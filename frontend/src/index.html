@@ -10,12 +10,36 @@
 </head>
 
 <body>
-    <header class="header w-full border border-blue-500"></header>
+    <header class="header w-full ">
+        <nav class="bg-green-400 p-4 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <h1 class="text-white text-xl font-bold">Clínica Sanitaria</h1>
+              <img src="./assets/logo clinica.png" alt="" class="w-9">
+              </div>
+              <button id="menu-toggle" class="md:hidden text-white">
+                ☰
+              </button>
+              <ul class="md:flex gap-6 hidden text-white font-medium" id="menu">
+                <li><a href="#" class="hover:underline">Inicio</a></li>
+                <li><a href="#" class="hover:underline">Servicios</a></li>
+                <li><a href="#" class="hover:underline">Especialistas</a></li>
+                <li><a href="#" class="hover:underline">Contacto</a></li>
+              </ul>
+            </div>
+            <ul id="mobile-menu" class="hidden md:hidden bg-blue-700 text-white text-center p-4 space-y-4">
+              <li><a href="#" class="block hover:underline">Inicio</a></li>
+              <li><a href="#" class="block hover:underline">Servicios</a></li>
+              <li><a href="#" class="block hover:underline">Especialistas</a></li>
+              <li><a href="#" class="block hover:underline">Contacto</a></li>
+            </ul>
+          </nav>
+    </header>
 
     <form action="#"
-        class="border border-green-300 rounded-lg shadow-lg w-4xl m-auto flex flex-col items-center justify-center mt-28"
+        class="border border-green-300 rounded-lg shadow-lg w-4xl m-auto flex flex-col items-center justify-center mt-48"
         novalidate>
-        <h1 class="text-green-400 text-3xl mt-7">Login</h1>
+        <h2 class="text-green-400 text-3xl mt-7">Login</h2>
         <div class="flex flex-col gap-2 mt-7">
             <input type="text" placeholder="E-mail" class="border w-72 border-green-400 rounded-lg text-gray-900  hover:cursor-pointer focus:outline-0">
             <input type="text" placeholder="Password" class="border w-72 border-green-400 rounded-lg text-gray-900 hover:cursor-pointer focus:outline-0">
@@ -31,6 +55,17 @@
             </div>
         </div>
     </form>
+
+
+    <footer class="bg-gray-800 text-white text-center p-4 mt-[282px] ">
+        <div class="container mx-auto">
+          <p>&copy; 2024 Clínica Salud. Todos los derechos reservados.</p>
+          <p>
+            <a href="#" class="hover:underline">Política de privacidad</a> |
+            <a href="#" class="hover:underline">Términos y condiciones</a>
+          </p>
+        </div>
+      </footer>
 </body>
 
 </html>
