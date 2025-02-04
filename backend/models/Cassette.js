@@ -1,55 +1,56 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
+const { DataTypes, Model } = require('sequelize');
+const sequelize = require('../config/db');
 
 class Cassette extends Model {}
 
 Cassette.init(
   {
-   
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID, // Asegúrate de que coincide con el tipo de `id` en Usuario
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     descripcion: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     fecha: {
       type: DataTypes.DATE,
       allowNull: false,
-
-    
     },
     organo: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      
-     },
-     caracteristicas: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    observaciones: {
-        type: DataTypes.STRING,
-        allowNull: false,
-
-      },
-    
-      qr_cassette: {
-        type: DataTypes.STRING, // Puede ser STRING o TEXT si es muy largo
-      
-      }
-    
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-  {
-    // Other model options go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'Cassette', // We need to choose the model name
-    //table
+    caracteristicas: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    observaciones: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    qr_cassette: {
+      type: DataTypes.TEXT,
+    },
+    usuario_id: {
+      type: DataTypes.UUID, // 👈 Debe coincidir con `id` en Usuario
+      allowNull: false,
+      references: {
+        model: 'usuarios', // 👈 Asegúrate de que es el nombre de la tabla, no del modelo
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+    },
   },
+  {
+    sequelize,
+    modelName: 'Cassette',
+    tableName: 'cassettes',
+    timestamps: true,
+    underscored: true,
+  }
 );
 
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
+module.exports = Cassette;

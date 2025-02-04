@@ -1,51 +1,52 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
+const { DataTypes, Model } = require('sequelize');
+const sequelize = require('../config/db');
 
 class Muestra extends Model {}
 
 Muestra.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     descripcion: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     fecha: {
       type: DataTypes.DATE,
       allowNull: false,
-
-    
     },
-     tincion: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+    tincion: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     observaciones: {
-        type: DataTypes.STRING,
-        allowNull: false,
-
-      },
-      qr_muestra: {
-        type: DataTypes.STRING, // Puede ser STRING o TEXT si es muy largo
-      
-      },
-     imagen:{
-        type: DataTypes.BLOB,
-     
-     }
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-  {
-    // Other model options go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'Muestra', // We need to choose the model name
-    //table
+    qr_muestra: {
+      type: DataTypes.TEXT,
+    },
+    cassette_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'cassettes', // 👈 Asegúrate de que es el nombre de la tabla en plural
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+    },
   },
+  {
+    sequelize,
+    modelName: 'Muestra',
+    tableName: 'muestras', // 👈 Asegúrate de que coincide con `references.model`
+    timestamps: true,
+    underscored: true,
+  }
 );
 
-// the defined model is the class itself
-console.log(User === sequelize.models.User); // true
+module.exports = Muestra;
