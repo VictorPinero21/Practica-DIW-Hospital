@@ -14,10 +14,12 @@ Muestra.init(
     descripcion: {
       type: DataTypes.STRING,
       allowNull: false,
+      //no puede ser superior a 255 caracterres
     },
     fecha: {
       type: DataTypes.DATE,
       allowNull: false,
+      //hoy o de la semana siguiente
     },
     tincion: {
       type: DataTypes.STRING,
@@ -26,15 +28,17 @@ Muestra.init(
     observaciones: {
       type: DataTypes.STRING,
       allowNull: false,
+      //no puede ser superior a 255 caracteres
     },
     qr_muestra: {
       type: DataTypes.TEXT,
+      allowNull: false,
     },
     cassette_id: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'cassettes', // 👈 Asegúrate de que es el nombre de la tabla en plural
+        model: 'cassettes',
         key: 'id',
       },
       onDelete: 'CASCADE',
@@ -43,7 +47,7 @@ Muestra.init(
   {
     sequelize,
     modelName: 'Muestra',
-    tableName: 'muestras', // 👈 Asegúrate de que coincide con `references.model`
+    tableName: 'muestras',
     timestamps: true,
     underscored: true,
   }

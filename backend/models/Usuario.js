@@ -14,24 +14,53 @@ Usuario.init(
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: {
+          args: true,
+          msg: 'El nombre solo puede contener letras',
+        },
+        len: {
+          args: [3, 50],
+          msg: 'El nombre debe tener entre 3 y 50 caracteres',
+        },
+      },
     },
     apellido: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: {
+          args: true,
+          msg: 'El apellido solo puede contener letras',
+        },
+        len: {
+          args: [3, 50],
+          msg: 'El apellido debe tener entre 3 y 50 caracteres',
+        },
+      },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: true,
+        isEmail: {
+          msg: 'El email no es válido',
+        },
       },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [8, 100],
+        is: {
+          args: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,100}$/],
+          msg: "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, un número y un carácter especial (Ejemplo: Abcdef1!)."
+        },
+        len: {
+          args: [8, 100],
+          msg: "La contraseña debe tener entre 8 y 100 caracteres."
+        },
       },
     },
     centro: {
@@ -42,12 +71,18 @@ Usuario.init(
       type: DataTypes.ENUM('administrador', 'alumno'),
       allowNull: false,
       defaultValue: 'alumno',
+      validate: {
+        isIn: {
+          args: [['administrador', 'alumno']],
+          msg: "El rol debe ser 'administrador' o 'alumno'.",
+        },
+      },
     },
   },
   {
     sequelize,
     modelName: 'Usuario',
-    tableName: 'usuarios', // 👈 Asegúrate de que el nombre es en plural
+    tableName: 'usuarios',
     timestamps: true,
     underscored: true,
   }

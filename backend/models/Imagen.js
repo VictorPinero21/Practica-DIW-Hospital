@@ -15,11 +15,11 @@ Imagen.init(
       type: DataTypes.BLOB,
       allowNull: false,
     },
-    muestra_id: { // 👈 Asegúrate de usar un solo campo para la clave foránea
+    muestra_id: { 
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'muestras', // 👈 Usa el nombre de la tabla, no del modelo
+        model: 'muestras', 
         key: 'id',
       },
       onDelete: 'CASCADE',
