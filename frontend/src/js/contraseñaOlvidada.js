@@ -1,3 +1,7 @@
+// al importarlo me da pete
+// const  emailjs = require('emailjs-com');
+
+// varibales
 let form = document.getElementById("form")
 let email = document.getElementById("email")
 let err_message = document.getElementById("err_message")
@@ -32,10 +36,43 @@ let reestablecer = (event) => {
     // suponemos que si que está
     // la contraseña tendra que ser aleatoria y tener un formato determinado
     // vamos a usar "prueba" para ver si podemos enviar el correo
-    let passwd = "prueba";
+    if(valida=true){
+        let passwd = "prueba";
 
+        // emailjs.send("service_hyxlmfv","template_s8lk1co",{
+        //     message: passwd,
+        //     reply_to: email.value,
+        //     });
+        console.log("antes del envio")
+        enviarCorreo(email.value, "Prueba", passwd);
+    }
+    
 
 }
+
+// Importa Email.js si usas un entorno con módulos
+// import emailjs from 'emailjs-com';
+
+// Función para enviar el correo
+function enviarCorreo(destinatario, asunto, mensaje) {
+    // emailjs.init('0wgPu1C_SkTQ0gYSb')
+
+    console.log("en la funcion")
+    let params = {
+        email: destinatario, 
+        subject: asunto,
+        message: mensaje
+    };
+
+    emailjs.send("service_hyxlmfv","template_1cmr1cq", params)
+    .then(response => {
+        console.log("Correo enviado con éxito", response);
+    })
+    .catch(error => {
+        console.error("Error al enviar el correo", error);
+    });
+}
+
 
 
 const validateEmail = (email) => {
