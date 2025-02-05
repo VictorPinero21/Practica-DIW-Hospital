@@ -5,6 +5,10 @@ const app = express();
 // importamos la conexión a la base de datos 
 const Sequelize = require("./config/db")
 
+
+// conectar asociaciones
+// require('./database/asociations')
+
 //Setting del Puerto
 const PORT = process.env.PORT || 5001;
 
