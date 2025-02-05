@@ -887,3 +887,10 @@
   inherits: false;
   initial-value: 1;
 }
+
+
+/*  */
+
+.text-red-500{
+  color: var(--color-red-500);
+}

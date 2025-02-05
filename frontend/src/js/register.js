@@ -25,3 +25,13 @@ volver_login.addEventListener("click",(event)=>{
             form_register.classList.add("hidden")
         }
 })
+
+// ir a recuperar la contraseña
+let contrasena_olvidada = document.getElementById("contrasena_olvidada");
+
+
+let IrReestablecer = () =>{
+    location.href="./pages/forgettenpass.html"
+}
+
+contrasena_olvidada.addEventListener("click",IrReestablecer)
