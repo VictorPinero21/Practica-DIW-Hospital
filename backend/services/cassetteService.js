@@ -32,7 +32,7 @@ const actualizarCassette = async (id, cassetteData) => {
     }
     return await cassette.update(cassetteData);
   } catch (error) {
-    throw new Error("Error al borrar modificar el cassette: " + error.message);
+    throw new Error("Error al modificar el cassette: " + error.message);
   }
 };
 
