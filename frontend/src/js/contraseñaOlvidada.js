@@ -44,7 +44,7 @@ let reestablecer = (event) => {
         //     reply_to: email.value,
         //     });
         console.log("antes del envio")
-        enviarCorreo(email.value, "Prueba", passwd);
+        enviarCorreo(email.value, passwd);
     }
     
 
@@ -54,13 +54,12 @@ let reestablecer = (event) => {
 // import emailjs from 'emailjs-com';
 
 // Función para enviar el correo
-function enviarCorreo(destinatario, asunto, mensaje) {
+function enviarCorreo(destinatario, mensaje) {
     // emailjs.init('0wgPu1C_SkTQ0gYSb')
 
     console.log("en la funcion")
     let params = {
         email: destinatario, 
-        subject: asunto,
         message: mensaje
     };
 

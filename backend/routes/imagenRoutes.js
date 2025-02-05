@@ -1,10 +1,9 @@
-const express = require('express');
-const { getImagenes, crearImagen } = require('../controllers/imagenController');
+const router = require('express').Router();
+const imagenController = require('../controllers/imagenController');
 
-const router = express.Router();
 
 // Rutas de imágenes
-router.get('/', getImagenes);
-router.post('/', crearImagen);
+router.get('/', imagenController.getImagenes);
+router.post('/', imagenController.crearImagen);
 
 module.exports = router;

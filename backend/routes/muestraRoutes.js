@@ -1,10 +1,9 @@
-const express = require('express');
-const { getMuestras, crearMuestra } = require('../controllers/muestraController');
+const router = require('express').Router();
+const muestraController = require('../controllers/muestraController');
 
-const router = express.Router();
 
 // Rutas de muestras
-router.get('/', getMuestras);
-router.post('/', crearMuestra);
+router.get('/', muestraController.getMuestras);
+router.post('/', muestraController.crearMuestra);
 
 module.exports = router;
