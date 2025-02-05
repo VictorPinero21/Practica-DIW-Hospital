@@ -29,7 +29,15 @@ const getCassetteById = async (req, res) => {
 // Crear un nuevo casette
 const crearCassette = async (req, res) => {
   try {
-    const createdCassette = await casetteService.crearCassette(req.body);
+    const createdCassette = await casetteService.crearCassette({
+      descripcion: req.body.descripcion,
+      fecha: req.body.fecha,
+      organo: req.body.organo,
+      caracteristicas: req.body.caracteristicas,
+      observaciones: req.body.observaciones,
+      qr_cassette: req.body.qr_cassette,
+      usuario_id: req.body.usuario_id,
+    });
     res.status(201).json(createdCassette);
   } catch (error) {
     res.status(500).json({ error: error.message });
