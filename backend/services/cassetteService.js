@@ -1,4 +1,4 @@
-const Cassette = require("../../backend/models/Cassette");
+const Cassette = require("./../models/Cassette");
 
 const getCassettes = async () => {
   try {

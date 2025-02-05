@@ -1,6 +1,6 @@
 //getCassettes, getCassetteById, crearCassette, actualizarCassette, eliminarCassette
 
-const casetteService = require("./../../frontend/services/casetteService");
+const casetteService = require("./../services/casetteService");
 
 // Obtener todos los casettes
 const getCassettes = async (req, res) => {
