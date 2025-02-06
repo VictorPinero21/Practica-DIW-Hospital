@@ -42,7 +42,11 @@ const crearImagen = async (req, res) => {
 // Actualizar un casette existente
 const actualizarImagen = async (req, res) => {
   try {
-    const updatedImagen = await imagenService.actualizarImagen(req.params.id, req.body);
+    const updatedImagen = await imagenService.actualizarImagen({
+      id: req.params.id,
+      imagen: req.body.imagen,
+      muestra_id: req.body.muestra_id,
+    });
     if (updatedImagen) {
       res.status(200).json(updatedImagen);
     } else {

@@ -47,7 +47,16 @@ const crearCassette = async (req, res) => {
 // Actualizar un casette existente
 const actualizarCassette = async (req, res) => {
   try {
-    const updatedCassette = await casetteService.actualizarCassette(req.params.id, req.body);
+    const updatedCassette = await casetteService.actualizarCassette({
+      id: req.params.id,
+      descripcion: req.body.descripcion,
+      fecha: req.body.fecha,
+      organo: req.body.organo,
+      caracteristicas: req.body.caracteristicas,
+      observaciones: req.body.observaciones,
+      qr_cassette: req.body.qr_cassette,
+      usuario_id: req.body.usuario_id,
+    });
     if (updatedCassette) {
       res.status(200).json(updatedCassette);
     } else {
