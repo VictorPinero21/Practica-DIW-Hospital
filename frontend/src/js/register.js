@@ -3,6 +3,8 @@ let register=document.getElementById("register")
 let form_login=document.getElementById("form_login")
 let form_register=document.getElementById("form_register");
 let volver_login=document.getElementById("login")
+// ir a recuperar la contraseña
+let contrasena_olvidada = document.getElementById("contrasena_olvidada");
 //Funciones
 
 //Funcion para mostrar el registro
@@ -12,6 +14,10 @@ const mostrarRegistro=(event)=>{
         form_register.classList.remove("hidden")
         form_register.classList.add("flex")
     }
+}
+
+let IrReestablecer = () =>{
+    location.href="./pages/forgettenpass.html"
 }
 
 
@@ -25,3 +31,4 @@ volver_login.addEventListener("click",(event)=>{
             form_register.classList.add("hidden")
         }
 })
+contrasena_olvidada.addEventListener("click",IrReestablecer)
