@@ -3,7 +3,7 @@
 let email_login=document.getElementById("email_login")
 let pass_login=document.getElementById("pass_login")
 //Campos del registro
-let nombre_register=document.getElementById("nombre")
+let nombre_register=document.getElementById("nombre_register")
 let apellidos_register=document.getElementById("apellidos_register")
 let select_institutos=document.getElementById("institutos")
 let email_register=document.getElementById("email_register")
@@ -17,6 +17,7 @@ let error_nombre_register=document.getElementById("error_nombre_register")
 let error_apellidos_register=document.getElementById("error_apellido_register")
 let error_email_register=document.getElementById("error_email_register")
 let error_pass_register=document.getElementById("error_pass_register")
+let error_repetirpass_register=document.getElementById("error_repetirpass_register")
 //Variable boleeana para el login
 let correcto=true
 //Funciones
@@ -44,15 +45,56 @@ const verificar_login=(event)=>{
         correcto=false
     }
     else{
-  error_pass_login.textContent=""
+        error_pass_login.textContent=""
     }
     
    
     return correcto;
 }
 
-const verificar_register=()=>{
+const verificar_register=(event)=>{
+    event.preventDefault()
+    console.log("REGISTER")
+    if(nombre_register.validity.valueMissing){
+        error_nombre_register.textContent="Debes introducir tu nombre."
+        correcto=false
+    }else{
+         error_nombre_register.textContent=""
+    }
+    if(apellidos_register.validity.valueMissing){
+        error_apellidos_register.textContent="Debes introducir tu apellido."
+        correcto=false
+    }else{
+         error_apellidos_register.textContent=""
+    }
+    if(email_register.validity.valueMissing){
+        error_email_register.textContent="Debes introducir el e-mail"
+        correcto=false
+    }else if(email_register.validity.typeMismatch){
+        error_email_register.textContent="El formato de e-mail es inválido."
+        correcto=false
+    }else{
+        error_email_register.textContent=""
+    }
+    if(pass_register.validity.valueMissing){
+        error_pass_register.textContent="Debes introducir la contraseña."
+        correcto=false
+    }else if(pass_register.validity.typeMismatch){
+        error_pass_register.textContent="La contraseña está mal consolidada."
+    }else{
+        error_pass_register.textContent=""
+    }
 
+    if(repetir_pass.validity.valueMissing){
+        error_repetirpass_register.textContent="Debes repetir la contraseña."
+        correcto=false
+    }else if(repetir_pass.validity.typeMismatch){
+        error_repetirpass_register.textContent="La contraseña está mal consolidada."
+        correcto=false
+    }else{
+        error_repetirpass_register.textContent=""
+    }
+    return correcto
 }
 
 //Listeners

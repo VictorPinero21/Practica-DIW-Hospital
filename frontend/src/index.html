@@ -65,9 +65,9 @@
     novalidate id="form_register">
     <h2 class="text-green-400 text-3xl mt-7">Register</h2>
     <div class="flex flex-col gap-2 mt-7">
-        <input type="text" placeholder="Nombre" class="border w-72 border-green-400 rounded-lg  hover:cursor-pointer focus:outline-0 text-green-400" id="nombre_register">
+        <input type="text" placeholder="Nombre" class="border w-72 border-green-400 rounded-lg  hover:cursor-pointer focus:outline-0 text-green-400" id="nombre_register" required>
         <p class="text-red-500" id="error_nombre_register"></p>
-        <input type="text" placeholder="Apellidos" class="border w-72 border-green-400 rounded-lg hover:cursor-pointer focus:outline-0 text-green-400" id="apellidos_register">
+        <input type="text" placeholder="Apellidos" class="border w-72 border-green-400 rounded-lg hover:cursor-pointer focus:outline-0 text-green-400" id="apellidos_register" required>
         <p class="text-red-500" id="error_apellido_register"></p>
         <select name="" id="institutos" class="text-green-400 border border-green-400 rounded-lg">
             <option value="ribera">
@@ -84,11 +84,11 @@
             </option>
         </select>
         
-        <input type="email" placeholder="E-mail" class="border w-72 border-green-400 rounded-lg   hover:cursor-pointer focus:outline-0 text-green-400" id="email_register">
+        <input type="email" placeholder="E-mail" class="border w-72 border-green-400 rounded-lg   hover:cursor-pointer focus:outline-0 text-green-400" id="email_register" required>
         <p class="text-red-500" id="error_email_register"></p>
-        <input type="text" placeholder="Password" class="border w-72 border-green-400 rounded-lg  hover:cursor-pointer focus:outline-0 text-green-400" id="pass_register" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,100}$">
+        <input type="text" placeholder="Password" class="border w-72 border-green-400 rounded-lg  hover:cursor-pointer focus:outline-0 text-green-400" id="pass_register" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,100}$" required>
         <p class="text-red-500" id="error_pass_register"></p>
-        <input type="text" placeholder="Repetir Password" class="border w-72 border-green-400 rounded-lg  hover:cursor-pointer focus:outline-0 text-green-400" id="repetir_pass">
+        <input type="text" placeholder="Repetir Password" class="border w-72 border-green-400 rounded-lg  hover:cursor-pointer focus:outline-0 text-green-400" id="repetir_pass" required>
         <p class="text-red-500" id="error_repetirpass_register"></p>
     </div>
 
