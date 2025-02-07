@@ -1,7 +1,7 @@
-const bodyParser = require("body-parser");
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-
+const cors = require("cors");
 // importamos la conexión a la base de datos 
 require('dotenv').config();
 
@@ -16,12 +16,16 @@ const PORT = process.env.PORT || 5001;
 //Middleware
 //Para poder rellenar el req.body
 app.use(bodyParser.json())
-bodyParser.urlencoded({extended: false})
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //Rutas   
 const router = require("./routes/index");
 app.use("/api", router);
-
+app.use(cors({
+  origin: "*",  // Permite cualquier origen
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 //Arrancamos el servidor 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
@@ -29,3 +33,4 @@ app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${POR
 sequelize.sync({ force: false }).then(() => { // 👈 Cambia `false` a `true` SOLO PARA PRUEBAS
   console.log('📌 Base de datos sincronizada con MySQL');
 });
+

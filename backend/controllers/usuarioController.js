@@ -17,7 +17,7 @@ const getUsuarios = async (req, res) => {
 // Obtener un usuario por ID
 const getUsuarioById = async (req, res) => {
   try {
-    const usuarios = await usuarioService.getUsuarioById(req.params.id);
+    const usuario = await usuarioService.getUsuarioById(req.params.id);
     if (usuario) {
       res.status(200).json(usuario);
     } else {
@@ -30,6 +30,7 @@ const getUsuarioById = async (req, res) => {
 
 // Crear un nuevo usuario
 const crearUsuario = async (req, res) => {
+  
   try {
     const createdUsuario = await usuarioService.crearUsuario({
       nombre: req.body.nombre,
@@ -40,6 +41,7 @@ const crearUsuario = async (req, res) => {
       centro: req.body.centro,
       rol: req.body.rol,
     });
+    
     res.status(201).json(createdUsuario);
   } catch (error) {
     res.status(500).json({ error: error.message });
