@@ -9,4 +9,4 @@ router.post('/', casseteRoutes.crearCassette);
 router.put('/:id', casseteRoutes.actualizarCassette);
 router.delete('/:id', casseteRoutes.eliminarCassette);
 
-module.exports = {router};
+module.exports = router;

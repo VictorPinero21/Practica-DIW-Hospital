@@ -6,4 +6,4 @@ const muestraController = require('../controllers/muestraController');
 router.get('/', muestraController.getMuestras);
 router.post('/', muestraController.crearMuestra);
 
-module.exports = {router};
+module.exports = router;

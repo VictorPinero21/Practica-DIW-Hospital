@@ -3,8 +3,9 @@ const express = require('express');
 const app = express();
 
 // importamos la conexión a la base de datos 
-const Sequelize = require("./config/db")
+require('dotenv').config();
 
+const { sequelize, Usuario, Cassette, Muestra, Imagen } = require('./database/models'); 
 
 // conectar asociaciones
 // require('./database/asociations')
@@ -23,7 +24,8 @@ app.use("/api", router);
 
 
 //Arrancamos el servidor 
-app.listen(PORT, () =>{
-   console.log(`Servidor corriendo en http://localhost:${PORT}`)
-   Sequelize.sync({force:false}).then(()=> console.log("conectado a concesionario"))
-  });
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+
+sequelize.sync({ force: false }).then(() => { // 👈 Cambia `false` a `true` SOLO PARA PRUEBAS
+  console.log('📌 Base de datos sincronizada con MySQL');
+});
