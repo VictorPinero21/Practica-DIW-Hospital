@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5001;
 //Middleware
 //Para poder rellenar el req.body
 app.use(bodyParser.json())
-bodyParser.urlencoded({extended: false})
+app.use(bodyParser.urlencoded({extended: false}))
 
 //Rutas   
 const router = require("./routes/index");

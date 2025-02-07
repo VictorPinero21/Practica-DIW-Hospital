@@ -35,8 +35,8 @@ const crearUsuario = async (req, res) => {
       nombre: req.body.nombre,
       apellido: req.body.apellido,
       email: req.body.email,
-      // password: bcrypt.hashSync(req.body.password, 10),
-      password: req.body.password,
+      password: bcrypt.hashSync(req.body.password, 10),
+      // password: req.body.password,
       centro: req.body.centro,
       rol: req.body.rol,
     });
