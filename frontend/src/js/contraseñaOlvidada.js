@@ -7,7 +7,7 @@ let email = document.getElementById("email")
 let err_message = document.getElementById("err_message")
 
 //Generador de contraseña
-let generator=require('generate-password-browser');
+// let generator=require('generate-password-browser');
 let reestablecer = (event) => {
     event.preventDefault();
     valida = true;
@@ -39,15 +39,15 @@ let reestablecer = (event) => {
     // la contraseña tendra que ser aleatoria y tener un formato determinado
     // vamos a usar "prueba" para ver si podemos enviar el correo
     if(valida=true){
-        let passwd = generator.generate({
-            length: 8,
-            numbers: true,
-            symbols: true,
-            lowercase: true,
-            uppercase: true,
+        // let passwd = generator.generate({
+        //     length: 8,
+        //     numbers: true,
+        //     symbols: true,
+        //     lowercase: true,
+        //     uppercase: true,
             
-          });
-
+        //   });
+        let passwd="prueba"
         // emailjs.send("service_hyxlmfv","template_s8lk1co",{
         //     message: passwd,
         //     reply_to: email.value,

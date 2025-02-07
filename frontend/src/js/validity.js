@@ -20,10 +20,17 @@ let error_pass_register=document.getElementById("error_pass_register")
 let error_repetirpass_register=document.getElementById("error_repetirpass_register")
 //Variable boleeana para el login
 let correcto=true
+//Peticion a la Api
+const peticionApi=async()=>{
+    const api=await fetch("http://localhost:5001/api/usuario")
+    const data=await api.json()
+    console.log(data)
+    return data;
+}
 //Funciones
-const verificar_login=(event)=>{
-    event.preventDefault()
-    console.log("SS")
+//Funcion para la validacion de patterns y requeridos del formulario
+const comprobacion_login=()=>{
+    console.log("Comprobando")
     if(email_login.validity.typeMismatch){
         console.log("Email mal consolidado")
         error_email_login.textContent="El correo está mal escrito."
@@ -46,12 +53,32 @@ const verificar_login=(event)=>{
     }
     else{
         error_pass_login.textContent=""
+        correcto=true
     }
-    
-   
     return correcto;
 }
 
+//Funcion para comprobar usuario y contraseña que sean correcto en la api
+const comprobarCredenciales=async()=>{
+    const arrayUsuarios=await peticionApi()
+
+    //Recorremos el array con un find
+    arrayUsuarios.find(usuario=>{
+        console.log("LO HEMOS ENCONTRADO")
+        usuario.email==email_login && usuario.password==pass_login
+    })
+}
+const verificar_login=(event)=>{
+    event.preventDefault()
+    if(comprobacion_login()){
+        comprobarCredenciales()
+        error_pass_login.textContent=""
+        console.log("Todo correcto")
+    }else{
+        error_pass_login.textContent="Usuario y/o contraseña inválidos."
+        console.log("No esta correcto tio")
+    }
+}
 const verificar_register=(event)=>{
     event.preventDefault()
     console.log("REGISTER")
@@ -98,5 +125,6 @@ const verificar_register=(event)=>{
 }
 
 //Listeners
+document.addEventListener("DOMContentLoaded",peticionApi)
 form_login.addEventListener("submit",verificar_login)
 form_register.addEventListener("submit",verificar_register)
