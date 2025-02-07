@@ -1,5 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('./../../config/db');
+const bcrypt = require('bcrypt');
+
 
 class Usuario extends Model {}
 
@@ -85,6 +87,23 @@ Usuario.init(
     tableName: 'usuarios',
     timestamps: true,
     underscored: true,
+    hooks: {
+      // Hook antes de crear un usuario
+      beforeCreate: async (usuario) => {
+        if (usuario.password) {
+          const salt = await bcrypt.genSalt(10);
+          usuario.password = await bcrypt.hash(usuario.password, salt);
+        }
+      },
+      // Hook antes de actualizar un usuario
+      beforeUpdate: async (usuario) => {
+        if (usuario.changed("password")) { // Solo hashea si la contraseña cambió
+          const salt = await bcrypt.genSalt(10);
+          usuario.password = await bcrypt.hash(usuario.password, salt);
+        }
+      },
+    },
+
   }
 );
 
