@@ -3,6 +3,7 @@ let register=document.getElementById("register")
 let form_login=document.getElementById("form_login")
 let form_register=document.getElementById("form_register");
 let volver_login=document.getElementById("login")
+// ir a recuperar la contraseña
 //Funciones
 
 //Funcion para mostrar el registro
@@ -13,6 +14,7 @@ const mostrarRegistro=(event)=>{
         form_register.classList.add("flex")
     }
 }
+
 
 
 //Listeners

@@ -38,6 +38,7 @@ const crearUsuario = async (req, res) => {
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 10),
       // password: req.body.password,
+      // password: bcrypt.hashSync(req.body.password, 10),
       centro: req.body.centro,
       rol: req.body.rol,
     });

@@ -5,6 +5,8 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/cli": "^4.0.3",
+    "express": "^4.21.2",
+    "generate-password-browser": "^1.1.0",
     "tailwindcss": "^4.0.3"
   }
 }
