@@ -11,7 +11,7 @@ router.use("/imagen",imagenRoutes)
 router.use("/cassete",casseteRoutes)
 router.use("/muestra",muestraRoutes)
 router.use("/usuario",usuarioRoutes)
-router.use("/reset"),resetPasswordRoutes
+router.use("/reset",resetPasswordRoutes)
 
 
 module.exports = router;
