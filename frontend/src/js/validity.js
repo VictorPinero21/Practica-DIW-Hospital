@@ -68,10 +68,12 @@ const comprobarCredenciales=async()=>{
         usuario.email==email_login && usuario.password==pass_login
     })
 }
+//Funcion para realizar el login correctamente en caso de estar todo correcto.
 const verificar_login=(event)=>{
     event.preventDefault()
     if(comprobacion_login()){
         comprobarCredenciales()
+        location.href="./pages/cassetes.html"
         error_pass_login.textContent=""
         console.log("Todo correcto")
     }else{
@@ -79,8 +81,8 @@ const verificar_login=(event)=>{
         console.log("No esta correcto tio")
     }
 }
-const verificar_register=(event)=>{
-    event.preventDefault()
+//Funcion para realizar la validacion de patterns y requeridos del formulario
+const comprobar_register=()=>{
     console.log("REGISTER")
     if(nombre_register.validity.valueMissing){
         error_nombre_register.textContent="Debes introducir tu nombre."
@@ -120,8 +122,45 @@ const verificar_register=(event)=>{
         correcto=false
     }else{
         error_repetirpass_register.textContent=""
+        correcto=true
     }
     return correcto
+}
+//Funcion para realizar el post a la base de datos(da error de CORS, preguntar a JORGE)
+const registrar_usuario=async()=>{
+    let body={
+        apellido: apellidos_register.value,
+        centro: select_institutos.value,
+        email:email_register.value,
+        nombre:nombre_register.value,
+        password:pass_register.value,
+        rol:'alumno'
+    }
+    
+    const api=await fetch("http://localhost:5001/api/usuario",{
+        method:'POST',
+        headers: {
+            Accept:'application/json',
+            'Content-Type': 'application/json',  // This needs to be allowed by the server
+          
+          },
+        body:JSON.stringify(body)
+       
+    })
+   
+    const data=await api.json()
+    console.log("USUARIO REGISTRADO CORRECTAMENTE")
+    return data
+}
+//Funcion para realizar el register correctamente en caso de estar todo correcto.
+const verificar_register=async(event)=>{
+    event.preventDefault()
+    if(comprobar_register()){
+        console.log("Todo correcto")
+        registrar_usuario()
+    }else{
+        console.log("No esta correcto tio")
+    }
 }
 
 //Listeners

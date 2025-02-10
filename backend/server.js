@@ -21,11 +21,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //Rutas   
 const router = require("./routes/index");
 app.use("/api", router);
-app.use(cors({
-  origin: "*",  // Permite cualquier origen
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+// app.use(cors({
+//   origin: "*",  // Permite cualquier origen
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
+app.use(cors());
+
 
 //Arrancamos el servidor 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
