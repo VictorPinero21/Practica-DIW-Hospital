@@ -1,5 +1,3 @@
-// para hasear la contraseña
-const bcrypt = require("bcrypt");
 // para poder hacer update en y comprobación en reset password
 const resetPasswordService = require("./../services/resetPasswordService");
 
@@ -41,8 +39,8 @@ const ComprobarCorreo = async (req,res) =>{
 // el email se lo pasamos en req.params.email
 const resetPassword = async (req,res) =>{
     // console.log('resetPassword');
-    const user = await resetPasswordService.resetPassword(req.body.password , req.params.email);
-
+    const user = await resetPasswordService.resetPassword(req.body.email);
+    console.log(user)
     res.status(200).send(user);
 }
 
