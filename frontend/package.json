@@ -1,10 +1,11 @@
 {
-  "scripts":{
-    "dev":"npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
-
   "dependencies": {
     "@tailwindcss/cli": "^4.0.3",
+    "express": "^4.21.2",
+    "generate-password-browser": "^1.1.0",
     "tailwindcss": "^4.0.3"
   }
 }

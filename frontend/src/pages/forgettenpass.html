@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Contraseña</title>
+    <link rel="shortcut icon" href="./../assets/favicoin.png" type="image/x-icon">
+    <link href="./../output.css" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"> -->
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+   
+
+
+  <script type="text/javascript">
+    emailjs.init('0wgPu1C_SkTQ0gYSb')
+  </script>
+</head>
+
+<body>
+    <header class="header w-full ">
+        <nav class="bg-green-400 p-4 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <h1 class="text-white text-xl font-bold">Clínica Sanitaria</h1>
+                    <img src="./../assets/logo clinica.png" alt="" class="w-9">
+                </div>
+                <button id="menu-toggle" class="md:hidden text-white">
+                    ☰
+                </button>
+                <ul class="md:flex gap-6 hidden text-white font-medium" id="menu">
+                    <li><a href="#" class="hover:underline">Inicio</a></li>
+                    <li><a href="#" class="hover:underline">Servicios</a></li>
+                    <li><a href="#" class="hover:underline">Especialistas</a></li>
+                    <li><a href="#" class="hover:underline">Contacto</a></li>
+                </ul>
+            </div>
+            <ul id="mobile-menu" class="hidden md:hidden bg-blue-700 text-white text-center p-4 space-y-4">
+                <li><a href="#" class="block hover:underline">Inicio</a></li>
+                <li><a href="#" class="block hover:underline">Servicios</a></li>
+                <li><a href="#" class="block hover:underline">Especialistas</a></li>
+                <li><a href="#" class="block hover:underline">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div>
+        <form action="#" id="form" novalidate
+            class="border border-green-300 rounded-lg shadow-lg w-4xl m-auto flex flex-col items-center justify-center mt-48">
+            <h1 class="text-green-400 text-3xl mt-7">Solicitar Contraseña</h1>
+            <div class="mt-8 flex flex-col justify-center items-center">
+                <input type="email" required id="email" placeholder="Correo" class="border w-72 border-green-400 rounded-lg text-green-400  hover:cursor-pointer focus:outline-0 p-2">
+                <p id="err_message" class="text-xl text-red-500 font-bold"></p>
+                <button class="hover:cursor-pointer bg-green-300 text-white p-2 w-60 rounded-lg mt-4">Solicitar Contraseña</button>
+            </div>
+
+
+            <p class="text-green-400 mt-8 mb-4">Volver a <a href="./../index.html" class="text-green-400 font-bold hover:cursor-pointer hover:scale-110">Login</a></p>
+
+        </form>
+    </div>
+</body>
+
+<script src="./../js/contraseñaOlvidada.js"></script>
+
+</html>
