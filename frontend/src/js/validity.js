@@ -128,7 +128,7 @@ const comprobar_register=()=>{
 }
 //Funcion para realizar el post a la base de datos(da error de CORS, preguntar a JORGE)
 const registrar_usuario=async()=>{
-    let body={
+    let user={
         apellido: apellidos_register.value,
         centro: select_institutos.value,
         email:email_register.value,
@@ -140,11 +140,11 @@ const registrar_usuario=async()=>{
     const api=await fetch("http://localhost:5001/api/usuario",{
         method:'POST',
         headers: {
-            Accept:'application/json',
+            
             'Content-Type': 'application/json',  // This needs to be allowed by the server
-          
+        
           },
-        body:JSON.stringify(body)
+        body:JSON.stringify(user)
        
     })
    
