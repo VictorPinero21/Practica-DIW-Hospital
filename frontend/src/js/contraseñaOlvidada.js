@@ -6,11 +6,9 @@ let form = document.getElementById("form")
 let email = document.getElementById("email")
 let err_message = document.getElementById("err_message")
 
-//Generador de contraseña
-// let generator=require('generate-password-browser');
-let reestablecer = (event) => {
-    event.preventDefault();
-    valida = true;
+
+const validar = () =>{
+    let valida = true;
 
     // validar si ha introducido o no un email.
     // no introduce ningun valor
@@ -30,15 +28,16 @@ let reestablecer = (event) => {
         }
     }
 
-    // despues de la propia validación del correo hay que verificar que el correo esté en la bdd 
+    return valida;
+}
 
 
+//Generador de contraseña
+// let generator=require('generate-password-browser');
+let reestablecer =  (event) => {
+    event.preventDefault();
 
-
-    // suponemos que si que está
-    // la contraseña tendra que ser aleatoria y tener un formato determinado
-    // vamos a usar "prueba" para ver si podemos enviar el correo
-    if(valida=true){
+    if(validar()){
         // let passwd = generator.generate({
         //     length: 8,
         //     numbers: true,
@@ -47,24 +46,36 @@ let reestablecer = (event) => {
         //     uppercase: true,
             
         //   });
-        let passwd="prueba"
-        // emailjs.send("service_hyxlmfv","template_s8lk1co",{
-        //     message: passwd,
-        //     reply_to: email.value,
-        //     });
-        console.log("antes del envio")
-        console.log(passwd)
-        enviarCorreo(email.value, passwd);
+
+        let url = 'http://localhost:5001/api/reset/'+email.value;
+
+        fetch(url)
+        .then(response => response.json())
+        .then(responsejson =>{
+            console.log(responsejson.email)
+        
+    
+            if(responsejson.email !== null){
+                // vaciamos el error
+                err_message.textContent=""
+                // llamamos a generar contraseña
+                GenerarContraseña();
+            }else{
+                // manadamos el error para que el usuario tenga feedback
+                err_message.textContent="Este email no existe"
+            }
+        })
+      
+
+        // Funcion para enviar el correo
+        // enviarCorreo(email.value, passwd);
     }
     
 
 }
 
-// Importa Email.js si usas un entorno con módulos
-//  import emailjs from 'emailjs-com';
-
 // Función para enviar el correo
-function enviarCorreo(destinatario, mensaje) {
+const enviarCorreo = (destinatario, mensaje) => {
     // emailjs.init('0wgPu1C_SkTQ0gYSb')
 
     console.log("en la funcion")
@@ -80,6 +91,10 @@ function enviarCorreo(destinatario, mensaje) {
     .catch(error => {
         console.error("Error al enviar el correo", error);
     });
+}
+
+const GenerarContraseña = () =>{
+    console.log("generar contraseña")
 }
 
 

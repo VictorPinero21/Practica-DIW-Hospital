@@ -5,11 +5,37 @@ const resetPasswordService = require("./../services/resetPasswordService");
 
 const ComprobarCorreo = async (req,res) =>{
     // recoger todos los correos
-    const correos = await resetPasswordService.getCorreos()
+    const correos = await resetPasswordService.getCorreos(req.params.email)
     // comprobar si cpincide algun correo con el que mandamos
-    let index = correos.filter(correo => req.params.email == correo.email)
-    // devolver el correo que ha coincidido, si no coincide devuelve array vacio
-    res.send(index)  
+    // let index = correos.findIndex(correo => req.params.email == correo.email)
+    // // devolver el correo que ha coincidido, si no coincide devuelve array vacio
+
+    // let data = {
+
+    // }
+
+    // if(index !== -1){
+    //     data = {
+    //         'email':req.params.email
+    //     }
+    // }else{
+    //     data = {
+    //         'email':null
+    //     }
+    // }
+    
+    // res.send(data) 
+
+    console.log(correos)
+
+    if(correos){
+    console.log("controlador: " + correos.email)
+        res.send(correos)
+    }else{
+        res.send({
+            email: null
+        })
+    }
 }
 
 // el email se lo pasamos en req.params.email

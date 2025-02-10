@@ -3,14 +3,16 @@ const bcrypt = require("bcrypt");
 
 
 // recoger todos los correos 
-const getCorreos = async () => {
-    try {
-        return await Usuario.findAll({
-            attributes: ['email']  // Selecciona solo el campo 'email'
-        });
-    } catch (error) {
-        throw new Error("Error al pedir todos los correos: " + error.message);
-    }
+const getCorreos = async (email) => {
+    const project = await Usuario.findOne({ where: { email: email } });
+
+if (project === null) {
+  console.log('Not found!');
+} else {
+  console.log(project.email);
+}
+
+return project;
 }
 
 // actualizar contraseña por correo 
