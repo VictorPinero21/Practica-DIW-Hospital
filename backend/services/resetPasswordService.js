@@ -35,7 +35,7 @@ const resetPassword = (correo) => {
                 { where: { email: correo } }
             )
         })
-        console.log(passwd)
+        console.log("servicio " + passwd)
         return passwd;
     } catch (error) {
         throw new Error("Error al modificar el usuario: " + error.message);

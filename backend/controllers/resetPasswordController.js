@@ -24,10 +24,10 @@ const ComprobarCorreo = async (req,res) =>{
     
     // res.send(data) 
 
-    console.log(correos)
+    // console.log(correos)
 
     if(correos){
-    console.log("controlador: " + correos.email)
+    // console.log("controlador: " + correos.email)
         res.send(correos)
     }else{
         res.send({
@@ -40,8 +40,10 @@ const ComprobarCorreo = async (req,res) =>{
 const resetPassword = async (req,res) =>{
     // console.log('resetPassword');
     const user = await resetPasswordService.resetPassword(req.body.email);
-    console.log(user)
-    res.status(200).send(user);
+    console.log("controlador " + user)
+    res.status(200).send({
+        data:user,
+});
 }
 
 
