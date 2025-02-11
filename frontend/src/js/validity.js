@@ -65,6 +65,8 @@ const comprobarCredenciales=async(email,password)=>{
     )
     if(arrayUsuarios.ok){
          location.href="./pages/cassetes.html"
+    }else{
+        error_pass_login.textContent="Usuario y/o contraseña incorrectos"
     }
 }
 //Funcion para realizar el login correctamente en caso de estar todo correcto.
@@ -78,7 +80,7 @@ const verificar_login=(event)=>{
         error_pass_login.textContent=""
         console.log("Todo correcto")
     }else{
-        error_pass_login.textContent="Usuario y/o contraseña inválidos."
+        
         console.log("No esta correcto tio")
     }
 }
