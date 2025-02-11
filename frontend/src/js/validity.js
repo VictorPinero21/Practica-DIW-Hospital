@@ -20,13 +20,6 @@ let error_pass_register=document.getElementById("error_pass_register")
 let error_repetirpass_register=document.getElementById("error_repetirpass_register")
 //Variable boleeana para el login
 let correcto=true
-//Peticion a la Api
-const peticionApi=async()=>{
-    const api=await fetch("http://localhost:5001/api/usuario")
-    const data=await api.json()
-    console.log(data)
-    return data;
-}
 //Funciones
 //Funcion para la validacion de patterns y requeridos del formulario
 const comprobacion_login=()=>{
@@ -59,21 +52,29 @@ const comprobacion_login=()=>{
 }
 
 //Funcion para comprobar usuario y contraseña que sean correcto en la api
-const comprobarCredenciales=async()=>{
-    const arrayUsuarios=await peticionApi()
-
-    //Recorremos el array con un find
-    arrayUsuarios.find(usuario=>{
-        console.log("LO HEMOS ENCONTRADO")
-        usuario.email==email_login && usuario.password==pass_login
-    })
+const comprobarCredenciales=async(email,password)=>{
+    console.log(email,password)
+    const arrayUsuarios=await fetch("http://localhost:5001/api/usuario/login",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        
+        body: JSON.stringify({ email, password })
+    }
+    )
+    if(arrayUsuarios.ok){
+         location.href="./pages/cassetes.html"
+    }
 }
 //Funcion para realizar el login correctamente en caso de estar todo correcto.
 const verificar_login=(event)=>{
     event.preventDefault()
     if(comprobacion_login()){
-        comprobarCredenciales()
-        location.href="./pages/cassetes.html"
+        let p=pass_login.value
+        let e=email_login.value
+        comprobarCredenciales(e,p)
+       
         error_pass_login.textContent=""
         console.log("Todo correcto")
     }else{
@@ -164,6 +165,6 @@ const verificar_register=async(event)=>{
 }
 
 //Listeners
-document.addEventListener("DOMContentLoaded",peticionApi)
+// document.addEventListener("DOMContentLoaded",peticionApi)
 form_login.addEventListener("submit",verificar_login)
 form_register.addEventListener("submit",verificar_register)
