@@ -18,14 +18,20 @@ return project;
 // actualizar contraseña por correo 
 const resetPassword = (correo) => {
 
-    let passwd = generator.generate({
-        length: 8,
-        numbers: true,
-        symbols: true,
-        lowercase: true,
-        uppercase: true,
-        
-      });
+    do {
+        passwd = generator.generate({
+            length: 8,
+            numbers: true,
+            symbols: true,
+            lowercase: true,
+            uppercase: true,
+        });
+    } while (
+        !/[0-9]/.test(passwd) ||   
+        !/[!@#$%^&*(),.?":{}|<>]/.test(passwd) || 
+        !/[A-Z]/.test(passwd) ||   
+        !/[a-z]/.test(passwd)      
+    );
 
     try {
         // Encriptar la nueva contraseña
