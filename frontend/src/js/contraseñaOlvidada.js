@@ -38,14 +38,6 @@ let reestablecer = (event) => {
     event.preventDefault();
 
     if (validar()) {
-        // let passwd = generator.generate({
-        //     length: 8,
-        //     numbers: true,
-        //     symbols: true,
-        //     lowercase: true,
-        //     uppercase: true,
-
-        //   });
 
         let url = 'http://localhost:5001/api/reset/' + email.value;
 
@@ -65,10 +57,6 @@ let reestablecer = (event) => {
                     err_message.textContent = "Este email no existe"
                 }
             })
-
-
-        // Funcion para enviar el correo
-        // enviarCorreo(email.value, passwd);
     }
 
 
@@ -76,8 +64,6 @@ let reestablecer = (event) => {
 
 // Función para enviar el correo
 const enviarCorreo = (destinatario, mensaje) => {
-    // emailjs.init('0wgPu1C_SkTQ0gYSb')
-
     console.log("en la funcion")
     let params = {
         email: destinatario,
@@ -118,18 +104,11 @@ const GenerarContraseña = (email) => {
 }
 
 
-
 const validateEmail = (email) => {
     const emailRegex = /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     if (emailRegex.test(email)) return true
     return false
 }
-
-
-
-
-
-
 
 form.addEventListener("submit", reestablecer)
