@@ -1,5 +1,22 @@
 // para poder hacer update en y comprobación en reset password
 const resetPasswordService = require("./../services/resetPasswordService");
+const jwt = require('jwt-simple')
+const moment = require('moment')
+const bcrypt = require("bcrypt");
+require('dotenv').config();
+const jwtSecret = process.env.JWT_SECRET;
+
+const createToken = (user) => {
+    const payload = {
+        usuario: user.id,
+        createdAt: moment().unix(),
+        expiredAt: moment().add(5,'minutes').unix()
+    }
+    
+    return jwt.encode(payload,jwtSecret);
+    
+    }
+    
 
 const ComprobarCorreo = async (req,res) =>{
     // recoger todos los correos
@@ -27,8 +44,24 @@ const resetPassword = async (req,res) =>{
 });
 }
 
+const ComprobarCorreo2 = async (req , res)=> {
+    const correos = await resetPasswordService.getCorreos(req.body.email)
+    
+    if(correos){
+        const iguales = bcrypt.compareSync(req.body.password, correos.password);
+        if(iguales){
+            res.json( {success:createToken(correos)})
+        }else{
+            res.json({error: 'Error en usuario y/o contraseña'})
+        }
+    }else{
+        res.json({error: 'Error en usuario y/o contraseña'})
+    }
+}
+
 
 module.exports = {
     ComprobarCorreo,
-    resetPassword
+    resetPassword,
+    ComprobarCorreo2
 }

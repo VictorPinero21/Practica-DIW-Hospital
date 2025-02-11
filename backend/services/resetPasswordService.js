@@ -2,6 +2,8 @@ const Usuario = require("./../database/models/Usuario");
 const bcrypt = require("bcrypt");
 let generator=require('generate-password-browser');
 
+
+
 // recoger todos los correos 
 const getCorreos = async (email) => {
     const project = await Usuario.findOne({ where: { email: email } });
@@ -48,7 +50,13 @@ const resetPassword = (correo) => {
     }
 }
 
+const getCorreos2 = async (email) =>{
+    const user = await Usuario.findOne({ where: { email: email } });
+        return user;
+}
+
 module.exports = {
     getCorreos,
-    resetPassword
+    resetPassword,
+    getCorreos2
 }
