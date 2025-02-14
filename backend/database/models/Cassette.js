@@ -34,7 +34,7 @@ Cassette.init(
           msg: "El campo 'organo' debe tener entre 3 y 50 caracteres."
         },
         isIn: {
-          args: [["corazón", "hígado", "pulmón", "riñón", "cerebro"]],
+          args: [["corazon", "higado", "pulmon", "riñon", "cerebro","uñas"]],
           msg: "El 'organo' debe ser uno de los valores permitidos."
         }
       }

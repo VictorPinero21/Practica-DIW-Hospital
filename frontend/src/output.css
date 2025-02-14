@@ -1477,17 +1477,20 @@
     --tw-border-style: solid;
     border-style: solid;
   }
+  .border-\[\#BBD9F3\] {
+    border-color: #BBD9F3;
+  }
   .border-\[\#a0c6e8\] {
     border-color: #a0c6e8;
-  }
-  .border-\[\#e6f0fa\] {
-    border-color: #e6f0fa;
   }
   .border-green-300 {
     border-color: var(--color-green-300);
   }
   .border-green-400 {
     border-color: var(--color-green-400);
+  }
+  .bg-\[\#BBD9F3\] {
+    background-color: #BBD9F3;
   }
   .bg-\[\#bbd9f3\] {
     background-color: #bbd9f3;
@@ -1682,6 +1685,9 @@
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
@@ -1827,14 +1833,14 @@
   .whitespace-pre-wrap {
     white-space: pre-wrap;
   }
-  .text-\[\#2c5282\] {
-    color: #2c5282;
-  }
   .text-\[\#4a90e2\] {
     color: #4a90e2;
   }
   .text-\[\#a0aec0\] {
     color: #a0aec0;
+  }
+  .text-gray-700 {
+    color: var(--color-gray-700);
   }
   .text-green-400 {
     color: var(--color-green-400);
@@ -2306,13 +2312,6 @@
     &:hover {
       @media (hover: hover) {
         cursor: pointer;
-      }
-    }
-  }
-  .hover\:bg-\[\#f8fbff\] {
-    &:hover {
-      @media (hover: hover) {
-        background-color: #f8fbff;
       }
     }
   }
