@@ -19,8 +19,23 @@ const mostrarCassetes=async()=>{
 
     //Creo los cassetes
     api.forEach(cassete => {
-       
+       let newDiv=document.createElement("DIV")
+       let fecha=document.createElement("P")
+       let descripcion=document.createElement("P")
+       let organo=document.createElement("P")
+
+       fecha.textContent=cassete.fecha
+       descripcion.textContent=cassete.descripcion
+       organo.textContent=cassete.organo
+
+       newDiv.appendChild(fecha)
+       newDiv.appendChild(descripcion)
+       newDiv.appendChild(organo)
+       fragment.appendChild(newDiv)
+
+       newDiv.classList.add("flex")
     });
+    listaCassetes.appendChild(fragment)
 }
 
 
