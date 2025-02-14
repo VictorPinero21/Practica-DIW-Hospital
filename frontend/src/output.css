@@ -533,6 +533,7 @@
   .collapse {
     visibility: collapse;
   }
+<<<<<<< HEAD
   .invisible {
     visibility: hidden;
   }
@@ -659,6 +660,11 @@
   .clear-start {
     clear: inline-start;
   }
+=======
+  .relative {
+    position: relative;
+  }
+>>>>>>> origin/Alvaro
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -692,6 +698,12 @@
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
   }
+  .mt-28 {
+    margin-top: calc(var(--spacing) * 28);
+  }
+  .mt-36 {
+    margin-top: calc(var(--spacing) * 36);
+  }
   .mt-48 {
     margin-top: calc(var(--spacing) * 48);
   }
@@ -713,9 +725,6 @@
   .block {
     display: block;
   }
-  .contents {
-    display: contents;
-  }
   .flex {
     display: flex;
   }
@@ -728,12 +737,15 @@
   .hidden {
     display: none;
   }
+<<<<<<< HEAD
   .inline {
     display: inline;
   }
   .inline-block {
     display: inline-block;
   }
+=======
+>>>>>>> origin/Alvaro
   .inline-flex {
     display: inline-flex;
   }
@@ -827,9 +839,13 @@
   .w-72 {
     width: calc(var(--spacing) * 72);
   }
+  .w-auto {
+    width: auto;
+  }
   .w-full {
     width: 100%;
   }
+<<<<<<< HEAD
   .w-screen {
     width: 100vw;
   }
@@ -883,6 +899,13 @@
   }
   .caption-top {
     caption-side: top;
+=======
+  .w-lg {
+    width: var(--container-lg);
+  }
+  .w-sm {
+    width: var(--container-sm);
+>>>>>>> origin/Alvaro
   }
   .border-collapse {
     border-collapse: collapse;
@@ -1266,6 +1289,7 @@
       margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+<<<<<<< HEAD
   .space-y-reverse {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 1;
@@ -1363,6 +1387,8 @@
   .rounded {
     border-radius: 0.25rem;
   }
+=======
+>>>>>>> origin/Alvaro
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
@@ -1946,6 +1972,7 @@
   .underline {
     text-decoration-line: underline;
   }
+<<<<<<< HEAD
   .decoration-dashed {
     text-decoration-style: dashed;
   }
@@ -2017,6 +2044,8 @@
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+=======
+>>>>>>> origin/Alvaro
   .shadow-lg {
     --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -2038,6 +2067,7 @@
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
   }
+<<<<<<< HEAD
   .blur {
     --tw-blur: blur(8px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
@@ -2298,6 +2328,8 @@
   .transform-view {
     transform-box: view-box;
   }
+=======
+>>>>>>> origin/Alvaro
   .hover\:scale-110 {
     &:hover {
       @media (hover: hover) {
@@ -2550,6 +2582,7 @@
   inherits: false;
   initial-value: solid;
 }
+<<<<<<< HEAD
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -2587,6 +2620,9 @@
   inherits: false;
 }
 @property --tw-backdrop-blur {
+=======
+@property --tw-scale-x {
+>>>>>>> origin/Alvaro
   syntax: "*";
   inherits: false;
 }

@@ -3,6 +3,7 @@
     "dev": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@tailwindcss/cli": "^4.0.3",
     "express": "^4.21.2",
     "generate-password-browser": "^1.1.0",
