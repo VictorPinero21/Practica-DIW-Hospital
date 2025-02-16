@@ -13,7 +13,7 @@
 
 <body>
       <!-- Modal de Modificar Cassette (Oculto por defecto) -->
-      <div id="modalModificarCassette" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+      <div id="modalModificarCassette" class="hidden fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg p-6 w-96">
             <div class="flex justify-between items-center border-b pb-2 mb-4">
                 <h2 class="text-lg font-semibold">Modificar Cassette</h2>
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Modal de nuevo Cassette -->
-<div id="nuevoCassete" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+<div id="nuevoCassete" class="hidden fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50">
     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
       <div class="flex justify-between items-center border-b pb-2 mb-4">
         <h2 class="text-lg font-semibold">Nuevo Cassette</h2>
@@ -86,7 +86,7 @@
     </div>
   </div>
 <!-- Modal de confirmación de eliminación -->
-<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden" >
+<div id="deleteModal" class="fixed inset-0  items-center justify-center bg-gray-900 bg-opacity-50 hidden" >
 <div class="bg-white rounded-lg shadow-lg p-6 w-96 text-center ">
   <h2 class="text-lg font-semibold text-blue-600">
     Desea Eliminar el Cassette.
@@ -206,12 +206,24 @@
             <div class="bg-white rounded-md border border-[#a0c6e8]">
                 <div class="bg-[#f8fbff] px-4 py-2 border-b border-[#a0c6e8] flex justify-between items-center">
                     <h2 class="text-[#4a90e2] font-medium">Muestras</h2>
-                    <button class="text-[#4a90e2]">
+                    <button id="btn__newMuestra" class="text-[#4a90e2]">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                     </button>
+                </div>
+                  <!-- Botones  -->
+                  <div class="flex">
+                    <button class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8] w-[50%] ">Fecha</button>
+                    <button
+                        class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8] w-[20%]">Descripción</button>
+                    <button class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8] w-[30%] ">Tinción</button>
+                </div>
+
+                <!-- Informacion sobre cassetes -->
+                <div class="flex flex-col" id="listaMuestras">
+
                 </div>
                 <div class="p-4">
                     <p class="text-[#a0aec0] text-center py-4">No se ha encontrado ninguna muestra</p>
@@ -219,6 +231,104 @@
             </div>
         </div>
     </div>
+
+    <!-- modal nueva muestra -->
+    <section id="newMuestra__modal" class="hidden p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
+        <article class="flex justify-between items-center mb-4">
+            <h2 class="text-green-700 text-xl font-bold">Nueva Muestra</h2>
+            <span id="close__newMuestra__modal" class="text-green-500 cursor-pointer text-xl">&times;</span>
+        </article>
+        <hr class="border-green-300 mb-4">
+        <form id="newMuestra__form" class="space-y-4">
+            <div>
+                <label for="newMuestra__desc" class="text-green-700 font-medium">Descripción</label>
+                <input id="newMuestra__desc" type="text" name="descripcion" class="w-full p-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+            </div>
+            <div>
+                <label for="newMuestra__date" class="text-green-700 font-medium">Fecha</label>
+                <input id="newMuestra__date" type="date" class="w-full p-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+            </div>
+            <div>
+                <label for="newMuestra__tincion" class="text-green-700 font-medium">Tinción</label>
+                <select name="tincion" id="newMuestra__tincion" class="w-full p-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    <option value="gram">Tinción de Gram</option>
+                    <option value="he">Hematoxilina-Eosina (H&E)</option>
+                    <option value="wright">Tinción de Wright</option>
+                    <option value="pap">Tinción de Papanicolaou</option>
+                    <option value="ziehl-neelsen">Tinción de Ziehl-Neelsen</option>
+                    <option value="giemsa">Tinción de Giemsa</option>
+                    <option value="pas">Tinción PAS (Ácido Periódico de Schiff)</option>
+                    <option value="alcian-blue">Tinción de Alcian Blue</option>
+                    <option value="prusia">Tinción de Prusia</option>
+                    <option value="silver">Tinción de Silver</option>
+                    <option value="methylene-blue">Tinción de Methylene Blue</option>
+                    <option value="congo-red">Tinción de Congo Red</option>
+                    <option value="masson-trichrome">Tinción Masson Trichrome</option>
+                    <option value="van-gieson">Tinción de Van Gieson</option>
+                    <option value="fast-green">Tinción de Fast Green</option>
+                    <option value="schmorl">Tinción de Schmorl</option>
+                    <option value="sudan-iii">Tinción de Sudan III</option>
+                    <option value="sudan-black">Tinción de Sudan Black</option>
+                    <option value="nissl">Tinción de Nissl</option>
+                    <option value="silver-reticular">Tinción Silver Staining para fibras reticulares</option>
+                    <option value="blue-toluidine">Tinción Blue Toluidine</option>
+                    <option value="toluene-blue">Tinción de Toluene Blue</option>
+                    <option value="lugol">Tinción de Lugol</option>
+                    <option value="cresyl-violet">Tinción de Cresyl Violet</option>
+                </select>
+            </div>
+            <div>
+                <label for="newMuestra__Observaciones" class="text-green-700 font-medium">Observaciones</label>
+                <input type="text" id="newMuestra__Observaciones" class="w-full p-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <div>
+                <label for="newMuestra__img" class="text-green-700 font-medium">Imagen</label>
+                <input type="file" id="newMuestra__img" class="w-full p-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">Crear Muestra</button>
+        </form>
+    </section> 
+
+    <!-- Modal detalles de la muestra -->
+
+    <section id="detalleMuestra__modal" class="hidden p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto">
+        <article class="flex justify-between items-center mb-4">
+            <h2 class="text-green-700 text-xl font-bold">Detalle Muestra</h2>
+            <p id="close__detalleMuestra__modal" class="text-green-500 cursor-pointer text-xl">&times;</p>
+        </article>
+        <hr class="border-green-300 mb-4">
+        <div class="flex items-start space-x-4">
+            <div class="w-1/3">
+                <div class="flex items-center space-x-2 text-green-700">
+                    <p class="font-bold">Descripción:</p>
+                    <p id="descripcion__detalleMuestra"></p>
+                </div>
+                <div class="flex items-center space-x-2 text-green-700">
+                    <p class="font-bold">Fecha:</p>
+                    <p id="fecha__detalleMuestra"></p>
+                </div>
+                <div class="flex items-center space-x-2 text-green-700">
+                    <p class="font-bold">Tinción:</p>
+                    <p id="tincion__detalleMuestra"></p>
+                </div>
+                <div class="flex items-center space-x-2 text-green-700">
+                    <p class="font-bold">Observaciones:</p>
+                    <p id="observaciones__detalleMuestra"></p>
+                </div>
+            </div>
+            <div class="w-2/3">
+                <!-- imagen vacia de prueba -->
+                <img id="Img__detalleMuestra" src="" alt="Imagen de muestra" class="rounded-lg shadow-md w-full">
+            </div>
+        </div>
+        <div class="mt-4 flex items-center space-x-2">
+            <div id="containerImg__detalleMuestra" class="mt-4 flex items-center space-x-2">
+                <!-- imagen vacia de prueba -->
+                <img src="" alt="Imagen miniatura" class="w-16 h-16 rounded-lg shadow-md">
+            </div>
+            <button id="aniadirImg__detalleMuestra" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">+</button>
+        </div>
+    </section>
     
 </body>
     <script src="./../js/cassetes.js"></script>
