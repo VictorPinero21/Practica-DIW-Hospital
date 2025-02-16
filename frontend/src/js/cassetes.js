@@ -152,10 +152,10 @@ const detalleCassete=async(event)=>{
     let p3=document.createElement("P")
     let p4=document.createElement("P")
 
-    p1.textContent=api.observaciones
-    p2.textContent=api.fecha
-    p3.textContent=api.caracteristicas
-    p4.textContent=api.observaciones
+    p1.textContent="Observaciones: "+api.observaciones
+    p2.textContent="Fecha: "+api.fecha
+    p3.textContent="Características: "+api.caracteristicas
+    p4.textContent="Observaciones: "+api.observaciones
 
     fragment.appendChild(p1)
     fragment.appendChild(p2)
