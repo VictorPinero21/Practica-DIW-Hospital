@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const cors = require("cors");
+const cors=require("cors")
 // importamos la conexión a la base de datos 
 require('dotenv').config();
 
@@ -26,6 +26,8 @@ app.use("/api", router);
 //   methods: ["GET", "POST", "PUT", "DELETE"],
 //   allowedHeaders: ["Content-Type", "Authorization"]
 // }));
+//  app.use(cors());
+
 
 //Arrancamos el servidor 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

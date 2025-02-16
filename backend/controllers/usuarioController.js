@@ -1,5 +1,3 @@
-//getUsuarios, getUsuarioById, crearUsuario, actualizarUsuario, eliminarUsuario
-//El Victor del pasado le dice a la Estela del futuro que los nombres de los controladores sean asi ma o meno que para las rutas me hacen falta parece ser
 const bcrypt = require("bcrypt");
 
 const usuarioService = require("./../services/usuarioService");
@@ -30,7 +28,6 @@ const getUsuarioById = async (req, res) => {
 
 // Crear un nuevo usuario
 const crearUsuario = async (req, res) => {
-  
   try {
     const createdUsuario = await usuarioService.crearUsuario({
       nombre: req.body.nombre,
@@ -42,7 +39,7 @@ const crearUsuario = async (req, res) => {
       centro: req.body.centro,
       rol: req.body.rol,
     });
-    
+
     res.status(201).json(createdUsuario);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -52,15 +49,18 @@ const crearUsuario = async (req, res) => {
 // Actualizar un usuario existente
 const actualizarUsuario = async (req, res) => {
   try {
-    const updatedUsuario = await usuarioService.actualizarUsuario({
-      id: req.params.id,
-      nombre: req.body.nombre,
-      apellido: req.body.apellido,
-      email: req.body.email,
-      password: req.body.password,
-      centro: req.body.centro,
-      rol: req.body.rol,
+    const { id } = req.params;
+    const { nombre, apellido, email, password, centro, rol } = req.body;
+
+    const updatedUsuario = await usuarioService.actualizarUsuario(id, {
+      nombre,
+      apellido,
+      email,
+      password,
+      centro,
+      rol,
     });
+
     if (updatedUsuario) {
       res.status(200).json(updatedUsuario);
     } else {
@@ -85,10 +85,26 @@ const eliminarUsuario = async (req, res) => {
   }
 };
 
+//Comprobar Usuario y contraseña
+const comprobarUsuario = async (req, res) => {
+  try {
+    const comprobar = await usuarioService.comprobarUsuario(req.body.email, req.body.password);
+
+    if (comprobar) {
+      res.status(204).json({ message: "Usuario verificado correctamente" });
+    } else {
+      res.status(404).json({ message: "Acceso denegado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "HA FALLADO" });
+  }
+};
+
 module.exports = {
   getUsuarios,
   getUsuarioById,
   crearUsuario,
   actualizarUsuario,
   eliminarUsuario,
+  comprobarUsuario,
 };

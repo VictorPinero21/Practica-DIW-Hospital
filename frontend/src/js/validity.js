@@ -20,13 +20,6 @@ let error_pass_register=document.getElementById("error_pass_register")
 let error_repetirpass_register=document.getElementById("error_repetirpass_register")
 //Variable boleeana para el login
 let correcto=true
-//Peticion a la Api
-const peticionApi=async()=>{
-    const api=await fetch("http://localhost:5001/api/usuario")
-    const data=await api.json()
-    console.log(data)
-    return data;
-}
 //Funciones
 //Funcion para la validacion de patterns y requeridos del formulario
 const comprobacion_login=()=>{
@@ -59,28 +52,40 @@ const comprobacion_login=()=>{
 }
 
 //Funcion para comprobar usuario y contraseña que sean correcto en la api
-const comprobarCredenciales=async()=>{
-    const arrayUsuarios=await peticionApi()
-
-    //Recorremos el array con un find
-    arrayUsuarios.find(usuario=>{
-        console.log("LO HEMOS ENCONTRADO")
-        usuario.email==email_login && usuario.password==pass_login
-    })
+const comprobarCredenciales=async(email,password)=>{
+    console.log(email,password)
+    const arrayUsuarios=await fetch("http://localhost:5001/api/usuario/login",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        
+        body: JSON.stringify({ email, password })
+    }
+    )
+    if(arrayUsuarios.ok){
+         location.href="./pages/cassetes.html"
+    }else{
+        error_pass_login.textContent="Usuario y/o contraseña incorrectos"
+    }
 }
+//Funcion para realizar el login correctamente en caso de estar todo correcto.
 const verificar_login=(event)=>{
     event.preventDefault()
     if(comprobacion_login()){
-        comprobarCredenciales()
+        let p=pass_login.value
+        let e=email_login.value
+        comprobarCredenciales(e,p)
+       
         error_pass_login.textContent=""
         console.log("Todo correcto")
     }else{
-        error_pass_login.textContent="Usuario y/o contraseña inválidos."
+        
         console.log("No esta correcto tio")
     }
 }
-const verificar_register=(event)=>{
-    event.preventDefault()
+//Funcion para realizar la validacion de patterns y requeridos del formulario
+const comprobar_register=()=>{
     console.log("REGISTER")
     if(nombre_register.validity.valueMissing){
         error_nombre_register.textContent="Debes introducir tu nombre."
@@ -120,11 +125,48 @@ const verificar_register=(event)=>{
         correcto=false
     }else{
         error_repetirpass_register.textContent=""
+        correcto=true
     }
     return correcto
 }
+//Funcion para realizar el post a la base de datos(da error de CORS, preguntar a JORGE)
+const registrar_usuario=async()=>{
+    let user={
+        apellido: apellidos_register.value,
+        centro: select_institutos.value,
+        email:email_register.value,
+        nombre:nombre_register.value,
+        password:pass_register.value,
+        rol:'alumno'
+    }
+    
+    const api=await fetch("http://localhost:5001/api/usuario",{
+        method:'POST',
+        headers: {
+            
+            'Content-Type': 'application/json',  // This needs to be allowed by the server
+        
+          },
+        body:JSON.stringify(user)
+       
+    })
+   
+    const data=await api.json()
+    console.log("USUARIO REGISTRADO CORRECTAMENTE")
+    return data
+}
+//Funcion para realizar el register correctamente en caso de estar todo correcto.
+const verificar_register=async(event)=>{
+    event.preventDefault()
+    if(comprobar_register()){
+        console.log("Todo correcto")
+        registrar_usuario()
+    }else{
+        console.log("No esta correcto tio")
+    }
+}
 
 //Listeners
-document.addEventListener("DOMContentLoaded",peticionApi)
+// document.addEventListener("DOMContentLoaded",peticionApi)
 form_login.addEventListener("submit",verificar_login)
 form_register.addEventListener("submit",verificar_register)
