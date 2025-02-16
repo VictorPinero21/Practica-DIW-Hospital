@@ -16,8 +16,8 @@ const getCassettes = async (req, res) => {
 const getCassetteById = async (req, res) => {
   try {
     const casettes = await casetteService.getCassetteById(req.params.id);
-    if (casette) {
-      res.status(200).json(casette);
+    if (casettes) {
+      res.status(200).json(casettes);
     } else {
       res.status(404).json({ message: "Cassette no encontrado" });
     }

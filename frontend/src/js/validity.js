@@ -171,3 +171,4 @@ const verificar_register=async(event)=>{
 // document.addEventListener("DOMContentLoaded",peticionApi)
 form_login.addEventListener("submit",verificar_login)
 form_register.addEventListener("submit",verificar_register)
+

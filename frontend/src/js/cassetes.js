@@ -66,26 +66,27 @@ const mostrarCassetes=async()=>{
     
     let cassetesArr;
     //Creo los cassetes
-    
     cassetesArr=api.filter(cassete => cassete.usuario_id===usuario_id);
-    console.log(cassetesArr)
-    console.log(usuario_id)
+   
     cassetesArr.forEach(cassete=>{
       let newDiv=document.createElement("DIV")
       let fecha=document.createElement("P")
       let descripcion=document.createElement("P")
       let organo=document.createElement("P")
 
-      fecha.textContent=cassete.fecha
+      fecha.textContent=cassete.fecha.substring(0, 10)
       descripcion.textContent=cassete.descripcion
       organo.textContent=cassete.organo
-
+      fecha.classList="w-[50%] ml-2 hover:cursor-pointer"
+      descripcion.classList="w-[20%] ml-2 hover:cursor-pointer"
+      organo.classList="w-[30%] ml-2  hover:cursor-pointer"
       newDiv.appendChild(fecha)
       newDiv.appendChild(descripcion)
       newDiv.appendChild(organo)
       fragment.appendChild(newDiv)
 
       newDiv.classList.add("flex")
+      newDiv.id=cassete.id
     })
     listaCassetes.appendChild(fragment)
 }
@@ -107,7 +108,10 @@ const crearCassete=async()=>{
     },
     body:JSON.stringify({descripcion,fecha,organo,caracteristicas,observaciones,usuario_id})
   })
-
+  if(postCassete.ok){
+    location.reload()
+    mostrarCassetes()
+  }
   const data = await postCassete.json()
   console.log(data)
   return data
@@ -120,13 +124,44 @@ const peticionApiUser=async()=>{
 //Funcion para recoger el ID de la persona que ha iniciado sesion a través de localStorage usando su email para recoger le ID
 const recogerID=async()=>{
   let email=localStorage.getItem("email")
-  console.log("EMAIL logueado: "+email)
+  
   let api=await peticionApiUser()
   let usuarioQuerido;
   usuarioQuerido=api.filter(usuario=>usuario.email==email)
-  console.log("ARRAY DEVUELTO FILTRADO"+usuarioQuerido)
+
   usuarioQuerido.forEach(usu=>usuario_id=usu.id)
-  console.log("USUARIO QUE SE HA METIDO"+usuario_id)
+  
+}
+
+const peticionApiID=async(id)=>{
+  const api=await fetch(`http://localhost:5001/api/cassete/${id}`)
+  const data=await api.json()
+
+  return data
+}
+//Funcion para recoger los detalles del cassete
+const detalleCassete=async(event)=>{
+  cassetteDetail.textContent=""
+  console.log(event.target.parentElement.id)
+    //Mostrar Descripcion,fecha,caracteristiacs, y observaciones
+    let id=event.target.parentElement.id
+    const api=await peticionApiID(id)
+    console.log(api)
+    let p1=document.createElement("P")
+    let p2=document.createElement("P")
+    let p3=document.createElement("P")
+    let p4=document.createElement("P")
+
+    p1.textContent=api.observaciones
+    p2.textContent=api.fecha
+    p3.textContent=api.caracteristicas
+    p4.textContent=api.observaciones
+
+    fragment.appendChild(p1)
+    fragment.appendChild(p2)
+    fragment.appendChild(p3)
+    fragment.appendChild(p4)
+    cassetteDetail.appendChild(fragment)
 }
 //listeners
 document.addEventListener("DOMContentLoaded",recogerID)
@@ -168,3 +203,5 @@ addEventListenerIfExists("cancelDelete", "click", () => {
 addEventListenerIfExists("modificarCassete", "click", () => {
   document.getElementById("modalModificarCassette").classList.toggle("hidden");
 });
+
+listaCassetes.addEventListener("click",detalleCassete)
