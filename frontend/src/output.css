@@ -671,8 +671,14 @@
   .w-96 {
     width: calc(var(--spacing) * 96);
   }
+  .w-\[5\%\] {
+    width: 5%;
+  }
   .w-\[20\%\] {
     width: 20%;
+  }
+  .w-\[25\%\] {
+    width: 25%;
   }
   .w-\[30\%\] {
     width: 30%;
@@ -789,6 +795,9 @@
   }
   .border-green-400 {
     border-color: var(--color-green-400);
+  }
+  .border-green-500 {
+    border-color: var(--color-green-500);
   }
   .bg-\[\#bbd9f3\] {
     background-color: #bbd9f3;
@@ -914,6 +923,9 @@
   }
   .text-green-500 {
     color: var(--color-green-500);
+  }
+  .text-green-600 {
+    color: var(--color-green-600);
   }
   .text-green-700 {
     color: var(--color-green-700);

@@ -8,7 +8,7 @@
     <title>Medical Interface</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="./../assets/favicoin.png" type="image/x-icon">
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <body>
@@ -54,7 +54,7 @@
     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
       <div class="flex justify-between items-center border-b pb-2 mb-4">
         <h2 class="text-lg font-semibold">Nuevo Cassette</h2>
-        <button id="cerrar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        <button id="cerrarNuevoCassete" class="text-gray-500 hover:text-gray-700">&times;</button>
       </div>
       <div class="space-y-4">
         <div>
@@ -225,7 +225,7 @@
                 <div class="flex flex-col" id="listaMuestras">
 
                 </div>
-                <div class="p-4">
+                <div class="p-4 block" id="noHayMuestras">
                     <p class="text-[#a0aec0] text-center py-4">No se ha encontrado ninguna muestra</p>
                 </div>
             </div>
@@ -233,7 +233,7 @@
     </div>
 
     <!-- modal nueva muestra -->
-     <div id="newMuestra__modal" class="hidden fixed inset-0 justify-center items-center">
+     <div id="newMuestra__modal" class="hidden fixed inset-0 justify-center items-center bg-gray-900 bg-opacity-50">
         <section  class=" p-6 rounded-lg shadow-lg w-full max-w-md mx-auto bg-white">
             <article class="flex justify-between items-center mb-4">
                 <h2 class="text-green-700 text-xl font-bold">Nueva Muestra</h2>

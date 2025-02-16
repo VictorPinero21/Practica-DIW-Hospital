@@ -84,10 +84,11 @@ const mostrarCassetes=async()=>{
       newDiv.appendChild(fecha)
       newDiv.appendChild(descripcion)
       newDiv.appendChild(organo)
-      fragment.appendChild(newDiv)
 
       newDiv.classList.add("flex")
       newDiv.id=cassete.id
+
+      fragment.appendChild(newDiv)
     })
     listaCassetes.appendChild(fragment)
 }
@@ -184,41 +185,47 @@ document.addEventListener("DOMContentLoaded",()=>{
 })
 submitCrearCassete.addEventListener("click",crearCassete)
 
-addEventListenerIfExists("cerrar", "click", () => {
-  document.getElementById("nuevoCassete").classList.toggle("hidden");
-});
+// ARREGLO DE LAS MODALES
 
-addEventListenerIfExists("toggleModal", "click", () => {
-  document.getElementById("nuevoCassete").classList.toggle("hidden");
-});
+// modal nuevos cassettes
+let nuevoCassete = document.getElementById('nuevoCassete');
+let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
+let toggleModal = document.getElementById('toggleModal')
+// modal modificar cassettes
+let modalModificarCassette = document.getElementById('modalModificarCassette');
+let cerrarModalCassete = document.getElementById('cerrarModalCassete');
+let modificarCassete = document.getElementById('modificarCassete')
+// modal de confirmacion de elimiar cassete
+let deleteModal = document.getElementById('deleteModal')
+let cancelDelete = document.getElementById('cancelDelete')
+let confirmDelete = document.getElementById('confirmDelete')
+let eliminarCassete = document.getElementById('eliminarCassete')
 
-addEventListenerIfExists("cerrarModal", "click", () => {
-  document.getElementById("nuevoCassete").classList.toggle("hidden");
-});
+const mostrar = (modal) =>{
+  modal.classList.remove("hidden")
+  modal.classList.add("flex")
+}
 
-addEventListenerIfExists("eliminarCassete", "click", () => {
-  document.getElementById("deleteModal").classList.toggle("hidden");
-});
+const ocultar = (modal) => {
+  modal.classList.add("hidden")
+  modal.classList.remove("flex")
+}
 
-addEventListenerIfExists("cancelDelete", "click", () => {
-  document.getElementById("deleteModal").classList.toggle("hidden");
-});
-
-addEventListenerIfExists("modificarCassete", "click", () => {
-  document.getElementById("modalModificarCassette").classList.toggle("hidden");
-});
+// eventos para ocultar modales
+cerrarNuevoCassete.addEventListener('click',()=>ocultar(nuevoCassete))
+cerrarModalCassete.addEventListener('click', ()=>ocultar(modalModificarCassette))
+cancelDelete.addEventListener('click',()=>ocultar(deleteModal))
+confirmDelete.addEventListener('click',()=>ocultar(deleteModal))
+// eventos para mostrar las modales
+toggleModal.addEventListener('click',()=>mostrar(nuevoCassete))
+modificarCassete.addEventListener('click', ()=>mostrar(modalModificarCassette))
+eliminarCassete.addEventListener('click',()=>mostrar(deleteModal))
 
 listaCassetes.addEventListener("click",detalleCassete)
 
 // A PARTIR DE AQUI ALVARO
 
-const mostrarMuestras = (id) =>{
-  let url = "http://localhost:5001/api/muestra/"+id;
 
-  fetch(url)
-  .then(response => response.json())
-  .then(responsejson => console.log(responsejson))
-}
 
 // mostrar la modal
 let btn__newMuestra = document.getElementById('btn__newMuestra');
@@ -226,6 +233,12 @@ let btn__newMuestra = document.getElementById('btn__newMuestra');
 let newMuestra__modal = document.getElementById('newMuestra__modal');
 // boton de cerrar la modal de nueva muestra 
 let close__newMuestra__modal = document.getElementById('close__newMuestra__modal');
+// nuevo fragment
+let fragment2 = document.createDocumentFragment();
+// aqui es donde se listan las muestras
+let listaMuestras = document.getElementById("listaMuestras");
+// feedback de que no hay muestras
+let noHayMuestras = document.getElementById('noHayMuestras');
 // mostrar la modal para crear muestras
 const mostrarModal__newMuestra = () =>{
     newMuestra__modal.classList.remove('hidden')
@@ -235,6 +248,55 @@ const mostrarModal__newMuestra = () =>{
 const ocultarModal__newMuestra = () =>{
   newMuestra__modal.classList.remove('flex')
   newMuestra__modal.classList.add('hidden')
+}
+
+// peticion a la api
+const mostrarMuestras = (id) =>{
+  let url = "http://localhost:5001/api/muestra/"+id;
+
+  fetch(url)
+  .then(response => response.json())
+  .then(responsejson => {
+    if(responsejson.length > 0){
+      listarMuestras(responsejson)
+      noHayMuestras.classList.remove('block')
+      noHayMuestras.classList.add("hidden")
+    }else{
+      noHayMuestras.classList.remove('hidden')
+      noHayMuestras.classList.add('block')
+    }
+
+  })
+}
+
+const listarMuestras = (muestras) =>{
+  console.log(muestras)
+  muestras.forEach(muestra=>{
+    // console.log(muestra)
+    let newDiv=document.createElement("DIV")
+    let fecha=document.createElement("P")
+    let descripcion=document.createElement("P")
+    let tincion=document.createElement("P")
+    let i =document.createElement("I")
+
+    fecha.textContent=muestra.fecha.substring(0, 10)
+    descripcion.textContent=muestra.descripcion
+    tincion.textContent=muestra.tincion
+    fecha.classList="w-[50%] ml-2 hover:cursor-pointer"
+    descripcion.classList="w-[20%] ml-2 hover:cursor-pointer"
+    tincion.classList="w-[25%] ml-2  hover:cursor-pointer"
+    i.classList="fas fa-file text-green-600 w-[5%] ml-2 hover:cursor-pointer"
+    newDiv.appendChild(fecha)
+    newDiv.appendChild(descripcion)
+    newDiv.appendChild(tincion)
+    newDiv.appendChild(i)
+
+    newDiv.classList="flex border-b border-green-500"
+    newDiv.id=muestra.id
+
+    fragment2.appendChild(newDiv)
+  })
+  listaMuestras.appendChild(fragment2)
 }
 
 
