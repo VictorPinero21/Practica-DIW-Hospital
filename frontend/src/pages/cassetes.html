@@ -59,29 +59,29 @@
       <div class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700">Descripción Corta</label>
-          <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="descripcion"/>
         </div>
         <div class="flex space-x-4">
           <div class="flex-1">
             <label class="block text-sm font-medium text-gray-700">Fecha</label>
-            <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="fecha"/>
           </div>
           <div class="flex-1">
             <label class="block text-sm font-medium text-gray-700">Órgano</label>
-            <select class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="selectOrganoCassete">
               <option>Seleccionar Órgano</option>
             </select>
           </div>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700">Características</label>
-          <textarea class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <textarea class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="caracteristicas"></textarea>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700">Observaciones</label>
-          <textarea class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <textarea class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="observaciones"></textarea>
         </div>
-        <button class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Crear Cassette</button>
+        <button class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600" type="submit" id="submitCrearCassete">Crear Cassette</button>
       </div>
     </div>
   </div>
@@ -127,6 +127,7 @@
                 <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#a0c6e8] rounded-md px-3 py-2">
 
                 <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#a0c6e8] rounded-md px-3 py-2">
+                <a href="./../index.html">Cerrar Sesion</a>
             </div>
         </div>
 
@@ -157,10 +158,10 @@
                         <!-- Botones  -->
                         <div class="flex">
 
-                            <button class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Fecha</button>
+                            <button class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8] w-[50%] ">Fecha</button>
                             <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Descripción</button>
-                            <button class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Órgano</button>
+                                class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8] w-[20%]">Descripción</button>
+                            <button class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8] w-[30%] ">Órgano</button>
                         </div>
 
                         <!-- Informacion sobre cassetes -->
@@ -221,5 +222,4 @@
     
 </body>
     <script src="./../js/cassetes.js"></script>
-</html>
 </html>

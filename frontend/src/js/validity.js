@@ -64,6 +64,7 @@ const comprobarCredenciales=async(email,password)=>{
     }
     )
     if(arrayUsuarios.ok){
+        localStorage.setItem("email",email)
          location.href="./pages/cassetes.html"
     }else{
         error_pass_login.textContent="Usuario y/o contraseña incorrectos"
@@ -170,3 +171,4 @@ const verificar_register=async(event)=>{
 // document.addEventListener("DOMContentLoaded",peticionApi)
 form_login.addEventListener("submit",verificar_login)
 form_register.addEventListener("submit",verificar_register)
+
