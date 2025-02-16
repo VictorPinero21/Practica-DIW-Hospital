@@ -5,6 +5,7 @@
 let form = document.getElementById("form")
 let email = document.getElementById("email")
 let err_message = document.getElementById("err_message")
+let message = document.getElementById("message")
 
 
 const validar = () => {
@@ -73,9 +74,12 @@ const enviarCorreo = (destinatario, mensaje) => {
     emailjs.send("service_hyxlmfv", "template_1cmr1cq", params)
         .then(response => {
             console.log("Correo enviado con éxito", response);
+            // darle u feedback al usuario
+            message.textContent="Correo enviado con éxito"
         })
         .catch(error => {
             console.error("Error al enviar el correo", error);
+            err_message.textContent="Error al enviar el correo"
         });
 }
 
