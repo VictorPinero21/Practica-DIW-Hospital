@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +12,105 @@
 </head>
 
 <body>
+      <!-- Modal de Modificar Cassette (Oculto por defecto) -->
+      <div id="modalModificarCassette" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+            <div class="flex justify-between items-center border-b pb-2 mb-4">
+                <h2 class="text-lg font-semibold">Modificar Cassette</h2>
+                <button id="cerrarModalCassete" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Descripción Corta</label>
+                    <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Nuevo Cassette">
+                </div>
+                <div class="flex space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Fecha</label>
+                        <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Órgano</label>
+                        <select class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option>Seleccionar Órgano</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Características</label>
+                    <textarea class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Observaciones</label>
+                    <textarea class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+                <button class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Modificar Cassette</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de nuevo Cassette -->
+<div id="nuevoCassete" class="hidden fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+      <div class="flex justify-between items-center border-b pb-2 mb-4">
+        <h2 class="text-lg font-semibold">Nuevo Cassette</h2>
+        <button id="cerrar" class="text-gray-500 hover:text-gray-700">&times;</button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Descripción Corta</label>
+          <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="flex space-x-4">
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700">Fecha</label>
+            <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700">Órgano</label>
+            <select class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option>Seleccionar Órgano</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Características</label>
+          <textarea class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Observaciones</label>
+          <textarea class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+        <button class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600">Crear Cassette</button>
+      </div>
+    </div>
+  </div>
+<!-- Modal de confirmación de eliminación -->
+<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden" >
+<div class="bg-white rounded-lg shadow-lg p-6 w-96 text-center ">
+  <h2 class="text-lg font-semibold text-blue-600">
+    Desea Eliminar el Cassette.
+  </h2>
+  <p class="text-gray-700 mt-2">
+    Al eliminar el cassette se eliminarán también todas sus muestras.
+  </p>
+  <div class="mt-4 flex justify-center gap-4">
+    <button
+      id="confirmDelete"
+      class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+    >
+      Eliminar
+    </button>
+    <button
+      id="cancelDelete"
+      class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>
+</div>
+
     <div class="min-h-screen bg-[#f0f8ff]">
         <!-- Header Controls -->
         <div class="bg-[#bbd9f3] p-4">
@@ -39,7 +139,7 @@
                         <div class="bg-[#f8fbff] px-4 py-2 border-b border-[#a0c6e8] flex justify-between items-center">
                             <h2 class="text-[#4a90e2] font-medium">Cassettes</h2>
                             <div class="flex gap-2">
-                                <button class="text-[#4a90e2]">
+                                <button class="text-[#4a90e2]" id="toggleModal">
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -81,13 +181,13 @@
                                         d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
                             </button>
-                            <button class="text-[#4a90e2]">
+                            <button class="text-[#4a90e2]" id="eliminarCassete">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
                             </button>
-                            <button class="text-[#4a90e2]">
+                            <button class="text-[#4a90e2]" id="modificarCassete">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -118,7 +218,7 @@
             </div>
         </div>
     </div>
-
+    
 </body>
     <script src="./../js/cassetes.js"></script>
 </html>
