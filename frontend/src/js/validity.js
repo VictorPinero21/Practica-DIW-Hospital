@@ -64,6 +64,7 @@ const comprobarCredenciales=async(email,password)=>{
     }
     )
     if(arrayUsuarios.ok){
+        localStorage.setItem("email",email)
          location.href="./pages/cassetes.html"
     }else{
         error_pass_login.textContent="Usuario y/o contraseña incorrectos"
