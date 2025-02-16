@@ -219,3 +219,33 @@ const mostrarMuestras = (id) =>{
   .then(response => response.json())
   .then(responsejson => console.log(responsejson))
 }
+
+// mostrar la modal
+let btn__newMuestra = document.getElementById('btn__newMuestra');
+// modal de nueva muestra
+let newMuestra__modal = document.getElementById('newMuestra__modal');
+// boton de cerrar la modal de nueva muestra 
+let close__newMuestra__modal = document.getElementById('close__newMuestra__modal');
+// mostrar la modal para crear muestras
+const mostrarModal__newMuestra = () =>{
+    newMuestra__modal.classList.remove('hidden')
+    newMuestra__modal.classList.add('flex')
+}
+// ocultar la modal
+const ocultarModal__newMuestra = () =>{
+  newMuestra__modal.classList.remove('flex')
+  newMuestra__modal.classList.add('hidden')
+}
+
+
+
+
+
+
+
+
+
+
+// listeners
+btn__newMuestra.addEventListener('click',mostrarModal__newMuestra)
+close__newMuestra__modal.addEventListener('click', ocultarModal__newMuestra)
