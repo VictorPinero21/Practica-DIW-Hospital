@@ -15,7 +15,7 @@ const getCassettes = async (req, res) => {
 // Obtener un casette por ID
 const getCassetteById = async (req, res) => {
   try {
-    const casettes = await casetteService.getCassetteById(req.params.id);
+    const casette = await casetteService.getCassetteById(req.params.id);
     if (casette) {
       res.status(200).json(casette);
     } else {
