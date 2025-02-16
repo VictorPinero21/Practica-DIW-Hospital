@@ -325,7 +325,7 @@ const modalMuestra = (muestra) =>{
   tincion__detalleMuestra.textContent=muestra.tincion;
   observaciones__detalleMuestra.textContent=muestra.observaciones;
   // aqui hay que comprobar si hay o no imagen, para mostrarlas o mostrar la de prueba
-
+  // Img__detalleMuestra.src=''
 
   // por ultimo mostrar la modal
   mostrar(detalleMuestra__modal)
