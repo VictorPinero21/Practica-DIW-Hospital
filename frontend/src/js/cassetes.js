@@ -299,6 +299,11 @@ const listarMuestras = (muestras) =>{
   listaMuestras.appendChild(fragment2)
 }
 
+const DetailMuestras = (event) =>{
+  if(event.target.tagName === 'I'){
+    console.log(event.target.parentElement)
+  }
+}
 
 
 
@@ -311,3 +316,4 @@ const listarMuestras = (muestras) =>{
 // listeners
 btn__newMuestra.addEventListener('click',mostrarModal__newMuestra)
 close__newMuestra__modal.addEventListener('click', ocultarModal__newMuestra)
+listaMuestras.addEventListener('click',DetailMuestras)
