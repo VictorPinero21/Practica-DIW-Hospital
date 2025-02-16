@@ -37,6 +37,7 @@ let organSelect=document.getElementById("organSelect")
 let listaCassetes=document.getElementById("listaCassetes")
 let cassetteDetail=document.getElementById("cassetteDetail")
 let usuario_id;
+let id //ID DEL CASSETE AL QUE HACES CLICK
 //modal Crear cassete
 let desc=document.getElementById("descripcion")
 let date=document.getElementById("fecha")
@@ -144,7 +145,7 @@ const detalleCassete=async(event)=>{
   cassetteDetail.textContent=""
   console.log(event.target.parentElement.id)
     //Mostrar Descripcion,fecha,caracteristiacs, y observaciones
-    let id=event.target.parentElement.id
+     id=event.target.parentElement.id
     const api=await peticionApiID(id)
     console.log(api)
     let p1=document.createElement("P")
