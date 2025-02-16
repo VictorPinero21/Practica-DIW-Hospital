@@ -144,11 +144,11 @@ const peticionApiID=async(id)=>{
 //Funcion para recoger los detalles del cassete
 const detalleCassete=async(event)=>{
   cassetteDetail.textContent=""
-  console.log(event.target.parentElement.id)
+  // console.log(event.target.parentElement.id)
     //Mostrar Descripcion,fecha,caracteristiacs, y observaciones
      id=event.target.parentElement.id
     const api=await peticionApiID(id)
-    console.log(api)
+    // console.log(api)
     let p1=document.createElement("P")
     let p2=document.createElement("P")
     let p3=document.createElement("P")
@@ -239,16 +239,17 @@ let fragment2 = document.createDocumentFragment();
 let listaMuestras = document.getElementById("listaMuestras");
 // feedback de que no hay muestras
 let noHayMuestras = document.getElementById('noHayMuestras');
-// mostrar la modal para crear muestras
-const mostrarModal__newMuestra = () =>{
-    newMuestra__modal.classList.remove('hidden')
-    newMuestra__modal.classList.add('flex')
-}
-// ocultar la modal
-const ocultarModal__newMuestra = () =>{
-  newMuestra__modal.classList.remove('flex')
-  newMuestra__modal.classList.add('hidden')
-}
+// variables para la informacion de dentro de los detalles de la muestra
+let detalleMuestra__modal = document.getElementById('detalleMuestra__modal');
+let descripcion__detalleMuestra = document.getElementById('descripcion__detalleMuestra');
+let fecha__detalleMuestra = document.getElementById('fecha__detalleMuestra')
+let tincion__detalleMuestra = document.getElementById('tincion__detalleMuestra')
+let observaciones__detalleMuestra = document.getElementById('observaciones__detalleMuestra')
+let Img__detalleMuestra = document.getElementById('Img__detalleMuestra');
+let containerImg__detalleMuestra = document.getElementById('containerImg__detalleMuestra')
+let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMuestra')
+let close__detalleMuestra__modal = document.getElementById('close__detalleMuestra__modal')
+
 
 // peticion a la api
 const mostrarMuestras = (id) =>{
@@ -301,8 +302,33 @@ const listarMuestras = (muestras) =>{
 
 const DetailMuestras = (event) =>{
   if(event.target.tagName === 'I'){
-    console.log(event.target.parentElement)
+    // console.log(event.target.parentElement.id)
+    peticionMuestras(event.target.parentElement.id)
   }
+}
+
+const peticionMuestras = (id) =>{
+  // console.log(id)
+  let url = "http://localhost:5001/api/muestra/"+id;
+
+  fetch(url)
+  .then(response => response.json())
+  .then(responsejson => modalMuestra(responsejson))
+}
+
+const modalMuestra = (muestra) =>{
+  console.log(muestra)
+
+  // dar valor a los textos
+  descripcion__detalleMuestra.textContent=muestra.descripcion;
+  fecha__detalleMuestra.textContent=muestra.fecha.substring(0,10);
+  tincion__detalleMuestra.textContent=muestra.tincion;
+  observaciones__detalleMuestra.textContent=muestra.observaciones;
+  // aqui hay que comprobar si hay o no imagen, para mostrarlas o mostrar la de prueba
+
+
+  // por ultimo mostrar la modal
+  mostrar(detalleMuestra__modal)
 }
 
 
@@ -312,8 +338,8 @@ const DetailMuestras = (event) =>{
 
 
 
-
 // listeners
-btn__newMuestra.addEventListener('click',mostrarModal__newMuestra)
-close__newMuestra__modal.addEventListener('click', ocultarModal__newMuestra)
+btn__newMuestra.addEventListener('click',()=>mostrar(newMuestra__modal))
+close__newMuestra__modal.addEventListener('click', ()=>ocultar(newMuestra__modal))
+close__detalleMuestra__modal.addEventListener('click', ()=>ocultar(detalleMuestra__modal))
 listaMuestras.addEventListener('click',DetailMuestras)

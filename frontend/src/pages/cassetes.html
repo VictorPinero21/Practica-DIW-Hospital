@@ -293,45 +293,47 @@
     
 
     <!-- Modal detalles de la muestra -->
-
-    <section id="detalleMuestra__modal" class="hidden p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto">
-        <article class="flex justify-between items-center mb-4">
-            <h2 class="text-green-700 text-xl font-bold">Detalle Muestra</h2>
-            <p id="close__detalleMuestra__modal" class="text-green-500 cursor-pointer text-xl">&times;</p>
-        </article>
-        <hr class="border-green-300 mb-4">
-        <div class="flex items-start space-x-4">
-            <div class="w-1/3">
-                <div class="flex items-center space-x-2 text-green-700">
-                    <p class="font-bold">Descripción:</p>
-                    <p id="descripcion__detalleMuestra"></p>
+    <div id="detalleMuestra__modal" class="hidden fixed inset-0 justify-center items-center bg-gray-900 bg-opacity-50">
+        <section id="" class="flex flex-col p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto bg-white">
+            <article class="flex justify-between items-center mb-4">
+                <h2 class="text-green-700 text-xl font-bold">Detalle Muestra</h2>
+                <p id="close__detalleMuestra__modal" class="text-green-500 cursor-pointer text-xl">&times;</p>
+            </article>
+            <hr class="border-green-300 mb-4">
+            <div class="flex items-start space-x-4">
+                <div class="w-1/3">
+                    <div class="flex items-center space-x-2 text-green-700">
+                        <p class="font-bold">Descripción:</p>
+                        <p id="descripcion__detalleMuestra"></p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-green-700">
+                        <p class="font-bold">Fecha:</p>
+                        <p id="fecha__detalleMuestra"></p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-green-700">
+                        <p class="font-bold">Tinción:</p>
+                        <p id="tincion__detalleMuestra"></p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-green-700">
+                        <p class="font-bold">Observaciones:</p>
+                        <p id="observaciones__detalleMuestra"></p>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2 text-green-700">
-                    <p class="font-bold">Fecha:</p>
-                    <p id="fecha__detalleMuestra"></p>
-                </div>
-                <div class="flex items-center space-x-2 text-green-700">
-                    <p class="font-bold">Tinción:</p>
-                    <p id="tincion__detalleMuestra"></p>
-                </div>
-                <div class="flex items-center space-x-2 text-green-700">
-                    <p class="font-bold">Observaciones:</p>
-                    <p id="observaciones__detalleMuestra"></p>
+                <div class="w-2/3">
+                    <!-- imagen vacia de prueba -->
+                    <img id="Img__detalleMuestra" src="" alt="Imagen de muestra" class="rounded-lg shadow-md w-full">
                 </div>
             </div>
-            <div class="w-2/3">
-                <!-- imagen vacia de prueba -->
-                <img id="Img__detalleMuestra" src="" alt="Imagen de muestra" class="rounded-lg shadow-md w-full">
+            <div class="mt-4 flex items-center space-x-2">
+                <div id="containerImg__detalleMuestra" class="mt-4 flex items-center space-x-2">
+                    <!-- imagen vacia de prueba -->
+                    <!-- <img src="" alt="Imagen miniatura" class="w-16 h-16 rounded-lg shadow-md"> -->
+                </div>
+                <button id="aniadirImg__detalleMuestra" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">+</button>
             </div>
-        </div>
-        <div class="mt-4 flex items-center space-x-2">
-            <div id="containerImg__detalleMuestra" class="mt-4 flex items-center space-x-2">
-                <!-- imagen vacia de prueba -->
-                <img src="" alt="Imagen miniatura" class="w-16 h-16 rounded-lg shadow-md">
-            </div>
-            <button id="aniadirImg__detalleMuestra" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">+</button>
-        </div>
-    </section>
+        </section>
+    </div>
+  
     
 </body>
     <script src="./../js/cassetes.js"></script>
