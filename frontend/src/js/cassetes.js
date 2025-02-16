@@ -1,7 +1,13 @@
 let organSelect=document.getElementById("organSelect")
 let listaCassetes=document.getElementById("listaCassetes")
 let cassetteDetail=document.getElementById("cassetteDetail")
-
+// Función para agregar eventos solo si el elemento existe
+function addEventListenerIfExists(id, event, callback) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.addEventListener(event, callback);
+  }
+}
 
 //Función para hacer la peticon GET a la API
 const peticionApi=async()=>{
