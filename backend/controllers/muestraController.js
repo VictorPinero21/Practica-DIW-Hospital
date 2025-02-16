@@ -12,8 +12,23 @@ const getMuestras = async (req, res) => {
   }
 };
 
-// Obtener una muestra por ID
-const getMuestraById = async (req, res) => {
+// Obtener una muestra por ID de cassette
+const getMuestraByIdCassete = async (req, res) => {
+  try {
+    const muestra = await muestraService.getMuestraByIdCassete(req.params.id);
+    if (muestra) {
+      res.status(200).json(muestra);
+    } else {
+      res.status(404).json({ message: "Muestra no encontrada" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Obtener una muestra segun su id
+
+const getMuestraById = async (req,res) => {
   try {
     const muestra = await muestraService.getMuestraById(req.params.id);
     if (muestra) {
@@ -24,7 +39,8 @@ const getMuestraById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}
+
 
 // Crear una nueva muestra
 const crearMuestra = async (req, res) => {
@@ -85,4 +101,5 @@ module.exports = {
   crearMuestra,
   actualizarMuestra,
   eliminarMuestra,
+  getMuestraByIdCassete
 };

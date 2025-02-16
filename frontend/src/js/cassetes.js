@@ -252,7 +252,7 @@ const ocultarModal__newMuestra = () =>{
 
 // peticion a la api
 const mostrarMuestras = (id) =>{
-  let url = "http://localhost:5001/api/muestra/"+id;
+  let url = "http://localhost:5001/api/muestra/cassette/"+id;
 
   fetch(url)
   .then(response => response.json())
@@ -270,7 +270,7 @@ const mostrarMuestras = (id) =>{
 }
 
 const listarMuestras = (muestras) =>{
-  console.log(muestras)
+  // console.log(muestras)
   muestras.forEach(muestra=>{
     // console.log(muestra)
     let newDiv=document.createElement("DIV")

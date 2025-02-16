@@ -8,7 +8,8 @@ const getMuestras = async () => {
   }
 };
 
-const getMuestraById = async (id) => {
+// obtener muestras por el id del cassette
+const getMuestraByIdCassete = async (id) => {
   try {
     return await Muestra.findAll({
       where: { cassette_id: id }
@@ -17,6 +18,17 @@ const getMuestraById = async (id) => {
     throw new Error("Error al pedir una muestra por id: " + error.message);
   }
 };
+
+// obtener una muestra por el id 
+
+const getMuestraById = async (id) =>{
+  try {
+    return await Muestra.findByPk(id)
+  } catch (error) {
+    throw new Error("Error al pedir una muestra por id: " + error.message);
+  }
+}
+
 
 const crearMuestra = async (muestraData) => {
   try {
@@ -56,4 +68,5 @@ module.exports = {
   crearMuestra,
   actualizarMuestra,
   eliminarMuestra,
+  getMuestraByIdCassete
 };
