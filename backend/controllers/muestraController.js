@@ -15,7 +15,7 @@ const getMuestras = async (req, res) => {
 // Obtener una muestra por ID
 const getMuestraById = async (req, res) => {
   try {
-    const muestras = await muestraService.getMuestraById(req.params.id);
+    const muestra = await muestraService.getMuestraById(req.params.id);
     if (muestra) {
       res.status(200).json(muestra);
     } else {

@@ -10,7 +10,9 @@ const getMuestras = async () => {
 
 const getMuestraById = async (id) => {
   try {
-    return await Muestra.findByPk(id);
+    return await Muestra.findAll({
+      where: { cassette_id: id }
+    });
   } catch (error) {
     throw new Error("Error al pedir una muestra por id: " + error.message);
   }

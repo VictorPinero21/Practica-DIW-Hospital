@@ -163,6 +163,9 @@ const detalleCassete=async(event)=>{
     fragment.appendChild(p3)
     fragment.appendChild(p4)
     cassetteDetail.appendChild(fragment)
+
+    // llamar a la funcon para mosrar muestras
+    mostrarMuestras(id);
 }
 //listeners
 document.addEventListener("DOMContentLoaded",recogerID)
@@ -206,3 +209,13 @@ addEventListenerIfExists("modificarCassete", "click", () => {
 });
 
 listaCassetes.addEventListener("click",detalleCassete)
+
+// A PARTIR DE AQUI ALVARO
+
+const mostrarMuestras = (id) =>{
+  let url = "http://localhost:5001/api/muestra/"+id;
+
+  fetch(url)
+  .then(response => response.json())
+  .then(responsejson => console.log(responsejson))
+}
