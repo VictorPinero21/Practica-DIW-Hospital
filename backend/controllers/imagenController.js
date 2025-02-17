@@ -16,8 +16,8 @@ const getImagenes = async (req, res) => {
 const getImagenById = async (req, res) => {
   try {
     const imagenes = await imagenService.getImagenById(req.params.id);
-    if (imagen) {
-      res.status(200).json(imagen);
+    if (imagenes) {
+      res.status(200).json(imagenes);
     } else {
       res.status(404).json({ message: "Imagen no encontrada" });
     }
@@ -67,10 +67,16 @@ const eliminarImagen = async (req, res) => {
   }
 };
 
+const getImagenByMuestra = async (req, res) => {
+  const imagenes = await imagenService.getImagenByMuestra(req.params.id)
+  res.send(imagenes).status(200)
+}
+
 module.exports = {
   getImagenes,
   getImagenById,
   crearImagen,
   actualizarImagen,
   eliminarImagen,
+  getImagenByMuestra
 };
