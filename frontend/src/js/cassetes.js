@@ -383,7 +383,7 @@ const peticionMuestras = (id) => {
 
 // mostrar la modal para ver los detalles de la muestra
 const modalMuestra = (muestra) => {
-  console.log(muestra)
+  // console.log(muestra)
 
   detalleMuestra__modal.id = muestra.id;
 
@@ -405,12 +405,12 @@ const createMuestra = (event) => {
   event.preventDefault();
   // comprobar que se haya hecho click en un cassette
   if (!id) {
-    console.log("No se ha seleccionado ningun cassette")
+    // console.log("No se ha seleccionado ningun cassette")
     newMuestra__feedback.textContent = "Debes seleccionar un Cassette"
     newMuestra__feedback.classList.remove("text-green-700")
     newMuestra__feedback.classList.add("text-red-500")
   } else {
-    console.log("Se ha seleccionado un cassette")
+    // console.log("Se ha seleccionado un cassette")
 
     let data = {
       descripcion: newMuestra__desc.value,
@@ -468,7 +468,7 @@ const borrado = (id) => {
   fetch(url, {
     method: 'DELETE',
   }).then(response => {
-    console.log(response)
+    // console.log(response)
     ocultar(deleteModal__muestra)
     ocultar(detalleMuestra__modal)
   })
@@ -495,7 +495,7 @@ const updateMuestra = (event) =>{
     observaciones:updateMuestra__Observaciones.value  
   }
 
-  console.log(data)
+  // console.log(data)
 
   fetch(url, {
     method: 'PUT',
