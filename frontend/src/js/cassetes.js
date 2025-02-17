@@ -74,8 +74,8 @@ const mostrarCassetes = async () => {
     let fecha = document.createElement("P")
     let descripcion = document.createElement("P")
     let organo = document.createElement("P")
-
-    fecha.textContent = cassete.fecha.substring(0, 10)
+    let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
+    fecha.textContent = fechaTexto;
     descripcion.textContent = cassete.descripcion
     organo.textContent = cassete.organo
     fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
@@ -111,8 +111,8 @@ const crearCassete = async () => {
     body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id })
   })
   if (postCassete.ok) {
-    location.reload()
     mostrarCassetes()
+    location.reload()
   }
   const data = await postCassete.json()
   console.log(data)
