@@ -287,7 +287,10 @@ const validarModal =  () => {
   } else if (modalPassword.validity.typeMismatch) {
     errorPassword.textContent = "La contraseña está mal conformada.";
     correcto = false;
-  } else {
+  } else if(modalPassword.validity.patternMismatch){
+    errorPassword.textContent = "La contraseña debe seguir un patron. "
+    correcto = false;
+  }else{
     errorPassword.textContent = "";
   }
 
@@ -325,9 +328,9 @@ const validarModal =  () => {
     errorApellido.textContent=""
   }
   // centro
-  if(modalApellido.validity.valueMissing){
+  if(modalCentro.validity.valueMissing){
     correcto=false;
-    errorCentro.textContent="El campo es un campo requerido"
+    errorCentro.textContent="El centro es un campo requerido"
   }else{
     errorCentro.textContent=""
   }

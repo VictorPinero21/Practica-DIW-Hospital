@@ -69,7 +69,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Contraseña</label>
             <!-- PONER COMO REQUIRED Y AÑADIR pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,100}$" -->
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalPassword" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalPassword" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,100}$"/>
             <p id="errorPassword" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div>
