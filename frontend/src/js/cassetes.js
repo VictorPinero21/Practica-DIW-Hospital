@@ -633,7 +633,7 @@ const subirImagen = async (event) => {
     // console.log(respuesta.ok)
     if (respuesta.ok == true) {
       // llamamos a la funcion que muestra la modal desde el principio (render)
-
+      ocultar(detalleMuestra__modal)
     }
 
   } catch (error) {
@@ -669,8 +669,6 @@ const borrarImagen = () =>{
   // ocultamos la modal de la elimiacion
   ocultar(deleteModal__img)
   ocultar(detalleMuestra__modal)
-
-
 }
 
 const cambiarImg = (event) =>{
