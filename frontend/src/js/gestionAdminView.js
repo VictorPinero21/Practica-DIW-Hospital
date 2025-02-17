@@ -52,10 +52,10 @@ const cargarAlumnos = async () => {
     const results = await fetch("http://localhost:5001/api/usuario");
     if (!results.ok) throw new Error("Error al obtener usuarios");
 
-    const usuarios = await results.json();
+    const alumnos = await results.json();
     tbody.innerHTML = ""; // Limpiar la tabla
 
-    const alumnos = usuarios.filter((usuario) => usuario.rol === "alumno");
+    //const alumnos = usuarios.filter((usuario) => usuario.rol === "alumno");
     let fragment = document.createDocumentFragment();
     let tr;
 
@@ -76,7 +76,7 @@ const cargarAlumnos = async () => {
         <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.nombre}</td>
         <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.apellido}</td>
         <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.email}</td>
-        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.password}</td>
+        <!-- <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.password}</td> -->
         <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.centro ?? "N/A"}</td>
         <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.rol}</td>
         <td class="px-4 py-2 border-b border-[#0ff56b]">
@@ -187,6 +187,7 @@ const eliminarUsuario = async (event) => {
   event.preventDefault();
   const button = event.target.closest("button");
   const id = button.dataset.id;
+  //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
   if (id && confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
     try {
       const response = await fetch(`http://localhost:5001/api/usuario/${id}`, { method: "DELETE" });
@@ -213,7 +214,7 @@ const promocionarUsuario = async (event) => {
   const email = tr.dataset.email;
   const password = tr.dataset.password;
   const centro = tr.dataset.centro;
-
+  //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
   if (confirm("¿Estás seguro de querer promocionar a este alumno a Administrador?")) {
     try {
       const response = await fetch(`http://localhost:5001/api/usuario/${id}`, {
