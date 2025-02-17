@@ -12,10 +12,10 @@ const getMuestras = async (req, res) => {
   }
 };
 
-// Obtener una muestra por ID
-const getMuestraById = async (req, res) => {
+// Obtener una muestra por ID de cassette
+const getMuestraByIdCassete = async (req, res) => {
   try {
-    const muestras = await muestraService.getMuestraById(req.params.id);
+    const muestra = await muestraService.getMuestraByIdCassete(req.params.id);
     if (muestra) {
       res.status(200).json(muestra);
     } else {
@@ -26,43 +26,53 @@ const getMuestraById = async (req, res) => {
   }
 };
 
-// Crear una nueva muestra
-const crearMuestra = async (req, res) => {
-  try {
-    const createdMuestra = await muestraService.crearMuestra({
-      descripcion: req.body.descripcion,
-      fecha: req.body.fecha,
-      tincion: req.body.tincion,
-      observaciones: req.body.observaciones,
-      qr_muestra: req.body.qr_muestra,
-      cassette_id: req.body.cassette_id,
-    });
-    res.status(201).json(createdMuestra);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// Obtener una muestra segun su id
 
-// Actualizar una muestra existente
-const actualizarMuestra = async (req, res) => {
+const getMuestraById = async (req,res) => {
   try {
-    const updatedMuestra = await muestraService.actualizarMuestra({
-      id: req.params.id,
-      descripcion: req.body.descripcion,
-      fecha: req.body.fecha,
-      tincion: req.body.tincion,
-      observaciones: req.body.observaciones,
-      qr_muestra: req.body.qr_muestra,
-      cassette_id: req.body.cassette_id,
-    });
-    if (updatedMuestra) {
-      res.status(200).json(updatedMuestra);
+    const muestra = await muestraService.getMuestraById(req.params.id);
+    if (muestra) {
+      res.status(200).json(muestra);
     } else {
       res.status(404).json({ message: "Muestra no encontrada" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+}
+
+
+// Crear una nueva muestra
+const crearMuestra = async (req, res) => {
+    const createdMuestra = await muestraService.crearMuestra({
+      descripcion: req.body.descripcion,
+      fecha: req.body.fecha,
+      tincion: req.body.tincion,
+      observaciones: req.body.observaciones,
+      qr_muestra: req.body.qr_muestra,
+      cassette_id: req.body.cassette_id,})
+      
+    res.status(201).json(createdMuestra);
+ 
+};
+
+// Actualizar una muestra existente
+const actualizarMuestra = async (req, res) => {
+  
+    const updatedMuestra = await muestraService.actualizarMuestra(
+      req.params.id,
+      {
+      descripcion: req.body.descripcion,
+      fecha: req.body.fecha,
+      tincion: req.body.tincion,
+      observaciones: req.body.observaciones,
+    });
+    if (updatedMuestra) {
+      res.status(200).json(updatedMuestra);
+    } else {
+      res.status(404).json({ message: "Muestra no encontrada" });
+    }
+  
 };
 
 // Eliminar una muestra
@@ -85,4 +95,5 @@ module.exports = {
   crearMuestra,
   actualizarMuestra,
   eliminarMuestra,
+  getMuestraByIdCassete
 };

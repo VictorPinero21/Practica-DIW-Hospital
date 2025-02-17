@@ -1,5 +1,3 @@
-//getUsuarios, getUsuarioById, crearUsuario, actualizarUsuario, eliminarUsuario
-//El Victor del pasado le dice a la Estela del futuro que los nombres de los controladores sean asi ma o meno que para las rutas me hacen falta parece ser
 const bcrypt = require("bcrypt");
 
 const usuarioService = require("./../services/usuarioService");
@@ -17,7 +15,7 @@ const getUsuarios = async (req, res) => {
 // Obtener un usuario por ID
 const getUsuarioById = async (req, res) => {
   try {
-    const usuarios = await usuarioService.getUsuarioById(req.params.id);
+    const usuario = await usuarioService.getUsuarioById(req.params.id);
     if (usuario) {
       res.status(200).json(usuario);
     } else {
@@ -36,9 +34,12 @@ const crearUsuario = async (req, res) => {
       apellido: req.body.apellido,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 10),
+      // password: req.body.password,
+      // password: bcrypt.hashSync(req.body.password, 10),
       centro: req.body.centro,
       rol: req.body.rol,
     });
+
     res.status(201).json(createdUsuario);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -48,15 +49,20 @@ const crearUsuario = async (req, res) => {
 // Actualizar un usuario existente
 const actualizarUsuario = async (req, res) => {
   try {
-    const updatedUsuario = await usuarioService.actualizarUsuario({
-      id: req.params.id,
+    const { id } = req.params;
+
+    const updatedUsuario = await usuarioService.actualizarUsuario(id, {
       nombre: req.body.nombre,
       apellido: req.body.apellido,
       email: req.body.email,
-      password: req.body.password,
+      // actulizar la contraseña haseada
+      password: bcrypt.hashSync(req.body.password, 10),
+      // password: req.body.password,
+      // password: bcrypt.hashSync(req.body.password, 10),
       centro: req.body.centro,
       rol: req.body.rol,
     });
+
     if (updatedUsuario) {
       res.status(200).json(updatedUsuario);
     } else {
@@ -81,10 +87,26 @@ const eliminarUsuario = async (req, res) => {
   }
 };
 
+//Comprobar Usuario y contraseña
+const comprobarUsuario = async (req, res) => {
+  try {
+    const comprobar = await usuarioService.comprobarUsuario(req.body.email, req.body.password);
+
+    if (comprobar) {
+      res.status(204).json({ message: "Usuario verificado correctamente" });
+    } else {
+      res.status(404).json({ message: "Acceso denegado" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "HA FALLADO" });
+  }
+};
+
 module.exports = {
   getUsuarios,
   getUsuarioById,
   crearUsuario,
   actualizarUsuario,
   eliminarUsuario,
+  comprobarUsuario,
 };

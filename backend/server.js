@@ -1,42 +1,40 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const cors=require("cors")
+// importamos la conexión a la base de datos 
 require('dotenv').config();
+
+const { sequelize, Usuario, Cassette, Muestra, Imagen } = require('./database/models'); 
+
+// conectar asociaciones
+// require('./database/asociations')
+
 //Setting del Puerto
 const PORT = process.env.PORT || 5001;
-//Importar modelos
-const { sequelize, Usuario, Cassette, Muestra, Imagen } = require('./models'); 
-
-
 
 //Middleware
 //Para poder rellenar el req.body
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //Rutas   
-app.get('/', (req, res) => {
-  res.json({ message: 'API funcionando 🚀' });
-});
+const router = require("./routes/index");
+app.use("/api", router);
+// app.use(cors({
+//   origin: "*",  // Permite cualquier origen
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
+
+//  app.use(cors());
+
+
 
 //Arrancamos el servidor 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
-/*
-// Importar rutas
-const usuarioRoutes = require('./routes/usuarioRoutes');
-const cassetteRoutes = require('./routes/cassetteRoutes');
-const muestraRoutes = require('./routes/muestraRoutes');
-const imagenRoutes = require('./routes/imagenRoutes');
-//Usar las rutas
-app.use('/api/usuarios', usuarioRoutes);
-app.use('/api/cassettes', cassetteRoutes);
-app.use('/api/muestras', muestraRoutes);
-app.use('/api/imagenes', imagenRoutes);
-*/
-
 
 sequelize.sync({ force: false }).then(() => { // 👈 Cambia `false` a `true` SOLO PARA PRUEBAS
   console.log('📌 Base de datos sincronizada con MySQL');
 });
-
-
 

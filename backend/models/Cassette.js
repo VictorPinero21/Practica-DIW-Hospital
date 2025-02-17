@@ -6,7 +6,7 @@ class Cassette extends Model {}
 Cassette.init(
   {
     id: {
-      type: DataTypes.UUID, 
+      type: DataTypes.UUID, // Asegúrate de que coincide con el tipo de `id` en Usuario
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
@@ -22,22 +22,6 @@ Cassette.init(
     organo: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: "El campo 'organo' no puede estar vacío."
-        },
-        isAlpha: {
-          msg: "El campo 'organo' solo puede contener letras."
-        },
-        len: {
-          args: [3, 50],
-          msg: "El campo 'organo' debe tener entre 3 y 50 caracteres."
-        },
-        isIn: {
-          args: [["corazón", "hígado", "pulmón", "riñón", "cerebro"]],
-          msg: "El 'organo' debe ser uno de los valores permitidos."
-        }
-      }
     },
     caracteristicas: {
       type: DataTypes.STRING,
@@ -51,10 +35,10 @@ Cassette.init(
       type: DataTypes.TEXT,
     },
     usuario_id: {
-      type: DataTypes.UUID, 
+      type: DataTypes.UUID, // 👈 Debe coincidir con `id` en Usuario
       allowNull: false,
       references: {
-        model: 'usuarios',
+        model: 'usuarios', // 👈 Asegúrate de que es el nombre de la tabla, no del modelo
         key: 'id',
       },
       onDelete: 'CASCADE',

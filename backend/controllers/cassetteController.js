@@ -1,6 +1,6 @@
 //getCassettes, getCassetteById, crearCassette, actualizarCassette, eliminarCassette
 
-const casetteService = require("./../services/casetteService");
+const casetteService = require("./../services/casseteService");
 
 // Obtener todos los casettes
 const getCassettes = async (req, res) => {
@@ -16,8 +16,8 @@ const getCassettes = async (req, res) => {
 const getCassetteById = async (req, res) => {
   try {
     const casettes = await casetteService.getCassetteById(req.params.id);
-    if (casette) {
-      res.status(200).json(casette);
+    if (casettes) {
+      res.status(200).json(casettes);
     } else {
       res.status(404).json({ message: "Cassette no encontrado" });
     }
@@ -47,16 +47,7 @@ const crearCassette = async (req, res) => {
 // Actualizar un casette existente
 const actualizarCassette = async (req, res) => {
   try {
-    const updatedCassette = await casetteService.actualizarCassette({
-      id: req.params.id,
-      descripcion: req.body.descripcion,
-      fecha: req.body.fecha,
-      organo: req.body.organo,
-      caracteristicas: req.body.caracteristicas,
-      observaciones: req.body.observaciones,
-      qr_cassette: req.body.qr_cassette,
-      usuario_id: req.body.usuario_id,
-    });
+    const updatedCassette = await casetteService.actualizarCassette(req.params.id, req.body);
     if (updatedCassette) {
       res.status(200).json(updatedCassette);
     } else {

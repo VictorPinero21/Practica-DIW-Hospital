@@ -1,4 +1,4 @@
-const Muestra = require("./../models/Muestra");
+const Muestra = require("./../database/models/Muestra");
 
 const getMuestras = async () => {
   try {
@@ -8,13 +8,27 @@ const getMuestras = async () => {
   }
 };
 
-const getMuestraById = async (id) => {
+// obtener muestras por el id del cassette
+const getMuestraByIdCassete = async (id) => {
   try {
-    return await Muestra.findByPk(id);
+    return await Muestra.findAll({
+      where: { cassette_id: id }
+    });
   } catch (error) {
     throw new Error("Error al pedir una muestra por id: " + error.message);
   }
 };
+
+// obtener una muestra por el id 
+
+const getMuestraById = async (id) =>{
+  try {
+    return await Muestra.findByPk(id)
+  } catch (error) {
+    throw new Error("Error al pedir una muestra por id: " + error.message);
+  }
+}
+
 
 const crearMuestra = async (muestraData) => {
   try {
@@ -24,16 +38,11 @@ const crearMuestra = async (muestraData) => {
   }
 };
 
-const actualizarMuestra = async (id, muestraData) => {
-  try {
-    const muestra = await Muestra.findByPk(id);
-    if (!muestra) {
-      throw new Error("Muestra no encontrado");
-    }
-    return await muestra.update(muestraData);
-  } catch (error) {
-    throw new Error("Error al modificar la muestra: " + error.message);
-  }
+const actualizarMuestra = async (id,muestraData) => {
+    const muestra = await Muestra.update(muestraData,{
+      where: {id:id}
+    });
+    return muestra
 };
 
 const eliminarMuestra = async (id) => {
@@ -54,4 +63,5 @@ module.exports = {
   crearMuestra,
   actualizarMuestra,
   eliminarMuestra,
+  getMuestraByIdCassete
 };

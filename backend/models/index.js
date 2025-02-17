@@ -14,7 +14,7 @@ Cassette.belongsTo(Usuario, { foreignKey: 'usuario_id' });
 Cassette.hasMany(Muestra, { foreignKey: 'cassette_id' });
 Muestra.belongsTo(Cassette, { foreignKey: 'cassette_id' });
 
-Muestra.hasMany(Imagen, { foreignKey: 'muestra_id' }); 
+Muestra.hasMany(Imagen, { foreignKey: 'muestra_id' }); // 👈 Asegúrate de usar el campo correcto
 Imagen.belongsTo(Muestra, { foreignKey: 'muestra_id' });
 
 module.exports = {
