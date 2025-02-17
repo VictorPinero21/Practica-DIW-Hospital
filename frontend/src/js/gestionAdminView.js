@@ -1,3 +1,5 @@
+const Sortable = window.Sortable;
+
 const tbody = document.getElementById("usersTableBody");
 const modalModificarUsuario = document.getElementById("modalModificarUsuario");
 const modalID = document.getElementById("modalID");
@@ -12,10 +14,11 @@ const guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
 const errorEmail = document.getElementById("errorEmail");
 const errorPassword = document.getElementById("errorPassword");
 const errorConfirmPassword = document.getElementById("errorConfirmPassword");
-// 
-let errorNombre = document.getElementById('errorNombre')
-let errorApellido = document.getElementById('errorApellido')
-let errorCentro = document.getElementById('errorCentro')
+const table = document.getElementById("usersTable");
+//
+let errorNombre = document.getElementById("errorNombre");
+let errorApellido = document.getElementById("errorApellido");
+let errorCentro = document.getElementById("errorCentro");
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -40,6 +43,7 @@ addEventListenerIfExists("modalModificarUsuario", "click", (event) => {
 //Funcion para arrancar la aplicacion
 const setup = () => {
   cargarAlumnos();
+  cargarSortable();
 };
 
 // Función para cargar sólo los usuarios con rol "alumno"
@@ -118,7 +122,7 @@ const cargarAlumnos = async () => {
       editButton.addEventListener("click", (event) => {
         modalModificarUsuario.classList.toggle("dnone");
         // esto a veces va a funcionar y otras no debido a que el boton es un svg y da problemas con el click, lo suyo es hacer con iconos de fontawesome
-        console.log(event.target.parentElement.parentElement.parentElement.parentElement.parentElement)
+        console.log(event.target.parentElement.parentElement.parentElement.parentElement.parentElement);
         let data = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
         cargarDatosModal(data);
       });
@@ -130,6 +134,41 @@ const cargarAlumnos = async () => {
   } catch (error) {
     console.log("Error cargando alumnos:", error);
   }
+};
+
+//Función para implementar Sortable.js en las cabeceras de la tabla
+const cargarSortable = () => {
+  const headers = table.querySelectorAll("th");
+  const tbody = table.querySelector("tbody");
+
+  headers.forEach((header, index) => {
+    header.style.cursor = "pointer";
+    header.addEventListener("click", () => {
+      sortTableByColumn(tbody, index);
+    });
+  });
+
+  function sortTableByColumn(tbody, columnIndex) {
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const isAscending = tbody.getAttribute("data-sort-order") !== "asc";
+    tbody.setAttribute("data-sort-order", isAscending ? "asc" : "desc");
+
+    rows.sort((rowA, rowB) => {
+      const cellA = rowA.children[columnIndex].textContent.trim().toLowerCase();
+      const cellB = rowB.children[columnIndex].textContent.trim().toLowerCase();
+
+      return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+    });
+
+    rows.forEach((row) => tbody.appendChild(row));
+  }
+
+  // Activar Sortable.js en el tbody para permitir el drag & drop manual de filas
+  new Sortable(tbody, {
+    animation: 150, // Duración de la animación en ms
+    ghostClass: "sortable-ghost", // Clase CSS para la fila mientras se arrastra
+    handle: "td", // Permitir que toda la fila sea arrastrable
+  });
 };
 
 const cargarDatosModal = async (tr) => {
@@ -174,16 +213,6 @@ const promocionarUsuario = async (event) => {
   const email = tr.dataset.email;
   const password = tr.dataset.password;
   const centro = tr.dataset.centro;
-
-  //   console.log({
-  //     id,
-  //     nombre,
-  //     apellido,
-  //     email,
-  //     password,
-  //     centro,
-  //     rol: "administrador", // Solo se actualiza el rol
-  //   });
 
   if (confirm("¿Estás seguro de querer promocionar a este alumno a Administrador?")) {
     try {
@@ -264,44 +293,42 @@ const modificarUsuario = async (event) => {
   }
 };
 
-//PENDIENTE DE IMPLEMENTAR
-const validarModal =  () => {
+const validarModal = () => {
   // console.log("validar modal");
   let correcto = true;
   if (modalEmail.validity.valueMissing) {
-    errorEmail.textContent = "Debes introducir el e-mail";
+    errorEmail.textContent = "Debe introducir el e-mail";
     correcto = false;
   } else if (modalEmail.validity.typeMismatch) {
-    errorEmail.textContent = "El formato de e-mail es inválido.";
+    errorEmail.textContent = "El formato de e-mail no es válido";
     correcto = false;
   } else {
     errorEmail.textContent = "";
   }
 
-  //añadir el pattern y hacer la validacion del patternMissMatch 
-
+  //añadir el pattern y hacer la validacion del patternMissMatch
 
   if (modalPassword.validity.valueMissing) {
-    errorPassword.textContent = "Debes introducir la contraseña.";
+    errorPassword.textContent = "Debe introducir la contraseña";
     correcto = false;
   } else if (modalPassword.validity.typeMismatch) {
-    errorPassword.textContent = "La contraseña está mal conformada.";
+    errorPassword.textContent = "La contraseña está mal conformada";
     correcto = false;
-  } else if(modalPassword.validity.patternMismatch){
-    errorPassword.textContent = "La contraseña debe seguir un patron. "
+  } else if (modalPassword.validity.patternMismatch) {
+    errorPassword.textContent = "La contraseña debe seguir un patrón";
     correcto = false;
-  }else{
+  } else {
     errorPassword.textContent = "";
   }
 
   if (modalConfirmPassword.validity.valueMissing) {
-    errorConfirmPassword.textContent = "Debes repetir la contraseña.";
+    errorConfirmPassword.textContent = "Debe repetir la contraseña";
     correcto = false;
   } else if (modalConfirmPassword.validity.typeMismatch) {
-    errorConfirmPassword.textContent = "La contraseña está mal conformada.";
+    errorConfirmPassword.textContent = "La contraseña está mal conformada";
     correcto = false;
   } else if (modalPassword.value != modalConfirmPassword.value) {
-    errorConfirmPassword.textContent = "Las contraseñas no coinciden.";
+    errorConfirmPassword.textContent = "Las contraseñas no coinciden";
     correcto = false;
   } else {
     errorConfirmPassword.textContent = "";
@@ -314,28 +341,26 @@ const validarModal =  () => {
   // modalCentro
 
   // nombre
-  if(modalNombre.validity.valueMissing){
-    correcto = false
-    errorNombre.textContent = "El nombre es un campo requerido"
-  }else{
-    errorNombre.textContent = ''
+  if (modalNombre.validity.valueMissing) {
+    correcto = false;
+    errorNombre.textContent = "El nombre no puede estar vacío";
+  } else {
+    errorNombre.textContent = "";
   }
   // apellido
-  if(modalApellido.validity.valueMissing){
-    correcto=false
-    errorApellido.textContent="El apellido es un campo requerido"
-  }else{
-    errorApellido.textContent=""
+  if (modalApellido.validity.valueMissing) {
+    correcto = false;
+    errorApellido.textContent = "El apellido no puede estar vacío";
+  } else {
+    errorApellido.textContent = "";
   }
   // centro
-  if(modalCentro.validity.valueMissing){
-    correcto=false;
-    errorCentro.textContent="El centro es un campo requerido"
-  }else{
-    errorCentro.textContent=""
+  if (modalCentro.validity.valueMissing) {
+    correcto = false;
+    errorCentro.textContent = "El centro no puede estar vacío";
+  } else {
+    errorCentro.textContent = "";
   }
-
-
 
   return correcto;
 };
