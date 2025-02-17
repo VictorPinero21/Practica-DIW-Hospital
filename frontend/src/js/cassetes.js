@@ -299,6 +299,10 @@ let delete__muestra = document.getElementById('delete__muestra')
 let delete__imgMuestra = document.getElementById('delete__imgMuestra')
 // añadirla
 let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMuestra')
+// modal confirmar eliminacion de muestra
+let deleteModal__muestra = document.getElementById('deleteModal__muestra');
+let confirmDelete__muestra = document.getElementById('confirmDelete__muestra');
+let cancelDelete__muestra = document.getElementById('cancelDelete__muestra');
 
 
 // peticion a la api
@@ -434,12 +438,30 @@ const createMuestra = (event) => {
 
 // eliminar la muestra
 
+let id__muestra = "";
+
 const deleteMuestra = (event) =>{
   // recoger el id de la muestra que queremos eliminar
-  let id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
-  console.log(id__muestra)
+  id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
+  // console.log(id__muestra)
 
   // modal de confirmacion
+  mostrar(deleteModal__muestra);
+}
+
+const borrado = (id) =>{
+  console.log(id)
+
+  let url = 'http://localhost:5001/api/muestra/'+id;
+
+  fetch(url, {
+    method: 'DELETE',
+  }).then(response => {
+    console.log(response)
+    ocultar(deleteModal__muestra)
+    ocultar(detalleMuestra__modal)
+  })
+  .catch(error => "error: "+error)
 }
 
 
@@ -449,6 +471,8 @@ const deleteMuestra = (event) =>{
 btn__newMuestra.addEventListener('click', () => mostrar(newMuestra__modal))
 close__newMuestra__modal.addEventListener('click', () => ocultar(newMuestra__modal))
 close__detalleMuestra__modal.addEventListener('click', () => ocultar(detalleMuestra__modal))
+confirmDelete__muestra.addEventListener('click',()=>borrado(id__muestra))
+cancelDelete__muestra.addEventListener('click',()=>ocultar(deleteModal__muestra))
 listaMuestras.addEventListener('click', DetailMuestras)
 newMuestra__form.addEventListener('submit', createMuestra)
 delete__muestra.addEventListener('click',deleteMuestra)
