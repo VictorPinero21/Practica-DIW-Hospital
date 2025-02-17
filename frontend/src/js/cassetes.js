@@ -227,13 +227,31 @@ const borrarCassete=async()=>{
     location.reload()
   }
 }
-
+//Funcion para saber si se ha hecho click previamente en algun cassete y si no, mostrar el error
 const comprobarBorrado=()=>{
   if(id){
     mostrar(deleteModal)
+    
   }else{
       cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
   }
+}
+
+//Funcion para modificar el cassete
+const modCassete=async()=>{
+    const modificar=await fetch(`http://localhost:5001/api/cassete/${id}`,{
+      
+    })
+
+}
+
+//Funcion para comprobar si hay algun cassete seleccionado para mostrar el modal de modificar
+const comprobarActualizacion=()=>{
+  if(id){
+    mostrar(modalModificarCassette)
+  }else{
+    cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
+}
 }
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
@@ -253,7 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
 submitCrearCassete.addEventListener("click", crearCassete)
 confirmDelete.addEventListener("click",borrarCassete)
 eliminarCassete.addEventListener("click",comprobarBorrado)
-
+modificarCassete.addEventListener('click', comprobarBorrado)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
@@ -274,7 +292,7 @@ cancelDelete.addEventListener('click', () => ocultar(deleteModal))
 confirmDelete.addEventListener('click', () => ocultar(deleteModal))
 // eventos para mostrar las modales
 toggleModal.addEventListener('click', () => mostrar(nuevoCassete))
-modificarCassete.addEventListener('click', () => mostrar(modalModificarCassette))
+// modificarCassete.addEventListener('click', () => mostrar(modalModificarCassette))
 // eliminarCassete.addEventListener('click', () => mostrar(deleteModal))
 
 listaCassetes.addEventListener("click", detalleCassete)
