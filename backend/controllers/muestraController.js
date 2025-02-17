@@ -44,19 +44,16 @@ const getMuestraById = async (req,res) => {
 
 // Crear una nueva muestra
 const crearMuestra = async (req, res) => {
-  try {
     const createdMuestra = await muestraService.crearMuestra({
       descripcion: req.body.descripcion,
       fecha: req.body.fecha,
       tincion: req.body.tincion,
       observaciones: req.body.observaciones,
       qr_muestra: req.body.qr_muestra,
-      cassette_id: req.body.cassette_id,
-    });
+      cassette_id: req.body.cassette_id,})
+      
     res.status(201).json(createdMuestra);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+ 
 };
 
 // Actualizar una muestra existente

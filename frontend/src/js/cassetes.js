@@ -185,6 +185,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 })
 submitCrearCassete.addEventListener("click",crearCassete)
 
+
+
+// A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
 // modal nuevos cassettes
@@ -223,7 +226,6 @@ eliminarCassete.addEventListener('click',()=>mostrar(deleteModal))
 
 listaCassetes.addEventListener("click",detalleCassete)
 
-// A PARTIR DE AQUI ALVARO
 
 
 
@@ -249,6 +251,14 @@ let Img__detalleMuestra = document.getElementById('Img__detalleMuestra');
 let containerImg__detalleMuestra = document.getElementById('containerImg__detalleMuestra')
 let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMuestra')
 let close__detalleMuestra__modal = document.getElementById('close__detalleMuestra__modal')
+// variables de la modal para crear la muestra
+let newMuestra__form = document.getElementById('newMuestra__form')
+let newMuestra__desc = document.getElementById('newMuestra__desc')
+let newMuestra__date = document.getElementById('newMuestra__date')
+let newMuestra__tincion = document.getElementById('newMuestra__tincion')
+let newMuestra__Observaciones = document.getElementById('newMuestra__Observaciones')
+let newMuestra__img = document.getElementById('newMuestra__img')
+
 
 
 // peticion a la api
@@ -258,6 +268,10 @@ const mostrarMuestras = (id) =>{
   fetch(url)
   .then(response => response.json())
   .then(responsejson => {
+
+  listaMuestras.innerHTML="";
+
+
     if(responsejson.length > 0){
       listarMuestras(responsejson)
       noHayMuestras.classList.remove('block')
@@ -316,6 +330,7 @@ const peticionMuestras = (id) =>{
   .then(responsejson => modalMuestra(responsejson))
 }
 
+// mostrar la modal para ver los detalles de la muestra
 const modalMuestra = (muestra) =>{
   console.log(muestra)
 
@@ -331,7 +346,41 @@ const modalMuestra = (muestra) =>{
   mostrar(detalleMuestra__modal)
 }
 
+// funcion para crear una nueva muestra a raiz de la modal
 
+const createMuestra = (event) =>{
+  event.preventDefault();
+
+  // comprobar que se haya hecho click en un cassette
+  if(!id){
+    console.log("No se ha seleccionado ningun cassette")
+  }else{
+    console.log("Se ha seleccionado un cassette")
+
+    let data = {
+        descripcion: newMuestra__desc.value,
+        fecha: newMuestra__date.value,
+        tincion: newMuestra__tincion.value,
+        observaciones: newMuestra__Observaciones.value,
+        qr_muestra: "",
+        cassette_id: id,
+    }
+
+    fetch('http://localhost:5001/api/muestra', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json', // Tipo de contenido (en este caso JSON)
+      },
+      body: JSON.stringify(data), // Convertimos los datos a JSON
+    }).then(response => {
+      // si la respuesta es un ok=true mostrar feedback
+      if(response.ok === true){
+        console.log("insercion realizada con exito")
+      }
+    })
+    .catch(error => console.log('El error: '+error))
+  }
+}
 
 
 
@@ -343,3 +392,4 @@ btn__newMuestra.addEventListener('click',()=>mostrar(newMuestra__modal))
 close__newMuestra__modal.addEventListener('click', ()=>ocultar(newMuestra__modal))
 close__detalleMuestra__modal.addEventListener('click', ()=>ocultar(detalleMuestra__modal))
 listaMuestras.addEventListener('click',DetailMuestras)
+newMuestra__form.addEventListener('submit', createMuestra)
