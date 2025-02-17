@@ -434,6 +434,8 @@ const createMuestra = (event) => {
         newMuestra__feedback.textContent = "Muestra creada"
         newMuestra__feedback.classList.add("text-green-700")
         newMuestra__feedback.classList.remove("text-red-500")
+        // aqui no salimos de la modal por si quiere crear varias muestras a la vez
+        mostrarMuestras(id)
       }
     })
       .catch(error => {
@@ -503,7 +505,17 @@ const updateMuestra = (event) =>{
     body: JSON.stringify(data)
   })
   .then(response => response.json())
-  .then(responsejson => console.log('Actualizado con éxito', responsejson))
+  .then(responsejson => {
+    // console.log('Actualizado con éxito', responsejson)
+    // ocultamos la modal del formulario
+    ocultar(updateModal__muestra)
+    // ocultamos la modal de los detalles
+    ocultar(detalleMuestra__modal)
+    // mostramos la modal con los nuevos datos
+    peticionMuestras(id__muestra)
+    // actualizamos el listado de muestras
+    mostrarMuestras(id)
+  })
   .catch(error => console.error('Error:', error));
   
 
