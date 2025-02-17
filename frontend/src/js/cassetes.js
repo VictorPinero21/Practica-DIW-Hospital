@@ -490,10 +490,10 @@ const updateModal = (event) => {
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
 
   // rellenar los campos del update
-  updateMuestra__desc.value=descripcion__detalleMuestra.textContent;
-  updateMuestra__date.value=fecha__detalleMuestra.textContent;
-  updateMuestra__tincion.value=tincion__detalleMuestra.textContent;
-  updateMuestra__Observaciones.value=observaciones__detalleMuestra.textContent;
+  updateMuestra__desc.value = descripcion__detalleMuestra.textContent;
+  updateMuestra__date.value = fecha__detalleMuestra.textContent;
+  updateMuestra__tincion.value = tincion__detalleMuestra.textContent;
+  updateMuestra__Observaciones.value = observaciones__detalleMuestra.textContent;
 
 
   mostrar(updateModal__muestra)
@@ -501,16 +501,16 @@ const updateModal = (event) => {
 
 
 // actualizar la muestra con los datos del formulario de la modal
-const updateMuestra = (event) =>{
+const updateMuestra = (event) => {
   event.preventDefault();
 
-  let url = "http://localhost:5001/api/muestra/"+id__muestra;
+  let url = "http://localhost:5001/api/muestra/" + id__muestra;
 
   let data = {
     descripcion: updateMuestra__desc.value,
-    fecha:  updateMuestra__date.value,
-    tincion:  updateMuestra__tincion.value,
-    observaciones:updateMuestra__Observaciones.value  
+    fecha: updateMuestra__date.value,
+    tincion: updateMuestra__tincion.value,
+    observaciones: updateMuestra__Observaciones.value
   }
 
   // console.log(data)
@@ -522,57 +522,79 @@ const updateMuestra = (event) =>{
     },
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
-  .then(responsejson => {
-    // console.log('Actualizado con éxito', responsejson)
-    // ocultamos la modal del formulario
-    ocultar(updateModal__muestra)
-    // ocultamos la modal de los detalles
-    ocultar(detalleMuestra__modal)
-    // mostramos la modal con los nuevos datos
-    peticionMuestras(id__muestra)
-    // actualizamos el listado de muestras
-    mostrarMuestras(id)
-  })
-  .catch(error => console.error('Error:', error));
-  
+    .then(response => response.json())
+    .then(responsejson => {
+      // console.log('Actualizado con éxito', responsejson)
+      // ocultamos la modal del formulario
+      ocultar(updateModal__muestra)
+      // ocultamos la modal de los detalles
+      ocultar(detalleMuestra__modal)
+      // mostramos la modal con los nuevos datos
+      peticionMuestras(id__muestra)
+      // actualizamos el listado de muestras
+      mostrarMuestras(id)
+    })
+    .catch(error => console.error('Error:', error));
+
 }
 
 // peticion para recpger las imagenes de las muestras
-const peticionImagenesMuestra = (id) =>{
-    let url = "http://localhost:5001/api/imagen/muestra/"+id;
+const peticionImagenesMuestra = async (id) => {
+  let url = `http://localhost:5001/api/imagen/muestra/${id}`;
 
-    fetch(url)
-    .then(response => response.json())
-    .then(responsejson => {
-      
-      // console.log(responsejson)
+  try {
+    const response = await fetch(url);
+    const data = await response.json(); // Convertimos la respuesta en JSON
 
-      if(responsejson.length == 0){
-          cargarImagenPorDefecto();
-      }else{
-        cargarImagenesMuestra(responsejson);
-      }
-    })
-}
+    console.log("JSON recibido:", data); // Verifica qué se recibe
+
+    if (data.length == 0) {
+      cargarImagenPorDefecto();
+      return;
+    }
+
+    // Convertir el buffer en un Blob
+    // ahora mismo esto sube la primera foto en grande
+    const uint8Array = new Uint8Array(data[0].imagen.data);
+    // console.log(uint8Array)
+    const blob = new Blob([uint8Array], { type: "image/png" }); // Cambia el tipo según el formato de tu imagen
+    const imageUrl = URL.createObjectURL(blob);
+
+    cargarImagenesMuestra(imageUrl);
+
+    // para mostrar todas las imagenes pequeñas
+    data.forEach((img) => {
+      // console.log(img)
+      const uint8Array = new Uint8Array(img.imagen.data);
+      const blob = new Blob([uint8Array], { type: "image/png" }); 
+      const imageUrl = URL.createObjectURL(blob);
+      mostrarOpcionesImagenes(imageUrl);
+    });
+
+  } catch (error) {
+    console.error("Error al obtener la imagen:", error);
+  }
+};
 
 
 // cargamos una imagen por defecto cuando la muestra no tiene imagenes
-const cargarImagenPorDefecto = () =>{
+const cargarImagenPorDefecto = () => {
   console.log("imagen por defecto")
-  Img__detalleMuestra.src='./../assets/camara.png'
+  Img__detalleMuestra.src = './../assets/camara.png'
 }
 
 // cargamos las imagenes de la muestra
-const cargarImagenesMuestra = (imagenes) =>{
+const cargarImagenesMuestra = (imagenes) => {
   console.log('cargar una imagen en grande y el resto en pequeño')
   console.log(imagenes)
-  Img__detalleMuestra.src='';
+  let src = imagenes;
+  console.log(src)
+  Img__detalleMuestra.src = src;
 
 }
 
-// chat gpt
-async function subirImagen(event) {
+// subir una imagen referenciada a esa muestra a la bd
+const subirImagen = async (event) => {
   event.preventDefault();
 
   const input = aniadirImg__detalleMuestra;
@@ -580,8 +602,8 @@ async function subirImagen(event) {
   console.log(input)
 
   if (input.files.length === 0) {
-      alert("Selecciona una imagen primero");
-      return;
+    alert("Selecciona una imagen primero");
+    return;
   }
 
   const formData = new FormData();
@@ -589,19 +611,31 @@ async function subirImagen(event) {
   formData.append("muestra_id", detalleMuestra__modal.id); // ID de la muestra (puedes cambiarlo)
 
   try {
-      const respuesta = await fetch("http://localhost:5001/api/imagen", {
-          method: "POST",
-          body: formData, // Enviar FormData con la imagen
-      });
+    const respuesta = await fetch("http://localhost:5001/api/imagen", {
+      method: "POST",
+      body: formData, // Enviar FormData con la imagen
+    });
 
-      const resultado = await respuesta.json();
-      console.log("Respuesta del servidor:", resultado);
+    const resultado = await respuesta.json();
+    console.log("Respuesta del servidor:", resultado);
+
+    // console.log(respuesta.ok)
+    if (respuesta.ok == true) {
+      // llamamos a la funcion que muestra la modal desde el principio (render)
+
+    }
+
   } catch (error) {
-      console.error("Error al subir la imagen:", error);
+    console.error("Error al subir la imagen:", error);
   }
 }
 
+// aqui debemos de crear las imagenes e introducirlas en un fragment, el src es (img)
+const mostrarOpcionesImagenes = (img) =>{
+  console.log(img)
 
+
+}
 
 
 // listeners
@@ -610,14 +644,14 @@ close__newMuestra__modal.addEventListener('click', () => ocultar(newMuestra__mod
 close__detalleMuestra__modal.addEventListener('click', () => ocultar(detalleMuestra__modal))
 confirmDelete__muestra.addEventListener('click', () => borrado(id__muestra))
 cancelDelete__muestra.addEventListener('click', () => ocultar(deleteModal__muestra))
-close__updateMuestra__modal.addEventListener('click', ()=>ocultar(updateModal__muestra))
+close__updateMuestra__modal.addEventListener('click', () => ocultar(updateModal__muestra))
 listaMuestras.addEventListener('click', DetailMuestras)
 newMuestra__form.addEventListener('submit', createMuestra)
 delete__muestra.addEventListener('click', deleteMuestra)
 update__muestra.addEventListener('click', updateModal)
 updateMuestra__form.addEventListener('submit', updateMuestra)
-aniadirImg__button.addEventListener('click', ()=>{
+aniadirImg__button.addEventListener('click', () => {
   aniadirImg__detalleMuestra.click();
 })
 
-aniadirImg__detalleMuestra.addEventListener('change',subirImagen)
+aniadirImg__detalleMuestra.addEventListener('change', subirImagen)
