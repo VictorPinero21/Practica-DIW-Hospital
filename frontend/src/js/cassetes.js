@@ -461,7 +461,7 @@ const deleteMuestra = (event) => {
 }
 
 const borrado = (id) => {
-  console.log(id)
+  // console.log(id)
 
   let url = 'http://localhost:5001/api/muestra/' + id;
 
@@ -479,7 +479,13 @@ const borrado = (id) => {
 
 const updateModal = (event) => {
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
-  // console.log(id__muestra)
+
+  // rellenar los campos del update
+  updateMuestra__desc.value=descripcion__detalleMuestra.textContent;
+  updateMuestra__date.value=fecha__detalleMuestra.textContent;
+  updateMuestra__tincion.value=tincion__detalleMuestra.textContent;
+  updateMuestra__Observaciones.value=observaciones__detalleMuestra.textContent;
+
   mostrar(updateModal__muestra)
 }
 

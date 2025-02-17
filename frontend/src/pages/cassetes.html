@@ -332,7 +332,7 @@
                     <div id="delete__muestra">
                         <i class="fa-solid fa-trash h-5 w-5"></i>
                     </div>
-                    
+
                 </div>
                 <div>
                     <!-- aqui va el boton de eliminar la imagen -->
@@ -353,7 +353,7 @@
                         <p class="font-bold">Tinción:</p>
                         <p id="tincion__detalleMuestra"></p>
                     </div>
-                    <div class="flex items-center space-x-2 text-green-700">
+                    <div class="flex flex-col items-left space-x-2 text-green-700">
                         <p class="font-bold">Observaciones:</p>
                         <p id="observaciones__detalleMuestra"></p>
                     </div>
@@ -386,15 +386,19 @@
                 Al eliminar la muestra se eliminaran tambien todas sus imagenes.
             </p>
             <div class="mt-4 flex justify-center gap-4">
-                <button id="confirmDelete__muestra" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                <button id="confirmDelete__muestra"
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
                     Eliminar
                 </button>
-                <button id="cancelDelete__muestra" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+                <button id="cancelDelete__muestra"
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
                     Cancelar
                 </button>
             </div>
         </div>
     </div>
+
+    <!-- update muestra modal -->
 
     <div id="updateModal__muestra" class="fixed inset-0  items-center justify-center bg-gray-900 bg-opacity-50 hidden">
         <section class=" p-6 rounded-lg shadow-lg w-full max-w-md mx-auto bg-white">
