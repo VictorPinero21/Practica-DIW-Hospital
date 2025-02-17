@@ -214,33 +214,39 @@ const promocionarUsuario = async (event) => {
   const email = tr.dataset.email;
   const password = tr.dataset.password;
   const centro = tr.dataset.centro;
+  const rol = tr.dataset.rol;
   //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
-  if (confirm("¿Estás seguro de querer promocionar a este alumno a Administrador?")) {
-    try {
-      const response = await fetch(`http://localhost:5001/api/usuario/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nombre,
-          apellido,
-          email,
-          password,
-          centro,
-          rol: "administrador",
-        }),
-      });
+  if (rol !== "administrador") {
+    if (confirm("¿Estás seguro de querer promocionar a este alumno a Administrador?")) {
+      try {
+        const response = await fetch(`http://localhost:5001/api/usuario/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nombre,
+            apellido,
+            email,
+            password,
+            centro,
+            rol: "administrador",
+          }),
+        });
 
-      if (!response.ok) {
-        const errorDetails = await response.text();
-        console.error("Error del servidor:", errorDetails);
-        throw new Error("Error al promocionar usuario");
+        if (!response.ok) {
+          const errorDetails = await response.text();
+          console.error("Error del servidor:", errorDetails);
+          throw new Error("Error al promocionar usuario");
+        }
+
+        cargarAlumnos(); // Recargar la tabla
+      } catch (error) {
+        console.log("Error al modificar el usuario: " + error.message);
       }
-
-      cargarAlumnos(); // Recargar la tabla
-    } catch (error) {
-      console.log("Error al modificar el usuario: " + error.message);
     }
-  }
+  } else {
+    //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
+    alert("No puedes promocionar a un usuario que ya es administrador");
+  } 
 };
 
 const modificarUsuario = async (event) => {
