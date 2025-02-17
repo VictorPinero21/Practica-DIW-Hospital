@@ -65,6 +65,10 @@ let deleteModal = document.getElementById('deleteModal')
 let cancelDelete = document.getElementById('cancelDelete')
 let confirmDelete = document.getElementById('confirmDelete')
 let eliminarCassete = document.getElementById('eliminarCassete')
+//botones para ordenar
+let fechaBoton=document.getElementById("fechaBoton")
+let descripcionBoton=document.getElementById("descripcionBoton")
+let organoBoton=document.getElementById("organoBoton")
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -91,10 +95,10 @@ const mostrarCassetes = async () => {
   cassetesArr = api.filter(cassete => cassete.usuario_id === usuario_id);
 
   cassetesArr.forEach(cassete => {
-    let newDiv = document.createElement("DIV")
-    let fecha = document.createElement("P")
-    let descripcion = document.createElement("P")
-    let organo = document.createElement("P")
+    let newDiv = document.createElement("tr")
+    let fecha = document.createElement("td")
+    let descripcion = document.createElement("td")
+    let organo = document.createElement("td")
     let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
     fecha.textContent = fechaTexto;
     descripcion.textContent = cassete.descripcion
@@ -280,6 +284,26 @@ const comprobarActualizacion=async()=>{
     cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
 }
 }
+//Inicializamos Sorttable para la tabla con los cassetes mostrados
+const Sortable = window.Sortable;
+const ordenarFecha=()=>{
+  console.log("Ordenar")
+  var rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  // Ordenar las filas por la fecha (columna 0)
+  rows.sort(function(a, b) {
+    var fechaA = new Date(a.cells[0].textContent); // Obtener la fecha de la primera celda
+    var fechaB = new Date(b.cells[0].textContent);
+    return fechaA - fechaB; // Ordenar de más antiguo a más reciente
+  });
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function(row) {
+    listaCassetes.appendChild(row);
+  });
+}
+
+
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -304,6 +328,7 @@ confirmDelete.addEventListener("click",borrarCassete)
 eliminarCassete.addEventListener("click",comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
 submitModificarCassete.addEventListener("click",modCassete)
+fechaBoton.addEventListener("click",ordenarFecha)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 

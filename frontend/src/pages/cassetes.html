@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="./../assets/favicoin.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  
 </head>
 
 <body>
@@ -161,21 +163,20 @@
                             </div>
                         </div>
 
-                        <!-- Botones  -->
-                        <div class="flex">
-
-                            <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[50%] ">Fecha</button>
-                            <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[20%]">Descripción</button>
-                            <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] ">Órgano</button>
-                        </div>
+                        
 
                         <!-- Informacion sobre cassetes -->
-                        <div class="flex flex-col h-40 overflow-y-auto" id="listaCassetes">
-
-                        </div>
+                        <table class="flex flex-col h-40 overflow-y-auto" id="listaCassetes">
+                            
+                        <tr>
+                            <th
+                            class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[50%] " id="fechaBoton">Fecha</th>
+                            <th
+                            class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[20%]" id="descripcionBoton">Descripción</th>
+                        <th
+                            class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] " id="organoBoton">Órgano</th>
+                        </tr>
+                        </table>
                     </div>
                 </div>
 
@@ -462,8 +463,10 @@
             </form>
         </section>
     </div>
-
+    
+      
+      
 </body>
-<script src="./../js/cassetes.js"></script>
 
+<script src="./../js/cassetes.js"></script>
 </html>
