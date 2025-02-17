@@ -314,7 +314,7 @@ let updateMuestra__Observaciones = document.getElementById('updateMuestra__Obser
 
 
 
-// peticion a la api
+// peticion a la api para recoger las muestras de un cassette
 const mostrarMuestras = (id) => {
   let url = "http://localhost:5001/api/muestra/cassette/" + id;
 
@@ -335,6 +335,7 @@ const mostrarMuestras = (id) => {
     })
 }
 
+// variable para mostrar las muestras que se encuentran en un cassette
 const listarMuestras = (muestras) => {
   // console.log(muestras)
   muestras.forEach(muestra => {
@@ -450,9 +451,10 @@ const createMuestra = (event) => {
 }
 
 // eliminar la muestra
-
+// variable global 
 let id__muestra = "";
 
+// mostrar la modal para eliminar la muestra
 const deleteMuestra = (event) => {
   // recoger el id de la muestra que queremos eliminar
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
@@ -462,6 +464,7 @@ const deleteMuestra = (event) => {
   mostrar(deleteModal__muestra);
 }
 
+// peticion a la api para borrar una muestra
 const borrado = (id) => {
   // console.log(id)
 
@@ -478,7 +481,7 @@ const borrado = (id) => {
 }
 
 // update de muestras
-
+// cargar los datos de la muestra deseada en la modal
 const updateModal = (event) => {
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
 
@@ -492,6 +495,8 @@ const updateModal = (event) => {
   mostrar(updateModal__muestra)
 }
 
+
+// actualizar la muestra con los datos del formulario de la modal
 const updateMuestra = (event) =>{
   event.preventDefault();
 
@@ -529,6 +534,7 @@ const updateMuestra = (event) =>{
   
 }
 
+// peticion para recpger las imagenes de las muestras
 const peticionImagenesMuestra = (id) =>{
     let url = "http://localhost:5001/api/imagen/muestra/"+id;
 
@@ -544,6 +550,8 @@ const peticionImagenesMuestra = (id) =>{
     })
 }
 
+
+// cargamos una imagen por defecto cuando la muestra no tiene imagenes
 const cargarImagenPorDefecto = () =>{
   console.log("imagen por defecto")
   Img__detalleMuestra.src='./../assets/camara.png'
