@@ -313,8 +313,14 @@ let updateMuestra__desc = document.getElementById('updateMuestra__desc')
 let updateMuestra__date = document.getElementById('updateMuestra__date')
 let updateMuestra__tincion = document.getElementById('updateMuestra__tincion')
 let updateMuestra__Observaciones = document.getElementById('updateMuestra__Observaciones')
-
-
+// fragment para añadir las imagenes
+let fragment3 = document.createDocumentFragment();
+// boton de borrar imagen
+let delete__image = document.getElementById('delete__image');
+// modal de confirmacion
+let deleteModal__img = document.getElementById('deleteModal__img')
+let confirmDelete__img = document.getElementById('confirmDelete__img')
+let cancelDelete__img = document.getElementById('cancelDelete__img')
 
 // peticion a la api para recoger las muestras de un cassette
 const mostrarMuestras = (id) => {
@@ -560,7 +566,7 @@ const peticionImagenesMuestra = async (id) => {
     const blob = new Blob([uint8Array], { type: "image/png" }); // Cambia el tipo según el formato de tu imagen
     const imageUrl = URL.createObjectURL(blob);
 
-    cargarImagenesMuestra(imageUrl);
+    cargarImagenesMuestra(imageUrl,data[0].id);
 
     // para mostrar todas las imagenes pequeñas
     data.forEach((img) => {
@@ -568,8 +574,10 @@ const peticionImagenesMuestra = async (id) => {
       const uint8Array = new Uint8Array(img.imagen.data);
       const blob = new Blob([uint8Array], { type: "image/png" }); 
       const imageUrl = URL.createObjectURL(blob);
-      mostrarOpcionesImagenes(imageUrl);
+      mostrarOpcionesImagenes(imageUrl,img.id);
     });
+
+    containerImg__detalleMuestra.append(fragment3)
 
   } catch (error) {
     console.error("Error al obtener la imagen:", error);
@@ -584,12 +592,14 @@ const cargarImagenPorDefecto = () => {
 }
 
 // cargamos las imagenes de la muestra
-const cargarImagenesMuestra = (imagenes) => {
-  console.log('cargar una imagen en grande y el resto en pequeño')
-  console.log(imagenes)
+// le pasamos el id por el alt para ppoder borrarlo posteriormente 
+const cargarImagenesMuestra = (imagenes,id) => {
+  // console.log('cargar una imagen en grande y el resto en pequeño')
+  // console.log(imagenes)
   let src = imagenes;
-  console.log(src)
+  // console.log(src)
   Img__detalleMuestra.src = src;
+  Img__detalleMuestra.alt = id;
 
 }
 
@@ -599,7 +609,7 @@ const subirImagen = async (event) => {
 
   const input = aniadirImg__detalleMuestra;
 
-  console.log(input)
+  // console.log(input)
 
   if (input.files.length === 0) {
     alert("Selecciona una imagen primero");
@@ -617,7 +627,7 @@ const subirImagen = async (event) => {
     });
 
     const resultado = await respuesta.json();
-    console.log("Respuesta del servidor:", resultado);
+    // console.log("Respuesta del servidor:", resultado);
 
     // console.log(respuesta.ok)
     if (respuesta.ok == true) {
@@ -631,11 +641,34 @@ const subirImagen = async (event) => {
 }
 
 // aqui debemos de crear las imagenes e introducirlas en un fragment, el src es (img)
-const mostrarOpcionesImagenes = (img) =>{
-  console.log(img)
+// pasamos el id oara guardarlo en el alt y asi poder borrar la imagen
+const mostrarOpcionesImagenes = (img,id) =>{
+  // console.log(img)
 
-
+  let image = document.createElement("IMG")
+  image.src = img;
+  image.alt = id;
+  image.classList="h-10 w-10 m-4"
+  fragment3.append(image);
 }
+
+const borrarImagen = () =>{
+  console.log(Img__detalleMuestra.alt)
+
+  let url = 'http://localhost:5001/api/imagen/'+Img__detalleMuestra.alt;
+
+  fetch(url, {
+    method: 'DELETE',  // Especificamos que es una solicitud DELETE
+    headers: {
+        'Content-Type': 'application/json', // Puedes añadir otros headers si es necesario
+        // 'Authorization': 'Bearer token' // Si necesitas autenticación, descomenta y añade el token
+    }
+}).then(response => console.log(response))
+
+  // ocultamos la modal de la elimiacion
+  ocultar(deleteModal__img)
+}
+
 
 
 // listeners
@@ -645,6 +678,8 @@ close__detalleMuestra__modal.addEventListener('click', () => ocultar(detalleMues
 confirmDelete__muestra.addEventListener('click', () => borrado(id__muestra))
 cancelDelete__muestra.addEventListener('click', () => ocultar(deleteModal__muestra))
 close__updateMuestra__modal.addEventListener('click', () => ocultar(updateModal__muestra))
+delete__image.addEventListener('click', ()=>mostrar(deleteModal__img))
+cancelDelete__img.addEventListener('click', ()=>ocultar(deleteModal__img))
 listaMuestras.addEventListener('click', DetailMuestras)
 newMuestra__form.addEventListener('submit', createMuestra)
 delete__muestra.addEventListener('click', deleteMuestra)
@@ -653,5 +688,6 @@ updateMuestra__form.addEventListener('submit', updateMuestra)
 aniadirImg__button.addEventListener('click', () => {
   aniadirImg__detalleMuestra.click();
 })
+confirmDelete__img.addEventListener('click',borrarImagen)
 
 aniadirImg__detalleMuestra.addEventListener('change', subirImagen)

@@ -334,7 +334,7 @@
                     </div>
 
                 </div>
-                <div>
+                <div id="delete__image">
                     <!-- aqui va el boton de eliminar la imagen -->
                     <i class="fa-solid fa-trash h-5 w-5"></i>
                 </div>
@@ -464,6 +464,28 @@
         </section>
     </div>
 
+    <!-- delete img modal -->
+
+    <div id="deleteModal__img" class="fixed inset-0  items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96 text-center ">
+            <h2 class="text-lg font-semibold text-green-600">
+                Desea Eliminar la imagen.
+            </h2>
+            <p class="text-gray-700 mt-2">
+                Al eliminar la imagen no podras recuperarla.
+            </p>
+            <div class="mt-4 flex justify-center gap-4">
+                <button id="confirmDelete__img"
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                    Eliminar
+                </button>
+                <button id="cancelDelete__img"
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="./../js/cassetes.js"></script>
 
