@@ -534,7 +534,19 @@ const peticionImagenesMuestra = (id) =>{
 
     fetch(url)
     .then(response => response.json())
-    .then(responsejson => console.log(responsejson))
+    .then(responsejson => {console.log(responsejson)
+
+      if(responsejson.length == 0){
+          cargarImagenPorDefecto();
+      }else{
+        console.log('cargar una imagen en grande y el resto en pequeño')
+      }
+    })
+}
+
+const cargarImagenPorDefecto = () =>{
+  console.log("imagen por defecto")
+  Img__detalleMuestra.src='./../assets/camara.png'
 }
 
 
