@@ -227,6 +227,14 @@ const borrarCassete=async()=>{
     location.reload()
   }
 }
+
+const comprobarBorrado=()=>{
+  if(id){
+    mostrar(deleteModal)
+  }else{
+      cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
+  }
+}
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -244,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 submitCrearCassete.addEventListener("click", crearCassete)
 confirmDelete.addEventListener("click",borrarCassete)
-
+eliminarCassete.addEventListener("click",comprobarBorrado)
 
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
@@ -267,7 +275,7 @@ confirmDelete.addEventListener('click', () => ocultar(deleteModal))
 // eventos para mostrar las modales
 toggleModal.addEventListener('click', () => mostrar(nuevoCassete))
 modificarCassete.addEventListener('click', () => mostrar(modalModificarCassette))
-eliminarCassete.addEventListener('click', () => mostrar(deleteModal))
+// eliminarCassete.addEventListener('click', () => mostrar(deleteModal))
 
 listaCassetes.addEventListener("click", detalleCassete)
 
