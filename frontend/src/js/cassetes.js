@@ -299,6 +299,8 @@ let delete__muestra = document.getElementById('delete__muestra')
 let delete__imgMuestra = document.getElementById('delete__imgMuestra')
 // añadirla
 let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMuestra')
+let aniadirImg__form = document.getElementById('aniadirImg__form')
+let aniadirImg__button = document.getElementById('aniadirImg__button')
 // modal confirmar eliminacion de muestra
 let deleteModal__muestra = document.getElementById('deleteModal__muestra');
 let confirmDelete__muestra = document.getElementById('confirmDelete__muestra');
@@ -542,12 +544,14 @@ const peticionImagenesMuestra = (id) =>{
 
     fetch(url)
     .then(response => response.json())
-    .then(responsejson => {console.log(responsejson)
+    .then(responsejson => {
+      
+      // console.log(responsejson)
 
       if(responsejson.length == 0){
           cargarImagenPorDefecto();
       }else{
-        console.log('cargar una imagen en grande y el resto en pequeño')
+        cargarImagenesMuestra(responsejson);
       }
     })
 }
@@ -559,6 +563,43 @@ const cargarImagenPorDefecto = () =>{
   Img__detalleMuestra.src='./../assets/camara.png'
 }
 
+// cargamos las imagenes de la muestra
+const cargarImagenesMuestra = (imagenes) =>{
+  console.log('cargar una imagen en grande y el resto en pequeño')
+  console.log(imagenes)
+  Img__detalleMuestra.src='';
+
+}
+
+// chat gpt
+async function subirImagen(event) {
+  event.preventDefault();
+
+  const input = aniadirImg__detalleMuestra;
+
+  console.log(input)
+
+  if (input.files.length === 0) {
+      alert("Selecciona una imagen primero");
+      return;
+  }
+
+  const formData = new FormData();
+  formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
+  formData.append("muestra_id", detalleMuestra__modal.id); // ID de la muestra (puedes cambiarlo)
+
+  try {
+      const respuesta = await fetch("http://localhost:5001/api/imagen", {
+          method: "POST",
+          body: formData, // Enviar FormData con la imagen
+      });
+
+      const resultado = await respuesta.json();
+      console.log("Respuesta del servidor:", resultado);
+  } catch (error) {
+      console.error("Error al subir la imagen:", error);
+  }
+}
 
 
 
@@ -575,3 +616,8 @@ newMuestra__form.addEventListener('submit', createMuestra)
 delete__muestra.addEventListener('click', deleteMuestra)
 update__muestra.addEventListener('click', updateModal)
 updateMuestra__form.addEventListener('submit', updateMuestra)
+aniadirImg__button.addEventListener('click', ()=>{
+  aniadirImg__detalleMuestra.click();
+})
+
+aniadirImg__detalleMuestra.addEventListener('change',subirImagen)
