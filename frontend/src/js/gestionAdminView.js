@@ -65,13 +65,13 @@ const cargarAlumnos = async () => {
       tr.dataset.rol = usuario.rol;
 
       tr.innerHTML = `
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.nombre}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.apellido}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.email}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.password}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.centro ?? "N/A"}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.rol}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.nombre}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.apellido}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.email}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.password}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.centro ?? "N/A"}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.rol}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">
           <div class="flex space-x-2 justify-center">
             <!-- Botón de eliminación -->
             <button class="text-red-500 hover:text-red-700 hover:cursor-pointer" data-id="${usuario.id}" title="Borrar">
@@ -81,7 +81,7 @@ const cargarAlumnos = async () => {
             </button>
 
             <!-- Botón de edición -->
-            <button class="text-blue-500 hover:text-blue-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
+            <button class="text-greeb-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
               <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z" />
               </svg>
@@ -111,9 +111,12 @@ const cargarAlumnos = async () => {
 
       // Asignar eventos a los botones de edición después de renderizar la tabla
       const editButton = row.querySelector("button[title='Editar']");
-      editButton.addEventListener("click", () => {
+      editButton.addEventListener("click", (event) => {
         modalModificarUsuario.classList.toggle("dnone");
-        cargarDatosModal(tr);
+        // esto a veces va a funcionar y otras no debido a que el boton es un svg y da problemas con el click, lo suyo es hacer con iconos de fontawesome
+        console.log(event.target.parentElement.parentElement.parentElement.parentElement.parentElement)
+        let data = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+        cargarDatosModal(data);
       });
 
       // Promocionar usuario
