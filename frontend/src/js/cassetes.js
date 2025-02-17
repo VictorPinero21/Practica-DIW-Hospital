@@ -357,9 +357,9 @@ const listarMuestras = (muestras) => {
     fecha.textContent = muestra.fecha.substring(0, 10)
     descripcion.textContent = muestra.descripcion
     tincion.textContent = muestra.tincion
-    fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
-    descripcion.classList = "w-[20%] ml-2 hover:cursor-pointer"
-    tincion.classList = "w-[25%] ml-2  hover:cursor-pointer"
+    fecha.classList = "md:w-[50%] w-[30%] ml-2 hover:cursor-pointer"
+    descripcion.classList = "md:w-[20%] w-[30%] ml-2 hover:cursor-pointer"
+    tincion.classList = "md:w-[25%] w-[35%] ml-2  hover:cursor-pointer"
     i.classList = "fas fa-file text-green-600 w-[5%] ml-2 hover:cursor-pointer"
     newDiv.appendChild(fecha)
     newDiv.appendChild(descripcion)
