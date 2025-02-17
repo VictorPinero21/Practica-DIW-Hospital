@@ -40,7 +40,7 @@
     </header>
 
     <!-- Modal de Modificar Usuario (Oculto por defecto) -->
-    <form id="modalModificarUsuario" class="dnone fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-20">
+    <form id="modalModificarUsuario" class="dnone fixed inset-0 flex items-center justify-center">
       <div class="bg-white rounded-lg shadow-lg p-6 w-96">
         <div class="flex justify-between items-center border-b pb-2 mb-4">
           <h2 class="text-lg font-semibold">Modificar Usuario</h2>
@@ -49,41 +49,41 @@
         <div class="space-y-4">
           <div class="dnone">
             <label class="block text-sm font-medium text-gray-700">Id</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalID" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalID" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Nombre</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalNombre" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalNombre" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Apellido</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalApellido" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalApellido" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Email</label>
-            <input type="email" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalEmail" required />
+            <input type="email" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalEmail" required />
             <p id="errorEmail" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Contraseña</label>
             <!-- PONER COMO REQUIRED Y AÑADIR pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,100}$" -->
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalPassword" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalPassword" />
             <p id="errorPassword" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalConfirmPassword" required />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalConfirmPassword" required />
             <p id="errorConfirmPassword" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Centro</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalCentro" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalCentro" />
           </div>
           <div class="dnone">
             <label class="block text-sm font-medium text-gray-700">Rol</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500" id="modalRol" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalRol" />
           </div>
-          <button id="guardarCambiosBtn" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 hover:cursor-pointer">Guardar</button>
+          <button id="guardarCambiosBtn" class="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 hover:cursor-pointer">Guardar</button>
         </div>
       </div>
     </form>
@@ -94,20 +94,20 @@
           <!-- Usuarios List -->
           <div class="col-span-1 md:col-span-3 flex flex-col">
             <!-- Cambio aquí -->
-            <div class="bg-white rounded-md border border-[#a0c6e8] overflow-hidden flex-1">
-              <div class="bg-[#f8fbff] px-4 py-2 border-b border-[#a0c6e8] flex justify-center items-center">
-                <h2 class="text-[#4a90e2] font-medium text-2xl">Usuarios</h2>
+            <div class="bg-white rounded-md border border-[#0ff56b] overflow-hidden flex-1">
+              <div class="bg-[#f8fbff] px-4 py-2 border-b border-[#0ff56b] flex justify-center items-center">
+                <h2 class="text-green-500 font-medium text-2xl">Usuarios</h2>
               </div>
               <table class="w-full" id="usersTable">
                 <thead>
-                  <tr class="bg-[#f8fbff] text-[#4a90e2] text-sm">
-                    <th class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Nombre</th>
-                    <th class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Apellidos</th>
-                    <th class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Email</th>
-                    <th class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Password</th>
-                    <th class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Centro</th>
-                    <th class="px-4 py-2 text-left font-medium border-b border-[#a0c6e8]">Rol</th>
-                    <th class="w-32 px-4 py-2 border-b border-[#a0c6e8]">Opciones</th>
+                  <tr class="bg-[#f8fbff] text-green-500 text-sm">
+                    <th class="px-4 py-2 text-left font-medium border-b border-[#0ff56b]">Nombre</th>
+                    <th class="px-4 py-2 text-left font-medium border-b border-[#0ff56b]">Apellidos</th>
+                    <th class="px-4 py-2 text-left font-medium border-b border-[#0ff56b]">Email</th>
+                    <th class="px-4 py-2 text-left font-medium border-b border-[#0ff56b]">Password</th>
+                    <th class="px-4 py-2 text-left font-medium border-b border-[#0ff56b]">Centro</th>
+                    <th class="px-4 py-2 text-left font-medium border-b border-[#0ff56b]">Rol</th>
+                    <th class="w-32 px-4 py-2 border-b border-[#0ff56b]">Opciones</th>
                   </tr>
                 </thead>
                 <tbody id="usersTableBody">
