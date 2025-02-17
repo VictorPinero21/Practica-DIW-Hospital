@@ -40,7 +40,7 @@
     </header>
 
     <!-- Modal de Modificar Usuario (Oculto por defecto) -->
-    <form id="modalModificarUsuario" class="dnone fixed inset-0 flex items-center justify-center">
+    <form id="modalModificarUsuario" class="dnone fixed inset-0 flex items-center justify-center" novalidate>
       <div class="bg-white rounded-lg shadow-lg p-6 w-96">
         <div class="flex justify-between items-center border-b pb-2 mb-4">
           <h2 class="text-lg font-semibold">Modificar Usuario</h2>
@@ -53,11 +53,13 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Nombre</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalNombre" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalNombre" required/>
+            <p id="errorNombre" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Apellido</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalApellido" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalApellido" required/>
+            <p id="errorApellido" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Email</label>
@@ -77,7 +79,8 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Centro</label>
-            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalCentro" />
+            <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="modalCentro" required/>
+            <p id="errorCentro" class="text-xl text-red-500 font-bold"></p>
           </div>
           <div class="dnone">
             <label class="block text-sm font-medium text-gray-700">Rol</label>

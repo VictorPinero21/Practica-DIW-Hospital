@@ -12,6 +12,10 @@ const guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
 const errorEmail = document.getElementById("errorEmail");
 const errorPassword = document.getElementById("errorPassword");
 const errorConfirmPassword = document.getElementById("errorConfirmPassword");
+// 
+let errorNombre = document.getElementById('errorNombre')
+let errorApellido = document.getElementById('errorApellido')
+let errorCentro = document.getElementById('errorCentro')
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -212,7 +216,7 @@ const promocionarUsuario = async (event) => {
 const modificarUsuario = async (event) => {
   event.preventDefault();
   // Validar los datos
-  if (validarModal(event)) {
+  if (validarModal()) {
     // Obtener los datos del formulario
     const usuarioModificado = {
       id: modalID.value,
@@ -261,40 +265,75 @@ const modificarUsuario = async (event) => {
 };
 
 //PENDIENTE DE IMPLEMENTAR
-const validarModal = async (event) => {
-  event.preventDefault();
-  console.log("validar modal");
+const validarModal =  () => {
+  // console.log("validar modal");
   let correcto = true;
-  // if (modalEmail.validity.valueMissing) {
-  //   errorEmail.textContent = "Debes introducir el e-mail";
-  //   correcto = false;
-  // } else if (modalEmail.validity.typeMismatch) {
-  //   errorEmail.textContent = "El formato de e-mail es inválido.";
-  //   correcto = false;
-  // } else {
-  //   errorEmail.textContent = "";
-  // }
-  // if (modalPassword.validity.valueMissing) {
-  //   errorPassword.textContent = "Debes introducir la contraseña.";
-  //   correcto = false;
-  // } else if (modalPassword.validity.typeMismatch) {
-  //   errorPassword.textContent = "La contraseña está mal conformada.";
-  // } else {
-  //   errorPassword.textContent = "";
-  // }
+  if (modalEmail.validity.valueMissing) {
+    errorEmail.textContent = "Debes introducir el e-mail";
+    correcto = false;
+  } else if (modalEmail.validity.typeMismatch) {
+    errorEmail.textContent = "El formato de e-mail es inválido.";
+    correcto = false;
+  } else {
+    errorEmail.textContent = "";
+  }
 
-  // if (modalConfirmPassword.validity.valueMissing) {
-  //   errorConfirmPassword.textContent = "Debes repetir la contraseña.";
-  //   correcto = false;
-  // } else if (modalConfirmPassword.validity.typeMismatch) {
-  //   errorConfirmPassword.textContent = "La contraseña está mal conformada.";
-  //   correcto = false;
-  // } else if (modalPassword.value != modalConfirmPassword.value) {
-  //   errorConfirmPassword.textContent = "Las contraseñas no coinciden.";
-  //   correcto = false;
-  // } else {
-  //   errorConfirmPassword.textContent = "";
-  // }
+  //añadir el pattern y hacer la validacion del patternMissMatch 
+
+
+  if (modalPassword.validity.valueMissing) {
+    errorPassword.textContent = "Debes introducir la contraseña.";
+    correcto = false;
+  } else if (modalPassword.validity.typeMismatch) {
+    errorPassword.textContent = "La contraseña está mal conformada.";
+    correcto = false;
+  } else {
+    errorPassword.textContent = "";
+  }
+
+  if (modalConfirmPassword.validity.valueMissing) {
+    errorConfirmPassword.textContent = "Debes repetir la contraseña.";
+    correcto = false;
+  } else if (modalConfirmPassword.validity.typeMismatch) {
+    errorConfirmPassword.textContent = "La contraseña está mal conformada.";
+    correcto = false;
+  } else if (modalPassword.value != modalConfirmPassword.value) {
+    errorConfirmPassword.textContent = "Las contraseñas no coinciden.";
+    correcto = false;
+  } else {
+    errorConfirmPassword.textContent = "";
+  }
+
+  // hay que hacer la validcion par que no se introduzcan cambios vacios (nombre, apellido, centro)
+
+  // modalNombre
+  // modalApellido
+  // modalCentro
+
+  // nombre
+  if(modalNombre.validity.valueMissing){
+    correcto = false
+    errorNombre.textContent = "El nombre es un campo requerido"
+  }else{
+    errorNombre.textContent = ''
+  }
+  // apellido
+  if(modalApellido.validity.valueMissing){
+    correcto=false
+    errorApellido.textContent="El apellido es un campo requerido"
+  }else{
+    errorApellido.textContent=""
+  }
+  // centro
+  if(modalApellido.validity.valueMissing){
+    correcto=false;
+    errorCentro.textContent="El campo es un campo requerido"
+  }else{
+    errorCentro.textContent=""
+  }
+
+
+
   return correcto;
 };
 
