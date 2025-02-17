@@ -58,24 +58,21 @@ const crearMuestra = async (req, res) => {
 
 // Actualizar una muestra existente
 const actualizarMuestra = async (req, res) => {
-  try {
-    const updatedMuestra = await muestraService.actualizarMuestra({
-      id: req.params.id,
+  
+    const updatedMuestra = await muestraService.actualizarMuestra(
+      req.params.id,
+      {
       descripcion: req.body.descripcion,
       fecha: req.body.fecha,
       tincion: req.body.tincion,
       observaciones: req.body.observaciones,
-      qr_muestra: req.body.qr_muestra,
-      cassette_id: req.body.cassette_id,
     });
     if (updatedMuestra) {
       res.status(200).json(updatedMuestra);
     } else {
       res.status(404).json({ message: "Muestra no encontrada" });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  
 };
 
 // Eliminar una muestra

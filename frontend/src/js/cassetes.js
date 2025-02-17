@@ -164,22 +164,22 @@ const detalleCassete = async (event) => {
   let div3 = document.createElement("DIV")
   let div4 = document.createElement("DIV")
 
-  div1.classList="overflow-y-auto overflow-x-hidden h-14 w-[300px] break-words"
-  div2.classList="overflow-y-auto overflow-x-hidden h-14 w-[300px] break-words"
+  div1.classList = "overflow-y-auto overflow-x-hidden h-14 w-[300px] break-words"
+  div2.classList = "overflow-y-auto overflow-x-hidden h-14 w-[300px] break-words"
 
-  p1.textContent =   api.descripcion
-  p2.textContent =  api.fecha
+  p1.textContent = api.descripcion
+  p2.textContent = api.fecha
   p3.textContent = api.caracteristicas
   p4.textContent = api.observaciones
   p5.textContent = "Características: "
   p6.textContent = "Observaciones: "
   p7.textContent = "Descripción: "
-  p8.textContent = "Fecha: " 
+  p8.textContent = "Fecha: "
 
-  p6.classList="text-green-500"
-  p5.classList="text-green-500"
-  p7.classList="text-green-500"
-  p8.classList="text-green-500"
+  p6.classList = "text-green-500"
+  p5.classList = "text-green-500"
+  p7.classList = "text-green-500"
+  p8.classList = "text-green-500"
 
 
   div1.appendChild(p5)
@@ -303,6 +303,15 @@ let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMue
 let deleteModal__muestra = document.getElementById('deleteModal__muestra');
 let confirmDelete__muestra = document.getElementById('confirmDelete__muestra');
 let cancelDelete__muestra = document.getElementById('cancelDelete__muestra');
+// modal para modificar la muestra
+let updateModal__muestra = document.getElementById('updateModal__muestra')
+let close__updateMuestra__modal = document.getElementById('close__updateMuestra__modal')
+let updateMuestra__form = document.getElementById('updateMuestra__form')
+let updateMuestra__desc = document.getElementById('updateMuestra__desc')
+let updateMuestra__date = document.getElementById('updateMuestra__date')
+let updateMuestra__tincion = document.getElementById('updateMuestra__tincion')
+let updateMuestra__Observaciones = document.getElementById('updateMuestra__Observaciones')
+
 
 
 // peticion a la api
@@ -376,7 +385,7 @@ const peticionMuestras = (id) => {
 const modalMuestra = (muestra) => {
   console.log(muestra)
 
-  detalleMuestra__modal.id=muestra.id;
+  detalleMuestra__modal.id = muestra.id;
 
   // dar valor a los textos
   descripcion__detalleMuestra.textContent = muestra.descripcion;
@@ -428,7 +437,7 @@ const createMuestra = (event) => {
       }
     })
       .catch(error => {
-        console.log('El error: '+error)
+        console.log('El error: ' + error)
         newMuestra__feedback.textContent = "Ha habido un error"
         newMuestra__feedback.classList.remove("text-green-700")
         newMuestra__feedback.classList.add("text-red-500")
@@ -440,7 +449,7 @@ const createMuestra = (event) => {
 
 let id__muestra = "";
 
-const deleteMuestra = (event) =>{
+const deleteMuestra = (event) => {
   // recoger el id de la muestra que queremos eliminar
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
   // console.log(id__muestra)
@@ -449,10 +458,10 @@ const deleteMuestra = (event) =>{
   mostrar(deleteModal__muestra);
 }
 
-const borrado = (id) =>{
+const borrado = (id) => {
   console.log(id)
 
-  let url = 'http://localhost:5001/api/muestra/'+id;
+  let url = 'http://localhost:5001/api/muestra/' + id;
 
   fetch(url, {
     method: 'DELETE',
@@ -461,8 +470,45 @@ const borrado = (id) =>{
     ocultar(deleteModal__muestra)
     ocultar(detalleMuestra__modal)
   })
-  .catch(error => "error: "+error)
+    .catch(error => "error: " + error)
 }
+
+// update de muestras
+
+const updateModal = (event) => {
+  id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
+  // console.log(id__muestra)
+  mostrar(updateModal__muestra)
+}
+
+const updateMuestra = (event) =>{
+  event.preventDefault();
+
+  let url = "http://localhost:5001/api/muestra/"+id__muestra;
+
+  let data = {
+    descripcion: updateMuestra__desc.value,
+    fecha:  updateMuestra__date.value,
+    tincion:  updateMuestra__tincion.value,
+    observaciones:updateMuestra__Observaciones.value  
+  }
+
+  console.log(data)
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(responsejson => console.log('Actualizado con éxito', responsejson))
+  .catch(error => console.error('Error:', error));
+  
+
+}
+
 
 
 
@@ -471,8 +517,11 @@ const borrado = (id) =>{
 btn__newMuestra.addEventListener('click', () => mostrar(newMuestra__modal))
 close__newMuestra__modal.addEventListener('click', () => ocultar(newMuestra__modal))
 close__detalleMuestra__modal.addEventListener('click', () => ocultar(detalleMuestra__modal))
-confirmDelete__muestra.addEventListener('click',()=>borrado(id__muestra))
-cancelDelete__muestra.addEventListener('click',()=>ocultar(deleteModal__muestra))
+confirmDelete__muestra.addEventListener('click', () => borrado(id__muestra))
+cancelDelete__muestra.addEventListener('click', () => ocultar(deleteModal__muestra))
+close__updateMuestra__modal.addEventListener('click', ()=>ocultar(updateModal__muestra))
 listaMuestras.addEventListener('click', DetailMuestras)
 newMuestra__form.addEventListener('submit', createMuestra)
-delete__muestra.addEventListener('click',deleteMuestra)
+delete__muestra.addEventListener('click', deleteMuestra)
+update__muestra.addEventListener('click', updateModal)
+updateMuestra__form.addEventListener('submit', updateMuestra)
