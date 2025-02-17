@@ -465,10 +465,10 @@ const deleteMuestra = (event) => {
 }
 
 // peticion a la api para borrar una muestra
-const borrado = (id) => {
+const borrado = (id_muestra) => {
   // console.log(id)
 
-  let url = 'http://localhost:5001/api/muestra/' + id;
+  let url = 'http://localhost:5001/api/muestra/' + id_muestra;
 
   fetch(url, {
     method: 'DELETE',
@@ -476,6 +476,8 @@ const borrado = (id) => {
     // console.log(response)
     ocultar(deleteModal__muestra)
     ocultar(detalleMuestra__modal)
+    // volver a listar las muestras
+    mostrarMuestras(id)
   })
     .catch(error => "error: " + error)
 }
