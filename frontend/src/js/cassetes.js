@@ -45,7 +45,13 @@ let selectOrganoCassete = document.getElementById("selectOrganoCassete")
 let carac = document.getElementById("caracteristicas")
 let ob = document.getElementById("observaciones")
 let submitCrearCassete = document.getElementById("submitCrearCassete")
-
+//modal modificar Cassetes
+let desM=document.getElementById("descripcionMod")
+let dateM=document.getElementById("fechaMod")
+let selecOrMod=document.getElementById("organoMod")
+let caracMod=document.getElementById("caracteristicasMod")
+let obMod=document.getElementById("observacionesMod")
+let submitModCassete=document.getElementById("submitModificarCassete")
 // modal nuevos cassettes
 let nuevoCassete = document.getElementById('nuevoCassete');
 let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
@@ -183,7 +189,7 @@ const detalleCassete = async (event) => {
   div2.classList = "overflow-y-auto overflow-x-hidden h-14 w-[300px] break-words"
 
   p1.textContent = api.descripcion
-  p2.textContent = api.fecha
+  p2.textContent = api.fecha.substring(0, 10)
   p3.textContent = api.caracteristicas
   p4.textContent = api.observaciones
   p5.textContent = "Características: "
@@ -239,16 +245,37 @@ const comprobarBorrado=()=>{
 
 //Funcion para modificar el cassete
 const modCassete=async()=>{
-    const modificar=await fetch(`http://localhost:5001/api/cassete/${id}`,{
-      
-    })
 
+  let descripcion = desM.value
+  let fecha = dateM.value
+  let organo = selecOrMod.value
+  let caracteristicas = caracMod.value
+  let observaciones = obMod.value
+    const modificar=await fetch(`http://localhost:5001/api/cassete/${id}`,{
+        method:'PUT',
+        body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+    if(modificar.ok){
+      mostrarCassetes()
+      location.reload()
+    }
 }
 
 //Funcion para comprobar si hay algun cassete seleccionado para mostrar el modal de modificar
-const comprobarActualizacion=()=>{
+const comprobarActualizacion=async()=>{
   if(id){
     mostrar(modalModificarCassette)
+    const api=await peticionApiID(id)
+   
+    desM.value=api.descripcion
+    let fechaTexto = api.fecha ? api.fecha.toString().substring(0, 10) : "Fecha no disponible";
+    dateM.value=fechaTexto
+    selecOrMod.value=api.organo
+    caracMod.textContent=api.caracteristicas
+    obMod.textContent=api.observaciones
   }else{
     cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
 }
@@ -260,18 +287,23 @@ document.addEventListener("DOMContentLoaded", () => {
   organosHumanos.forEach(organo => {
     let option = document.createElement("OPTION")
     let option2 = document.createElement("OPTION")
+    let option3=document.createElement("OPTION")
     option.textContent = organo
     option.value = organo.trim();
     option2.textContent = organo
     option2.value = organo.trim()
+    option3.textContent = organo
+    option3.value = organo.trim()
     selectOrganoCassete.appendChild(option)
     organSelect.appendChild(option2)
+    selecOrMod.appendChild(option3)
   })
 })
 submitCrearCassete.addEventListener("click", crearCassete)
 confirmDelete.addEventListener("click",borrarCassete)
 eliminarCassete.addEventListener("click",comprobarBorrado)
-modificarCassete.addEventListener('click', comprobarBorrado)
+modificarCassete.addEventListener('click', comprobarActualizacion)
+submitModificarCassete.addEventListener("click",modCassete)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
