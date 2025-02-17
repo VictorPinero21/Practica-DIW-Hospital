@@ -576,7 +576,8 @@ const peticionImagenesMuestra = async (id) => {
       const imageUrl = URL.createObjectURL(blob);
       mostrarOpcionesImagenes(imageUrl,img.id);
     });
-
+    // primero se vacia para que no se sobreescriba
+    containerImg__detalleMuestra.innerHTML=""
     containerImg__detalleMuestra.append(fragment3)
 
   } catch (error) {
@@ -667,8 +668,18 @@ const borrarImagen = () =>{
 
   // ocultamos la modal de la elimiacion
   ocultar(deleteModal__img)
+  ocultar(detalleMuestra__modal)
+
+
 }
 
+const cambiarImg = (event) =>{
+  if(event.target.tagName === 'IMG'){
+    // nos aseguramos de que pincha en una imagen
+    console.log(event.target.alt)
+    cargarImagenesMuestra(event.target.src,event.target.alt)
+  }
+}
 
 
 // listeners
@@ -691,3 +702,4 @@ aniadirImg__button.addEventListener('click', () => {
 confirmDelete__img.addEventListener('click',borrarImagen)
 
 aniadirImg__detalleMuestra.addEventListener('change', subirImagen)
+containerImg__detalleMuestra.addEventListener('click',cambiarImg)
