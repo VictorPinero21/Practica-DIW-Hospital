@@ -176,9 +176,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     let option=document.createElement("OPTION")
     let option2=document.createElement("OPTION")
     option.textContent=organo
-    option.value=organo
+    option.value=organo.trim();
     option2.textContent=organo
-    option2.value=organo
+    option2.value=organo.trim()
     selectOrganoCassete.appendChild(option)
     organSelect.appendChild(option2)
   })
@@ -258,7 +258,7 @@ let newMuestra__date = document.getElementById('newMuestra__date')
 let newMuestra__tincion = document.getElementById('newMuestra__tincion')
 let newMuestra__Observaciones = document.getElementById('newMuestra__Observaciones')
 let newMuestra__img = document.getElementById('newMuestra__img')
-
+let newMuestra__feedback = document.getElementById('newMuestra__feedback')
 
 
 // peticion a la api
@@ -375,10 +375,18 @@ const createMuestra = (event) =>{
     }).then(response => {
       // si la respuesta es un ok=true mostrar feedback
       if(response.ok === true){
-        console.log("insercion realizada con exito")
+        // console.log("insercion realizada con exito")
+        newMuestra__feedback.textContent="Muestra creada"
+        newMuestra__feedback.classList.add("text-green-700")
+        newMuestra__feedback.classList.remove("text-red-500")
       }
     })
-    .catch(error => console.log('El error: '+error))
+    .catch(error => {
+      // console.log('El error: '+error)
+      newMuestra__feedback.textContent="Ha habido un error"
+      newMuestra__feedback.classList.remove("text-green-700")
+      newMuestra__feedback.classList.add("text-red-500")
+    })
   }
 }
 

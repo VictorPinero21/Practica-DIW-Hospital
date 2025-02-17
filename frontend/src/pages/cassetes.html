@@ -59,16 +59,16 @@
       <div class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700">Descripción Corta</label>
-          <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="descripcion"/>
+          <input required type="text" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="descripcion"/>
         </div>
         <div class="flex space-x-4">
           <div class="flex-1">
             <label class="block text-sm font-medium text-gray-700">Fecha</label>
-            <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="fecha"/>
+            <input required type="date" class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="fecha"/>
           </div>
           <div class="flex-1">
             <label class="block text-sm font-medium text-gray-700">Órgano</label>
-            <select class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="selectOrganoCassete">
+            <select required class="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="selectOrganoCassete">
               <option>Seleccionar Órgano</option>
             </select>
           </div>
@@ -165,7 +165,7 @@
                         </div>
 
                         <!-- Informacion sobre cassetes -->
-                        <div class="flex flex-col" id="listaCassetes">
+                        <div class="flex flex-col h-40 overflow-y-auto" id="listaCassetes">
 
                         </div>
                     </div>
@@ -222,7 +222,7 @@
                 </div>
 
                 <!-- Informacion sobre cassetes -->
-                <div class="flex flex-col" id="listaMuestras">
+                <div class="flex flex-col h-32 overflow-y-auto" id="listaMuestras">
 
                 </div>
                 <div class="p-4 block" id="noHayMuestras">
@@ -286,6 +286,8 @@
                     <label for="newMuestra__img" class="text-green-700 font-medium">Imagen</label>
                     <input type="file" id="newMuestra__img" class="w-full p-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
+                <!-- feedback al usuario -->
+                 <p id="newMuestra__feedback" class="text-green-700 font-medium"></p>
                 <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">Crear Muestra</button>
             </form>
         </section> 
