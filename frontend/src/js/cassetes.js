@@ -45,6 +45,21 @@ let selectOrganoCassete = document.getElementById("selectOrganoCassete")
 let carac = document.getElementById("caracteristicas")
 let ob = document.getElementById("observaciones")
 let submitCrearCassete = document.getElementById("submitCrearCassete")
+
+// modal nuevos cassettes
+let nuevoCassete = document.getElementById('nuevoCassete');
+let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
+let toggleModal = document.getElementById('toggleModal')
+// modal modificar cassettes
+let modalModificarCassette = document.getElementById('modalModificarCassette');
+let cerrarModalCassete = document.getElementById('cerrarModalCassete');
+let modificarCassete = document.getElementById('modificarCassete')
+// modal de confirmacion de elimiar cassete
+let deleteModal = document.getElementById('deleteModal')
+let cancelDelete = document.getElementById('cancelDelete')
+let confirmDelete = document.getElementById('confirmDelete')
+let eliminarCassete = document.getElementById('eliminarCassete')
+
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
   const element = document.getElementById(id);
@@ -200,6 +215,18 @@ const detalleCassete = async (event) => {
   // llamar a la funcon para mosrar muestras
   mostrarMuestras(id);
 }
+
+//Funcion para borrar el cassete seleccionado
+const borrarCassete=async()=>{
+  console.log("El id ha borrar es: "+id)
+  const delete_cassete=await fetch(`http://localhost:5001/api/cassete/${id}`,{
+    method:'DELETE',
+  })
+  if(delete_cassete.ok){
+    mostrarCassetes()
+    location.reload()
+  }
+}
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -216,24 +243,11 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 })
 submitCrearCassete.addEventListener("click", crearCassete)
-
+confirmDelete.addEventListener("click",borrarCassete)
 
 
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
-// modal nuevos cassettes
-let nuevoCassete = document.getElementById('nuevoCassete');
-let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
-let toggleModal = document.getElementById('toggleModal')
-// modal modificar cassettes
-let modalModificarCassette = document.getElementById('modalModificarCassette');
-let cerrarModalCassete = document.getElementById('cerrarModalCassete');
-let modificarCassete = document.getElementById('modificarCassete')
-// modal de confirmacion de elimiar cassete
-let deleteModal = document.getElementById('deleteModal')
-let cancelDelete = document.getElementById('cancelDelete')
-let confirmDelete = document.getElementById('confirmDelete')
-let eliminarCassete = document.getElementById('eliminarCassete')
 
 const mostrar = (modal) => {
   modal.classList.remove("hidden")
