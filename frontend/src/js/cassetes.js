@@ -395,6 +395,8 @@ const modalMuestra = (muestra) => {
   // aqui hay que comprobar si hay o no imagen, para mostrarlas o mostrar la de prueba
   // Img__detalleMuestra.src=''
 
+  // peticion a la pai para coger las imagenes de esta muestra
+  peticionImagenesMuestra(muestra.id)
   // por ultimo mostrar la modal
   mostrar(detalleMuestra__modal)
 }
@@ -486,6 +488,7 @@ const updateModal = (event) => {
   updateMuestra__tincion.value=tincion__detalleMuestra.textContent;
   updateMuestra__Observaciones.value=observaciones__detalleMuestra.textContent;
 
+
   mostrar(updateModal__muestra)
 }
 
@@ -524,7 +527,14 @@ const updateMuestra = (event) =>{
   })
   .catch(error => console.error('Error:', error));
   
+}
 
+const peticionImagenesMuestra = (id) =>{
+    let url = "http://localhost:5001/api/imagen/muestra/"+id;
+
+    fetch(url)
+    .then(response => response.json())
+    .then(responsejson => console.log(responsejson))
 }
 
 
