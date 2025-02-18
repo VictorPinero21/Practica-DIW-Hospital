@@ -8,7 +8,7 @@ const organosHumanos = [
   "Higado",
   "Riñones",
   "Bazo",
-  "Páncreas",
+  "Pancreas",
   "Estómago",
   "Intestino delgado",
   "Intestino grueso",
@@ -304,11 +304,48 @@ const ordenarFecha=()=>{
 }
 const ordenarDescripcion=()=>{
   console.log("Descripcion")
-  
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  rows.sort(function(a, b) {
+
+    var valorA =a.cells[1].textContent // Obtener la fecha de la primera celda
+    var valorB = b.cells[1].textContent
+    console.log("fecha A:"+valorA)
+    console.log("fecha B:"+valorB)
+    // Ordenar alfabéticamente
+    if (valorA < valorB) return -1;
+    if (valorA > valorB) return 1;
+    return 0;
+  });
+
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function(row) {
+    listaCassetes.appendChild(row);
+  });
 }
 
 const ordenarOrgano=()=>{
   console.log("Organo")
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  rows.sort(function(a, b) {
+
+    var valorA =a.cells[2].textContent // Obtener la fecha de la primera celda
+    var valorB = b.cells[2].textContent
+    console.log("fecha A:"+valorA)
+    console.log("fecha B:"+valorB)
+    // Ordenar alfabéticamente
+    if (valorA < valorB) return -1;
+    if (valorA > valorB) return 1;
+    return 0;
+  });
+
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function(row) {
+    listaCassetes.appendChild(row);
+  });
 }
 
 //listeners
