@@ -78,25 +78,25 @@ const cargarAlumnos = async () => {
         <td class="px-4 py-2 border-b border-[#0ff56b]">
           <div class="flex space-x-2 justify-center">
             <!-- Botón de eliminación -->
-            <button class="text-red-500 hover:text-red-700 hover:cursor-pointer" data-id="${usuario.id}" title="Borrar">
+            <div class="text-red-500 hover:text-red-700 hover:cursor-pointer" data-id="${usuario.id}" title="Borrar">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </button>
+            </div>
 
             <!-- Botón de edición -->
-            <button class="text-greeb-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
+            <div class="text-greeb-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
               <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z" />
               </svg>
-            </button>
+            </div>
 
             <!-- Botón de promoción -->
-            <button class="text-green-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Promocionar">
+            <div class="text-green-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Promocionar">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
               </svg>
-            </button>
+            </div>
           </div>
         </td>
       `;

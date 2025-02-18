@@ -303,11 +303,12 @@ const ordenarFecha=()=>{
   });
 }
 const ordenarDescripcion=()=>{
-
+  console.log("Descripcion")
+  
 }
 
 const ordenarOrgano=()=>{
-  
+  console.log("Organo")
 }
 
 //listeners
@@ -404,6 +405,8 @@ let delete__muestra = document.getElementById('delete__muestra')
 let delete__imgMuestra = document.getElementById('delete__imgMuestra')
 // añadirla
 let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMuestra')
+let aniadirImg__form = document.getElementById('aniadirImg__form')
+let aniadirImg__button = document.getElementById('aniadirImg__button')
 // modal confirmar eliminacion de muestra
 let deleteModal__muestra = document.getElementById('deleteModal__muestra');
 let confirmDelete__muestra = document.getElementById('confirmDelete__muestra');
@@ -416,10 +419,16 @@ let updateMuestra__desc = document.getElementById('updateMuestra__desc')
 let updateMuestra__date = document.getElementById('updateMuestra__date')
 let updateMuestra__tincion = document.getElementById('updateMuestra__tincion')
 let updateMuestra__Observaciones = document.getElementById('updateMuestra__Observaciones')
+// fragment para añadir las imagenes
+let fragment3 = document.createDocumentFragment();
+// boton de borrar imagen
+let delete__image = document.getElementById('delete__image');
+// modal de confirmacion
+let deleteModal__img = document.getElementById('deleteModal__img')
+let confirmDelete__img = document.getElementById('confirmDelete__img')
+let cancelDelete__img = document.getElementById('cancelDelete__img')
 
-
-
-// peticion a la api
+// peticion a la api para recoger las muestras de un cassette
 const mostrarMuestras = (id) => {
   let url = "http://localhost:5001/api/muestra/cassette/" + id;
 
@@ -440,6 +449,7 @@ const mostrarMuestras = (id) => {
     })
 }
 
+// variable para mostrar las muestras que se encuentran en un cassette
 const listarMuestras = (muestras) => {
   // console.log(muestras)
   muestras.forEach(muestra => {
@@ -453,9 +463,9 @@ const listarMuestras = (muestras) => {
     fecha.textContent = muestra.fecha.substring(0, 10)
     descripcion.textContent = muestra.descripcion
     tincion.textContent = muestra.tincion
-    fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
-    descripcion.classList = "w-[20%] ml-2 hover:cursor-pointer"
-    tincion.classList = "w-[25%] ml-2  hover:cursor-pointer"
+    fecha.classList = "md:w-[50%] w-[30%] ml-2 hover:cursor-pointer"
+    descripcion.classList = "md:w-[20%] w-[30%] ml-2 hover:cursor-pointer"
+    tincion.classList = "md:w-[25%] w-[35%] ml-2  hover:cursor-pointer"
     i.classList = "fas fa-file text-green-600 w-[5%] ml-2 hover:cursor-pointer"
     newDiv.appendChild(fecha)
     newDiv.appendChild(descripcion)
@@ -500,6 +510,8 @@ const modalMuestra = (muestra) => {
   // aqui hay que comprobar si hay o no imagen, para mostrarlas o mostrar la de prueba
   // Img__detalleMuestra.src=''
 
+  // peticion a la pai para coger las imagenes de esta muestra
+  peticionImagenesMuestra(muestra.id)
   // por ultimo mostrar la modal
   mostrar(detalleMuestra__modal)
 }
@@ -553,9 +565,10 @@ const createMuestra = (event) => {
 }
 
 // eliminar la muestra
-
+// variable global 
 let id__muestra = "";
 
+// mostrar la modal para eliminar la muestra
 const deleteMuestra = (event) => {
   // recoger el id de la muestra que queremos eliminar
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
@@ -565,10 +578,11 @@ const deleteMuestra = (event) => {
   mostrar(deleteModal__muestra);
 }
 
-const borrado = (id) => {
+// peticion a la api para borrar una muestra
+const borrado = (id_muestra) => {
   // console.log(id)
 
-  let url = 'http://localhost:5001/api/muestra/' + id;
+  let url = 'http://localhost:5001/api/muestra/' + id_muestra;
 
   fetch(url, {
     method: 'DELETE',
@@ -576,34 +590,39 @@ const borrado = (id) => {
     // console.log(response)
     ocultar(deleteModal__muestra)
     ocultar(detalleMuestra__modal)
+    // volver a listar las muestras
+    mostrarMuestras(id)
   })
     .catch(error => "error: " + error)
 }
 
 // update de muestras
-
+// cargar los datos de la muestra deseada en la modal
 const updateModal = (event) => {
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
 
   // rellenar los campos del update
-  updateMuestra__desc.value=descripcion__detalleMuestra.textContent;
-  updateMuestra__date.value=fecha__detalleMuestra.textContent;
-  updateMuestra__tincion.value=tincion__detalleMuestra.textContent;
-  updateMuestra__Observaciones.value=observaciones__detalleMuestra.textContent;
+  updateMuestra__desc.value = descripcion__detalleMuestra.textContent;
+  updateMuestra__date.value = fecha__detalleMuestra.textContent;
+  updateMuestra__tincion.value = tincion__detalleMuestra.textContent;
+  updateMuestra__Observaciones.value = observaciones__detalleMuestra.textContent;
+
 
   mostrar(updateModal__muestra)
 }
 
-const updateMuestra = (event) =>{
+
+// actualizar la muestra con los datos del formulario de la modal
+const updateMuestra = (event) => {
   event.preventDefault();
 
-  let url = "http://localhost:5001/api/muestra/"+id__muestra;
+  let url = "http://localhost:5001/api/muestra/" + id__muestra;
 
   let data = {
     descripcion: updateMuestra__desc.value,
-    fecha:  updateMuestra__date.value,
-    tincion:  updateMuestra__tincion.value,
-    observaciones:updateMuestra__Observaciones.value  
+    fecha: updateMuestra__date.value,
+    tincion: updateMuestra__tincion.value,
+    observaciones: updateMuestra__Observaciones.value
   }
 
   // console.log(data)
@@ -615,25 +634,156 @@ const updateMuestra = (event) =>{
     },
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
-  .then(responsejson => {
-    // console.log('Actualizado con éxito', responsejson)
-    // ocultamos la modal del formulario
-    ocultar(updateModal__muestra)
-    // ocultamos la modal de los detalles
-    ocultar(detalleMuestra__modal)
-    // mostramos la modal con los nuevos datos
-    peticionMuestras(id__muestra)
-    // actualizamos el listado de muestras
-    mostrarMuestras(id)
-  })
-  .catch(error => console.error('Error:', error));
-  
+    .then(response => response.json())
+    .then(responsejson => {
+      // console.log('Actualizado con éxito', responsejson)
+      // ocultamos la modal del formulario
+      ocultar(updateModal__muestra)
+      // ocultamos la modal de los detalles
+      ocultar(detalleMuestra__modal)
+      // mostramos la modal con los nuevos datos
+      peticionMuestras(id__muestra)
+      // actualizamos el listado de muestras
+      mostrarMuestras(id)
+    })
+    .catch(error => console.error('Error:', error));
 
 }
 
+// peticion para recpger las imagenes de las muestras
+const peticionImagenesMuestra = async (id) => {
+  let url = `http://localhost:5001/api/imagen/muestra/${id}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json(); // Convertimos la respuesta en JSON
+
+    console.log("JSON recibido:", data); // Verifica qué se recibe
+
+    if (data.length == 0) {
+      cargarImagenPorDefecto();
+      return;
+    }
+
+    // Convertir el buffer en un Blob
+    // ahora mismo esto sube la primera foto en grande
+    const uint8Array = new Uint8Array(data[0].imagen.data);
+    // console.log(uint8Array)
+    const blob = new Blob([uint8Array], { type: "image/png" }); // Cambia el tipo según el formato de tu imagen
+    const imageUrl = URL.createObjectURL(blob);
+
+    cargarImagenesMuestra(imageUrl,data[0].id);
+
+    // para mostrar todas las imagenes pequeñas
+    data.forEach((img) => {
+      // console.log(img)
+      const uint8Array = new Uint8Array(img.imagen.data);
+      const blob = new Blob([uint8Array], { type: "image/png" }); 
+      const imageUrl = URL.createObjectURL(blob);
+      mostrarOpcionesImagenes(imageUrl,img.id);
+    });
+    // primero se vacia para que no se sobreescriba
+    containerImg__detalleMuestra.innerHTML=""
+    containerImg__detalleMuestra.append(fragment3)
+
+  } catch (error) {
+    console.error("Error al obtener la imagen:", error);
+  }
+};
 
 
+// cargamos una imagen por defecto cuando la muestra no tiene imagenes
+const cargarImagenPorDefecto = () => {
+  console.log("imagen por defecto")
+  Img__detalleMuestra.src = './../assets/camara.png'
+}
+
+// cargamos las imagenes de la muestra
+// le pasamos el id por el alt para ppoder borrarlo posteriormente 
+const cargarImagenesMuestra = (imagenes,id) => {
+  // console.log('cargar una imagen en grande y el resto en pequeño')
+  // console.log(imagenes)
+  let src = imagenes;
+  // console.log(src)
+  Img__detalleMuestra.src = src;
+  Img__detalleMuestra.alt = id;
+
+}
+
+// subir una imagen referenciada a esa muestra a la bd
+const subirImagen = async (event) => {
+  event.preventDefault();
+
+  const input = aniadirImg__detalleMuestra;
+
+  // console.log(input)
+
+  if (input.files.length === 0) {
+    alert("Selecciona una imagen primero");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
+  formData.append("muestra_id", detalleMuestra__modal.id); // ID de la muestra (puedes cambiarlo)
+
+  try {
+    const respuesta = await fetch("http://localhost:5001/api/imagen", {
+      method: "POST",
+      body: formData, // Enviar FormData con la imagen
+    });
+
+    const resultado = await respuesta.json();
+    // console.log("Respuesta del servidor:", resultado);
+
+    // console.log(respuesta.ok)
+    if (respuesta.ok == true) {
+      // llamamos a la funcion que muestra la modal desde el principio (render)
+      ocultar(detalleMuestra__modal)
+    }
+
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+  }
+}
+
+// aqui debemos de crear las imagenes e introducirlas en un fragment, el src es (img)
+// pasamos el id oara guardarlo en el alt y asi poder borrar la imagen
+const mostrarOpcionesImagenes = (img,id) =>{
+  // console.log(img)
+
+  let image = document.createElement("IMG")
+  image.src = img;
+  image.alt = id;
+  image.classList="h-10 w-10 m-4"
+  fragment3.append(image);
+}
+
+const borrarImagen = () =>{
+  console.log(Img__detalleMuestra.alt)
+
+  let url = 'http://localhost:5001/api/imagen/'+Img__detalleMuestra.alt;
+
+  fetch(url, {
+    method: 'DELETE',  // Especificamos que es una solicitud DELETE
+    headers: {
+        'Content-Type': 'application/json', // Puedes añadir otros headers si es necesario
+        // 'Authorization': 'Bearer token' // Si necesitas autenticación, descomenta y añade el token
+    }
+}).then(response => console.log(response))
+
+  // ocultamos la modal de la elimiacion
+  ocultar(deleteModal__img)
+  ocultar(detalleMuestra__modal)
+}
+
+const cambiarImg = (event) =>{
+  if(event.target.tagName === 'IMG'){
+    // nos aseguramos de que pincha en una imagen
+    console.log(event.target.alt)
+    cargarImagenesMuestra(event.target.src,event.target.alt)
+  }
+}
 
 
 // listeners
@@ -642,9 +792,18 @@ close__newMuestra__modal.addEventListener('click', () => ocultar(newMuestra__mod
 close__detalleMuestra__modal.addEventListener('click', () => ocultar(detalleMuestra__modal))
 confirmDelete__muestra.addEventListener('click', () => borrado(id__muestra))
 cancelDelete__muestra.addEventListener('click', () => ocultar(deleteModal__muestra))
-close__updateMuestra__modal.addEventListener('click', ()=>ocultar(updateModal__muestra))
+close__updateMuestra__modal.addEventListener('click', () => ocultar(updateModal__muestra))
+delete__image.addEventListener('click', ()=>mostrar(deleteModal__img))
+cancelDelete__img.addEventListener('click', ()=>ocultar(deleteModal__img))
 listaMuestras.addEventListener('click', DetailMuestras)
 newMuestra__form.addEventListener('submit', createMuestra)
 delete__muestra.addEventListener('click', deleteMuestra)
 update__muestra.addEventListener('click', updateModal)
 updateMuestra__form.addEventListener('submit', updateMuestra)
+aniadirImg__button.addEventListener('click', () => {
+  aniadirImg__detalleMuestra.click();
+})
+confirmDelete__img.addEventListener('click',borrarImagen)
+
+aniadirImg__detalleMuestra.addEventListener('change', subirImagen)
+containerImg__detalleMuestra.addEventListener('click',cambiarImg)

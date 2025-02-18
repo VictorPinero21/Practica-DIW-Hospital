@@ -122,7 +122,7 @@
     <div class="min-h-screen bg-[#f1fff0]">
         <!-- Header Controls -->
         <div class="bg-[#c7f3bb] p-4">
-            <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
+            <div class="max-w-7xl mx-auto flex gap-4 flex-wrap justify-center">
                 <select id="organSelect" class="bg-white rounded-md border-[#0ff56b] px-3 py-2">
                     <option value="" disabled selected>Seleccionar un Órgano</option>
                     <option value="bazo">Bazo</option>
@@ -135,15 +135,15 @@
                 <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2">
 
                 <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2">
-                <a href="./../index.html">Cerrar Sesion</a>
             </div>
+            <a href="./../index.html">Cerrar Sesion</a>
         </div>
 
         <div class="max-w-7xl mx-auto p-4 space-y-4">
             <!-- Main Content -->
-            <div class="grid grid-cols-3 gap-4">
+            <div class="flex flex-col justify-between flex-wrap md:flex-row">
                 <!-- Cassettes List -->
-                <div class="col-span-2">
+                <div class="md:w-[60%]">
                     <div class="bg-white rounded-md border border-[#0ff56b] overflow-hidden">
                         <div class="bg-[#f8fbff] px-4 py-2 border-b border-[#0ff56b] flex justify-between items-center">
                             <h2 class="text-green-500 font-medium">Cassettes</h2>
@@ -181,7 +181,7 @@
                 </div>
 
                 <!-- Detalle Cassette -->
-                <div class="bg-white rounded-md border border-[#0ff56b]">
+                <div class="bg-white rounded-md border border-[#0ff56b] md:w-[36%] mt-4 md:mt-0">
                     <div class="bg-[#f8fbff] px-4 py-2 border-b border-[#0ff56b] flex justify-between items-center">
                         <h2 class="text-green-500 font-medium">Detalle Cassette</h2>
                         <div class="flex gap-2">
@@ -230,7 +230,7 @@
                     <button class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] ">Tinción</button>
                 </div>
 
-                <!-- Informacion sobre cassetes -->
+                <!-- Informacion sobre muestras -->
                 <div class="flex flex-col h-32 overflow-y-auto" id="listaMuestras">
 
                 </div>
@@ -314,14 +314,14 @@
 
 
     <!-- Modal detalles de la muestra -->
-    <div id="detalleMuestra__modal" class="hidden fixed inset-0 justify-center items-center bg-gray-900 bg-opacity-50">
+    <div id="detalleMuestra__modal" class="p-4 hidden fixed inset-0 justify-center items-center bg-gray-900 bg-opacity-50">
         <section id="" class="flex flex-col p-6 rounded-lg shadow-lg w-full max-w-4xl mx-auto bg-white">
             <article class="flex justify-between items-center mb-4">
                 <h2 class="text-green-700 text-xl font-bold">Detalle Muestra</h2>
                 <p id="close__detalleMuestra__modal" class="text-green-500 cursor-pointer text-xl">&times;</p>
             </article>
             <hr class="border-green-300 mb-4">
-            <div class="flex justify-between text-green-700">
+            <div class="flex justify-between flex-wrap text-green-700">
                 <div class="flex ">
                     <!-- aqui van los 3 botones -->
                     <div id="qr__muestra">
@@ -335,13 +335,13 @@
                     </div>
 
                 </div>
-                <div>
+                <div id="delete__image">
                     <!-- aqui va el boton de eliminar la imagen -->
                     <i class="fa-solid fa-trash h-5 w-5"></i>
                 </div>
             </div>
-            <div class="flex items-start space-x-4">
-                <div class="w-1/3">
+            <div class="flex sm:flex-row flex-col items-start space-x-4">
+                <div class="w-full sm:w-1/3">
                     <div class="flex items-center space-x-2 text-green-700">
                         <p class="font-bold">Descripción:</p>
                         <p id="descripcion__detalleMuestra"></p>
@@ -359,10 +359,10 @@
                         <p id="observaciones__detalleMuestra"></p>
                     </div>
                 </div>
-                <div class="w-2/3">
+                <div class="w-full sm:w-2/3">
                     <!-- imagen vacia de prueba -->
-                    <img id="Img__detalleMuestra" src="./../assets/camara.png" alt="Imagen de muestra"
-                        class="rounded-lg shadow-md w-full">
+                    <img id="Img__detalleMuestra" src="" alt="Imagen de muestra"
+                        class="rounded-lg shadow-md w-full h-64">
                 </div>
             </div>
             <div class="mt-4 flex items-center space-x-2">
@@ -370,8 +370,9 @@
                     <!-- imagen vacia de prueba -->
                     <!-- <img src="" alt="Imagen miniatura" class="w-16 h-16 rounded-lg shadow-md"> -->
                 </div>
-                <button id="aniadirImg__detalleMuestra"
-                    class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">+</button>
+                    <input type="file" id="aniadirImg__detalleMuestra"
+                    class="hidden bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition"></input>
+                    <button id="aniadirImg__button" class="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">+</button>
             </div>
         </section>
     </div>
@@ -463,9 +464,29 @@
             </form>
         </section>
     </div>
-    
-      
-      
+
+    <!-- delete img modal -->
+
+    <div id="deleteModal__img" class="fixed inset-0  items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96 text-center ">
+            <h2 class="text-lg font-semibold text-green-600">
+                Desea Eliminar la imagen.
+            </h2>
+            <p class="text-gray-700 mt-2">
+                Al eliminar la imagen no podras recuperarla.
+            </p>
+            <div class="mt-4 flex justify-center gap-4">
+                <button id="confirmDelete__img"
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                    Eliminar
+                </button>
+                <button id="cancelDelete__img"
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 
 <script src="./../js/cassetes.js"></script>
