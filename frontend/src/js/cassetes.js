@@ -40,6 +40,7 @@ let header_f1=document.getElementById("header_f1")
 let header_f2=document.getElementById("header_f2")
 //Resto
 let listaCassetes = document.getElementById("listaCassetes")
+let ponerCassetes=document.getElementById("ponerCassetes")
 let cassetteDetail = document.getElementById("cassetteDetail")
 let usuario_id;
 let id //ID DEL CASSETE AL QUE HACES CLICK
@@ -74,6 +75,9 @@ let eliminarCassete = document.getElementById('eliminarCassete')
 let fechaBoton=document.getElementById("fechaBoton")
 let descripcionBoton=document.getElementById("descripcionBoton")
 let organoBoton=document.getElementById("organoBoton")
+let arrOrganos=[]
+
+
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -108,9 +112,9 @@ const mostrarCassetes = async () => {
     fecha.textContent = fechaTexto;
     descripcion.textContent = cassete.descripcion
     organo.textContent = cassete.organo
-    fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
-    descripcion.classList = "w-[20%] ml-2 hover:cursor-pointer"
-    organo.classList = "w-[30%] ml-2  hover:cursor-pointer"
+    fecha.classList = " ml-2 hover:cursor-pointer"
+    descripcion.classList = " ml-2 hover:cursor-pointer"
+    organo.classList = " ml-2  hover:cursor-pointer"
     newDiv.appendChild(fecha)
     newDiv.appendChild(descripcion)
     newDiv.appendChild(organo)
@@ -120,6 +124,7 @@ const mostrarCassetes = async () => {
 
     fragment.appendChild(newDiv)
   })
+  // ponerCassetes.appendChild(fragment)
   listaCassetes.appendChild(fragment)
 }
 
@@ -295,16 +300,18 @@ const Sortable = window.Sortable;
 const ordenarFecha=()=>{
   console.log("Ordenar")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
-  console.log(rows)
+
   // Ordenar las filas por la fecha (columna 0)
   rows.sort(function(a, b) {
     var fechaA = new Date(a.cells[0].textContent); // Obtener la fecha de la primera celda
     var fechaB = new Date(b.cells[0].textContent);
+    console.log("FECHA A"+fechaA)
     return fechaA - fechaB; // Ordenar de más antiguo a más reciente
   });
 
   // Reinsertar las filas ordenadas en la tabla
   rows.forEach(function(row) {
+    console.log(row)
     listaCassetes.appendChild(row);
   });
 }
@@ -356,7 +363,45 @@ const ordenarOrgano=()=>{
 }
 
 //Funcion para filtrar los cassetes por el tipo de organo seleccionado
-const filtrarporOrgano=()=>{}
+
+const filtrarporOrgano=async(e)=>{
+  const api = await peticionApi()
+  if(e.target.value=="Todos"){
+    listaCassetes.innerHTML=""
+        mostrarCassetes()
+ 
+  }else{
+    listaCassetes.innerHTML=""
+    arrOrganos = api.filter(cassete => cassete.usuario_id === usuario_id);
+     console.log("Array Original "+arrOrganos)
+    let arrFiltrado=arrOrganos.filter(cassete=>cassete.organo===e.target.value)
+    arrFiltrado.forEach(cassete => {
+      let newDiv = document.createElement("tr")
+      let fecha = document.createElement("td")
+      let descripcion = document.createElement("td")
+      let organo = document.createElement("td")
+      let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
+      fecha.textContent = fechaTexto;
+      descripcion.textContent = cassete.descripcion
+      organo.textContent = cassete.organo
+      fecha.classList = " ml-2 hover:cursor-pointer"
+      descripcion.classList = "wml-2 hover:cursor-pointer"
+      organo.classList = " ml-2  hover:cursor-pointer"
+      newDiv.appendChild(fecha)
+      newDiv.appendChild(descripcion)
+      newDiv.appendChild(organo)
+  
+      newDiv.classList.add("flex")
+      newDiv.id = cassete.id
+  
+      fragment.appendChild(newDiv)
+    }
+    )
+    listaCassetes.appendChild(fragment)
+  }
+
+  
+}
 //Funcion para filtrar los cassetes por 2 fechas
 const filtrarPorFecha=()=>{}
 //listeners
