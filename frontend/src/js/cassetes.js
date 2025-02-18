@@ -734,8 +734,10 @@ const peticionImagenesMuestra = async (id) => {
 
     console.log("JSON recibido:", data); // Verifica qué se recibe
 
+    // vaciamos el contenedor en cualquier caso
+    containerImg__detalleMuestra.innerHTML = ""
+
     if (data.length == 0) {
-      containerImg__detalleMuestra.innerHTML = ""
       cargarImagenPorDefecto();
       return;
     } else {
