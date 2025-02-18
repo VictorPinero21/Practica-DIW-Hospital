@@ -50,15 +50,17 @@ const crearUsuario = async (req, res) => {
 const actualizarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, apellido, email, password, centro, rol } = req.body;
 
     const updatedUsuario = await usuarioService.actualizarUsuario(id, {
-      nombre,
-      apellido,
-      email,
-      password,
-      centro,
-      rol,
+      nombre: req.body.nombre,
+      apellido: req.body.apellido,
+      email: req.body.email,
+      // actulizar la contraseña haseada
+      password: bcrypt.hashSync(req.body.password, 10),
+      // password: req.body.password,
+      // password: bcrypt.hashSync(req.body.password, 10),
+      centro: req.body.centro,
+      rol: req.body.rol,
     });
 
     if (updatedUsuario) {

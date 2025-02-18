@@ -12,9 +12,9 @@ Imagen.init(
       primaryKey: true,
     },
     imagen: {
-      type: DataTypes.BLOB,
+      type: DataTypes.BLOB("long"), // Guarda la imagen en binario
       allowNull: false,
-    },
+  },
     muestra_id: { // 👈 Asegúrate de usar un solo campo para la clave foránea
       type: DataTypes.UUID,
       allowNull: false,

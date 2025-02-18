@@ -48,10 +48,20 @@ const eliminarImagen = async (id) => {
   }
 };
 
+// recoger las imagenes de una muestra (muestra_id)
+const getImagenByMuestra = async (id) =>{
+    const imagenes = await Imagen.findAll({
+      where:{ muestra_id: id}
+    });
+
+    return imagenes;
+}
+
 module.exports = {
   getImagenes,
   getImagenById,
   crearImagen,
   actualizarImagen,
   eliminarImagen,
+  getImagenByMuestra
 };

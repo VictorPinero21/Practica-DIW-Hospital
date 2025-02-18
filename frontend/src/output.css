@@ -635,12 +635,20 @@
   .h-3\.5 {
     height: calc(var(--spacing) * 3.5);
   }
+<<<<<<< HEAD
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
+=======
+  .h-5 {
+    height: calc(var(--spacing) * 5);
+  }
+<<<<<<< HEAD
+=======
+>>>>>>> Ricardo
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
@@ -650,24 +658,34 @@
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
+<<<<<<< HEAD
+=======
+>>>>>>> Alvaro
+>>>>>>> Ricardo
   .h-14 {
     height: calc(var(--spacing) * 14);
   }
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
+<<<<<<< HEAD
   .h-22 {
     height: calc(var(--spacing) * 22);
   }
+=======
+>>>>>>> Ricardo
   .h-32 {
     height: calc(var(--spacing) * 32);
   }
   .h-40 {
     height: calc(var(--spacing) * 40);
   }
+<<<<<<< HEAD
   .h-64 {
     height: calc(var(--spacing) * 64);
   }
+=======
+>>>>>>> Ricardo
   .min-h-screen {
     min-height: 100vh;
   }
@@ -688,9 +706,12 @@
   }
   .w-3\.5 {
     width: calc(var(--spacing) * 3.5);
+<<<<<<< HEAD
   }
   .w-4xl {
     width: var(--container-4xl);
+=======
+>>>>>>> Ricardo
   }
   .w-5 {
     width: calc(var(--spacing) * 5);
@@ -867,9 +888,12 @@
   }
   .border-\[\#0ff56b\] {
     border-color: #0ff56b;
+<<<<<<< HEAD
   }
   .border-\[\#a0c6e8\] {
     border-color: #a0c6e8;
+=======
+>>>>>>> Ricardo
   }
   .border-green-300 {
     border-color: var(--color-green-300);
@@ -880,8 +904,13 @@
   .border-green-500 {
     border-color: var(--color-green-500);
   }
+<<<<<<< HEAD
   .bg-\[\#bbd9f3\] {
     background-color: #bbd9f3;
+=======
+  .bg-\[\#c7f3bb\] {
+    background-color: #c7f3bb;
+>>>>>>> Ricardo
   }
   .bg-\[\#c7f3bb\] {
     background-color: #c7f3bb;
@@ -897,9 +926,12 @@
   }
   .bg-\[\#ffffff\] {
     background-color: #ffffff;
+<<<<<<< HEAD
   }
   .bg-blue-500 {
     background-color: var(--color-blue-500);
+=======
+>>>>>>> Ricardo
   }
   .bg-blue-700 {
     background-color: var(--color-blue-700);
@@ -992,19 +1024,25 @@
   }
   .break-words {
     overflow-wrap: break-word;
+<<<<<<< HEAD
   }
   .text-\[\#4a90e2\] {
     color: #4a90e2;
+=======
+>>>>>>> Ricardo
   }
   .text-\[\#a0aec0\] {
     color: #a0aec0;
   }
+<<<<<<< HEAD
   .text-blue-500 {
     color: var(--color-blue-500);
   }
   .text-blue-600 {
     color: var(--color-blue-600);
   }
+=======
+>>>>>>> Ricardo
   .text-gray-500 {
     color: var(--color-gray-500);
   }
@@ -1031,12 +1069,6 @@
   }
   .text-white {
     color: var(--color-white);
-  }
-  .lowercase {
-    text-transform: lowercase;
-  }
-  .uppercase {
-    text-transform: uppercase;
   }
   .underline {
     text-decoration-line: underline;
@@ -1082,13 +1114,6 @@
       }
     }
   }
-  .hover\:bg-blue-600 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-600);
-      }
-    }
-  }
   .hover\:bg-gray-400 {
     &:hover {
       @media (hover: hover) {
@@ -1103,6 +1128,7 @@
       }
     }
   }
+<<<<<<< HEAD
   .hover\:text-blue-700 {
     &:hover {
       @media (hover: hover) {
@@ -1110,6 +1136,8 @@
       }
     }
   }
+=======
+>>>>>>> Ricardo
   .hover\:text-gray-700 {
     &:hover {
       @media (hover: hover) {
@@ -1144,9 +1172,9 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
-  .focus\:ring-blue-500 {
+  .focus\:ring-green-500 {
     &:focus {
-      --tw-ring-color: var(--color-blue-500);
+      --tw-ring-color: var(--color-green-500);
     }
   }
   .focus\:ring-green-500 {

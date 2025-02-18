@@ -12,6 +12,10 @@ const guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
 const errorEmail = document.getElementById("errorEmail");
 const errorPassword = document.getElementById("errorPassword");
 const errorConfirmPassword = document.getElementById("errorConfirmPassword");
+// 
+let errorNombre = document.getElementById('errorNombre')
+let errorApellido = document.getElementById('errorApellido')
+let errorCentro = document.getElementById('errorCentro')
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -65,34 +69,34 @@ const cargarAlumnos = async () => {
       tr.dataset.rol = usuario.rol;
 
       tr.innerHTML = `
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.nombre}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.apellido}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.email}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.password}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.centro ?? "N/A"}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">${usuario.rol}</td>
-        <td class="px-4 py-2 border-b border-[#a0c6e8]">
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.nombre}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.apellido}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.email}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.password}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.centro ?? "N/A"}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">${usuario.rol}</td>
+        <td class="px-4 py-2 border-b border-[#0ff56b]">
           <div class="flex space-x-2 justify-center">
             <!-- Botón de eliminación -->
-            <button class="text-red-500 hover:text-red-700 hover:cursor-pointer" data-id="${usuario.id}" title="Borrar">
+            <div class="text-red-500 hover:text-red-700 hover:cursor-pointer" data-id="${usuario.id}" title="Borrar">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </button>
+            </div>
 
             <!-- Botón de edición -->
-            <button class="text-blue-500 hover:text-blue-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
+            <div class="text-greeb-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
               <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z" />
               </svg>
-            </button>
+            </div>
 
             <!-- Botón de promoción -->
-            <button class="text-green-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Promocionar">
+            <div class="text-green-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Promocionar">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
               </svg>
-            </button>
+            </div>
           </div>
         </td>
       `;
@@ -111,9 +115,12 @@ const cargarAlumnos = async () => {
 
       // Asignar eventos a los botones de edición después de renderizar la tabla
       const editButton = row.querySelector("button[title='Editar']");
-      editButton.addEventListener("click", () => {
+      editButton.addEventListener("click", (event) => {
         modalModificarUsuario.classList.toggle("dnone");
-        cargarDatosModal(tr);
+        // esto a veces va a funcionar y otras no debido a que el boton es un svg y da problemas con el click, lo suyo es hacer con iconos de fontawesome
+        console.log(event.target.parentElement.parentElement.parentElement.parentElement.parentElement)
+        let data = event.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+        cargarDatosModal(data);
       });
 
       // Promocionar usuario
@@ -209,7 +216,7 @@ const promocionarUsuario = async (event) => {
 const modificarUsuario = async (event) => {
   event.preventDefault();
   // Validar los datos
-  if (validarModal(event)) {
+  if (validarModal()) {
     // Obtener los datos del formulario
     const usuarioModificado = {
       id: modalID.value,
@@ -258,40 +265,78 @@ const modificarUsuario = async (event) => {
 };
 
 //PENDIENTE DE IMPLEMENTAR
-const validarModal = async (event) => {
-  event.preventDefault();
-  console.log("validar modal");
+const validarModal =  () => {
+  // console.log("validar modal");
   let correcto = true;
-  // if (modalEmail.validity.valueMissing) {
-  //   errorEmail.textContent = "Debes introducir el e-mail";
-  //   correcto = false;
-  // } else if (modalEmail.validity.typeMismatch) {
-  //   errorEmail.textContent = "El formato de e-mail es inválido.";
-  //   correcto = false;
-  // } else {
-  //   errorEmail.textContent = "";
-  // }
-  // if (modalPassword.validity.valueMissing) {
-  //   errorPassword.textContent = "Debes introducir la contraseña.";
-  //   correcto = false;
-  // } else if (modalPassword.validity.typeMismatch) {
-  //   errorPassword.textContent = "La contraseña está mal conformada.";
-  // } else {
-  //   errorPassword.textContent = "";
-  // }
+  if (modalEmail.validity.valueMissing) {
+    errorEmail.textContent = "Debes introducir el e-mail";
+    correcto = false;
+  } else if (modalEmail.validity.typeMismatch) {
+    errorEmail.textContent = "El formato de e-mail es inválido.";
+    correcto = false;
+  } else {
+    errorEmail.textContent = "";
+  }
 
-  // if (modalConfirmPassword.validity.valueMissing) {
-  //   errorConfirmPassword.textContent = "Debes repetir la contraseña.";
-  //   correcto = false;
-  // } else if (modalConfirmPassword.validity.typeMismatch) {
-  //   errorConfirmPassword.textContent = "La contraseña está mal conformada.";
-  //   correcto = false;
-  // } else if (modalPassword.value != modalConfirmPassword.value) {
-  //   errorConfirmPassword.textContent = "Las contraseñas no coinciden.";
-  //   correcto = false;
-  // } else {
-  //   errorConfirmPassword.textContent = "";
-  // }
+  //añadir el pattern y hacer la validacion del patternMissMatch 
+
+
+  if (modalPassword.validity.valueMissing) {
+    errorPassword.textContent = "Debes introducir la contraseña.";
+    correcto = false;
+  } else if (modalPassword.validity.typeMismatch) {
+    errorPassword.textContent = "La contraseña está mal conformada.";
+    correcto = false;
+  } else if(modalPassword.validity.patternMismatch){
+    errorPassword.textContent = "La contraseña debe seguir un patron. "
+    correcto = false;
+  }else{
+    errorPassword.textContent = "";
+  }
+
+  if (modalConfirmPassword.validity.valueMissing) {
+    errorConfirmPassword.textContent = "Debes repetir la contraseña.";
+    correcto = false;
+  } else if (modalConfirmPassword.validity.typeMismatch) {
+    errorConfirmPassword.textContent = "La contraseña está mal conformada.";
+    correcto = false;
+  } else if (modalPassword.value != modalConfirmPassword.value) {
+    errorConfirmPassword.textContent = "Las contraseñas no coinciden.";
+    correcto = false;
+  } else {
+    errorConfirmPassword.textContent = "";
+  }
+
+  // hay que hacer la validcion par que no se introduzcan cambios vacios (nombre, apellido, centro)
+
+  // modalNombre
+  // modalApellido
+  // modalCentro
+
+  // nombre
+  if(modalNombre.validity.valueMissing){
+    correcto = false
+    errorNombre.textContent = "El nombre es un campo requerido"
+  }else{
+    errorNombre.textContent = ''
+  }
+  // apellido
+  if(modalApellido.validity.valueMissing){
+    correcto=false
+    errorApellido.textContent="El apellido es un campo requerido"
+  }else{
+    errorApellido.textContent=""
+  }
+  // centro
+  if(modalCentro.validity.valueMissing){
+    correcto=false;
+    errorCentro.textContent="El centro es un campo requerido"
+  }else{
+    errorCentro.textContent=""
+  }
+
+
+
   return correcto;
 };
 
