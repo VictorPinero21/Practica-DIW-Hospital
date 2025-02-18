@@ -580,6 +580,7 @@ const createMuestra = (event) => {
       },
       body: JSON.stringify(data), // Convertimos los datos a JSON
     }).then(response => {
+
       // si la respuesta es un ok=true mostrar feedback
       if (response.ok === true) {
         // console.log("insercion realizada con exito")
@@ -589,14 +590,52 @@ const createMuestra = (event) => {
         // aqui no salimos de la modal por si quiere crear varias muestras a la vez
         mostrarMuestras(id)
       }
-    })
-      .catch(error => {
+      return response.json()
+    }).then(responsejson =>{
+      console.log(responsejson)
+      createImgMuestra(responsejson.id);
+    }).catch(error => {
         console.log('El error: ' + error)
         newMuestra__feedback.textContent = "Ha habido un error"
         newMuestra__feedback.classList.remove("text-green-700")
         newMuestra__feedback.classList.add("text-red-500")
       })
   }
+}
+
+const createImgMuestra = async (id__muestra) =>{
+  
+    const input = newMuestra__img;
+  
+    console.log(input)
+  
+    if (input.files.length === 0) {
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
+    formData.append("muestra_id", id__muestra); // ID de la muestra (puedes cambiarlo)
+  
+    try {
+      const respuesta = await fetch("http://localhost:5001/api/imagen", {
+        method: "POST",
+        body: formData, // Enviar FormData con la imagen
+      });
+  
+      const resultado = await respuesta.json();
+      // console.log("Respuesta del servidor:", resultado);
+  
+      // console.log(respuesta.ok)
+      if (respuesta.ok == true) {
+        // llamamos a la funcion que muestra la modal desde el principio (render)
+        ocultar(detalleMuestra__modal)
+      }
+  
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
+  
 }
 
 // eliminar la muestra
