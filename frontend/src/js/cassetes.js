@@ -33,7 +33,12 @@ const organosHumanos = [
   "Hipotalamo",
   "Hipofisis"
 ];
+//Variables header
 let organSelect = document.getElementById("organSelect")
+let QR_header=document.getElementById("QR_header")
+let header_f1=document.getElementById("header_f1")
+let header_f2=document.getElementById("header_f2")
+//Resto
 let listaCassetes = document.getElementById("listaCassetes")
 let cassetteDetail = document.getElementById("cassetteDetail")
 let usuario_id;
@@ -286,6 +291,7 @@ const comprobarActualizacion=async()=>{
 }
 //Inicializamos Sorttable para la tabla con los cassetes mostrados
 const Sortable = window.Sortable;
+//Funcion para ordenar por fechas
 const ordenarFecha=()=>{
   console.log("Ordenar")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
@@ -302,6 +308,7 @@ const ordenarFecha=()=>{
     listaCassetes.appendChild(row);
   });
 }
+//Funcion para ordenar alfabeticamente por la Descripcion 
 const ordenarDescripcion=()=>{
   console.log("Descripcion")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
@@ -324,7 +331,7 @@ const ordenarDescripcion=()=>{
     listaCassetes.appendChild(row);
   });
 }
-
+//Funcion para ordenar alfabeticamente por el organo
 const ordenarOrgano=()=>{
   console.log("Organo")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
@@ -348,6 +355,10 @@ const ordenarOrgano=()=>{
   });
 }
 
+//Funcion para filtrar los cassetes por el tipo de organo seleccionado
+const filtrarporOrgano=()=>{}
+//Funcion para filtrar los cassetes por 2 fechas
+const filtrarPorFecha=()=>{}
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -375,6 +386,7 @@ submitModificarCassete.addEventListener("click",modCassete)
 fechaBoton.addEventListener("click",ordenarFecha)
 descripcionBoton.addEventListener("click",ordenarDescripcion)
 organoBoton.addEventListener("click",ordenarOrgano)
+organSelect.addEventListener("change",filtrarporOrgano)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
