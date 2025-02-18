@@ -288,7 +288,7 @@ const comprobarActualizacion=async()=>{
 const Sortable = window.Sortable;
 const ordenarFecha=()=>{
   console.log("Ordenar")
-  var rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
   console.log(rows)
   // Ordenar las filas por la fecha (columna 0)
   rows.sort(function(a, b) {
@@ -302,7 +302,13 @@ const ordenarFecha=()=>{
     listaCassetes.appendChild(row);
   });
 }
+const ordenarDescripcion=()=>{
 
+}
+
+const ordenarOrgano=()=>{
+  
+}
 
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
@@ -329,6 +335,8 @@ eliminarCassete.addEventListener("click",comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
 submitModificarCassete.addEventListener("click",modCassete)
 fechaBoton.addEventListener("click",ordenarFecha)
+descripcionBoton.addEventListener("click",ordenarDescripcion)
+organoBoton.addEventListener("click",ordenarOrgano)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
