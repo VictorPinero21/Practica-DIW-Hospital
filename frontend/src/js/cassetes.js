@@ -39,6 +39,31 @@ let selectOrganoCassete = document.getElementById("selectOrganoCassete")
 let carac = document.getElementById("caracteristicas")
 let ob = document.getElementById("observaciones")
 let submitCrearCassete = document.getElementById("submitCrearCassete")
+//modal modificar Cassetes
+let desM=document.getElementById("descripcionMod")
+let dateM=document.getElementById("fechaMod")
+let selecOrMod=document.getElementById("organoMod")
+let caracMod=document.getElementById("caracteristicasMod")
+let obMod=document.getElementById("observacionesMod")
+let submitModCassete=document.getElementById("submitModificarCassete")
+// modal nuevos cassettes
+let nuevoCassete = document.getElementById('nuevoCassete');
+let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
+let toggleModal = document.getElementById('toggleModal')
+// modal modificar cassettes
+let modalModificarCassette = document.getElementById('modalModificarCassette');
+let cerrarModalCassete = document.getElementById('cerrarModalCassete');
+let modificarCassete = document.getElementById('modificarCassete')
+// modal de confirmacion de elimiar cassete
+let deleteModal = document.getElementById('deleteModal')
+let cancelDelete = document.getElementById('cancelDelete')
+let confirmDelete = document.getElementById('confirmDelete')
+let eliminarCassete = document.getElementById('eliminarCassete')
+//botones para ordenar
+let fechaBoton=document.getElementById("fechaBoton")
+let descripcionBoton=document.getElementById("descripcionBoton")
+let organoBoton=document.getElementById("organoBoton")
+
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
   const element = document.getElementById(id);
@@ -64,12 +89,12 @@ const mostrarCassetes = async () => {
   cassetesArr = api.filter(cassete => cassete.usuario_id === usuario_id);
 
   cassetesArr.forEach(cassete => {
-    let newDiv = document.createElement("DIV")
-    let fecha = document.createElement("P")
-    let descripcion = document.createElement("P")
-    let organo = document.createElement("P")
-
-    fecha.textContent = cassete.fecha.substring(0, 10)
+    let newDiv = document.createElement("tr")
+    let fecha = document.createElement("td")
+    let descripcion = document.createElement("td")
+    let organo = document.createElement("td")
+    let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
+    fecha.textContent = fechaTexto;
     descripcion.textContent = cassete.descripcion
     organo.textContent = cassete.organo
     fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
@@ -105,8 +130,8 @@ const crearCassete = async () => {
     body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id })
   })
   if (postCassete.ok) {
-    location.reload()
     mostrarCassetes()
+    location.reload()
   }
   const data = await postCassete.json()
   console.log(data)
@@ -162,7 +187,7 @@ const detalleCassete = async (event) => {
   div2.classList = "overflow-y-auto overflow-x-hidden h-14 w-[300px] break-words"
 
   p1.textContent = api.descripcion
-  p2.textContent = api.fecha
+  p2.textContent = api.fecha.substring(0, 10)
   p3.textContent = api.caracteristicas
   p4.textContent = api.observaciones
   p5.textContent = "Características: "
@@ -194,6 +219,92 @@ const detalleCassete = async (event) => {
   // llamar a la funcon para mosrar muestras
   mostrarMuestras(id);
 }
+
+//Funcion para borrar el cassete seleccionado
+const borrarCassete=async()=>{
+  console.log("El id ha borrar es: "+id)
+  const delete_cassete=await fetch(`http://localhost:5001/api/cassete/${id}`,{
+    method:'DELETE',
+  })
+  if(delete_cassete.ok){
+    mostrarCassetes()
+    location.reload()
+  }
+}
+//Funcion para saber si se ha hecho click previamente en algun cassete y si no, mostrar el error
+const comprobarBorrado=()=>{
+  if(id){
+    mostrar(deleteModal)
+    
+  }else{
+      cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
+  }
+}
+
+//Funcion para modificar el cassete
+const modCassete=async()=>{
+
+  let descripcion = desM.value
+  let fecha = dateM.value
+  let organo = selecOrMod.value
+  let caracteristicas = caracMod.value
+  let observaciones = obMod.value
+    const modificar=await fetch(`http://localhost:5001/api/cassete/${id}`,{
+        method:'PUT',
+        body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+    if(modificar.ok){
+      mostrarCassetes()
+      location.reload()
+    }
+}
+
+//Funcion para comprobar si hay algun cassete seleccionado para mostrar el modal de modificar
+const comprobarActualizacion=async()=>{
+  if(id){
+    mostrar(modalModificarCassette)
+    const api=await peticionApiID(id)
+   
+    desM.value=api.descripcion
+    let fechaTexto = api.fecha ? api.fecha.toString().substring(0, 10) : "Fecha no disponible";
+    dateM.value=fechaTexto
+    selecOrMod.value=api.organo
+    caracMod.textContent=api.caracteristicas
+    obMod.textContent=api.observaciones
+  }else{
+    cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
+}
+}
+//Inicializamos Sorttable para la tabla con los cassetes mostrados
+const Sortable = window.Sortable;
+const ordenarFecha=()=>{
+  console.log("Ordenar")
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  // Ordenar las filas por la fecha (columna 0)
+  rows.sort(function(a, b) {
+    var fechaA = new Date(a.cells[0].textContent); // Obtener la fecha de la primera celda
+    var fechaB = new Date(b.cells[0].textContent);
+    return fechaA - fechaB; // Ordenar de más antiguo a más reciente
+  });
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function(row) {
+    listaCassetes.appendChild(row);
+  });
+}
+const ordenarDescripcion=()=>{
+  console.log("Descripcion")
+  
+}
+
+const ordenarOrgano=()=>{
+  console.log("Organo")
+}
+
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -201,33 +312,28 @@ document.addEventListener("DOMContentLoaded", () => {
   organosHumanos.forEach(organo => {
     let option = document.createElement("OPTION")
     let option2 = document.createElement("OPTION")
+    let option3=document.createElement("OPTION")
     option.textContent = organo
     option.value = organo.trim();
     option2.textContent = organo
     option2.value = organo.trim()
+    option3.textContent = organo
+    option3.value = organo.trim()
     selectOrganoCassete.appendChild(option)
     organSelect.appendChild(option2)
+    selecOrMod.appendChild(option3)
   })
 })
 submitCrearCassete.addEventListener("click", crearCassete)
-
-
-
+confirmDelete.addEventListener("click",borrarCassete)
+eliminarCassete.addEventListener("click",comprobarBorrado)
+modificarCassete.addEventListener('click', comprobarActualizacion)
+submitModificarCassete.addEventListener("click",modCassete)
+fechaBoton.addEventListener("click",ordenarFecha)
+descripcionBoton.addEventListener("click",ordenarDescripcion)
+organoBoton.addEventListener("click",ordenarOrgano)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
-// modal nuevos cassettes
-let nuevoCassete = document.getElementById('nuevoCassete');
-let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
-let toggleModal = document.getElementById('toggleModal')
-// modal modificar cassettes
-let modalModificarCassette = document.getElementById('modalModificarCassette');
-let cerrarModalCassete = document.getElementById('cerrarModalCassete');
-let modificarCassete = document.getElementById('modificarCassete')
-// modal de confirmacion de elimiar cassete
-let deleteModal = document.getElementById('deleteModal')
-let cancelDelete = document.getElementById('cancelDelete')
-let confirmDelete = document.getElementById('confirmDelete')
-let eliminarCassete = document.getElementById('eliminarCassete')
 
 const mostrar = (modal) => {
   modal.classList.remove("hidden")
@@ -246,8 +352,8 @@ cancelDelete.addEventListener('click', () => ocultar(deleteModal))
 confirmDelete.addEventListener('click', () => ocultar(deleteModal))
 // eventos para mostrar las modales
 toggleModal.addEventListener('click', () => mostrar(nuevoCassete))
-modificarCassete.addEventListener('click', () => mostrar(modalModificarCassette))
-eliminarCassete.addEventListener('click', () => mostrar(deleteModal))
+// modificarCassete.addEventListener('click', () => mostrar(modalModificarCassette))
+// eliminarCassete.addEventListener('click', () => mostrar(deleteModal))
 
 listaCassetes.addEventListener("click", detalleCassete)
 

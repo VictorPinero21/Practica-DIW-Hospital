@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="./../assets/favicoin.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  
 </head>
 
 <body>
@@ -22,29 +24,29 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Descripción Corta</label>
                     <input type="text" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500"
-                        placeholder="Nuevo Cassette">
+                        placeholder="Nuevo Cassette" id="descripcionMod">
                 </div>
                 <div class="flex space-x-4">
                     <div class="flex-1">
                         <label class="block text-sm font-medium text-gray-700">Fecha</label>
-                        <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500">
+                        <input type="date" class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="fechaMod">
                     </div>
                     <div class="flex-1">
                         <label class="block text-sm font-medium text-gray-700">Órgano</label>
-                        <select class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500">
+                        <select class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="organoMod">
                             <option>Seleccionar Órgano</option>
                         </select>
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Características</label>
-                    <textarea class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500"></textarea>
+                    <textarea class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="caracteristicasMod"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Observaciones</label>
-                    <textarea class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500"></textarea>
+                    <textarea class="w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500" id="observacionesMod"></textarea>
                 </div>
-                <button class="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600">Modificar
+                <button class="w-full bg-green-500 text-white p-2 rounded-lg hover:bg-green-600" id="submitModificarCassete">Modificar
                     Cassette</button>
             </div>
         </div>
@@ -161,21 +163,20 @@
                             </div>
                         </div>
 
-                        <!-- Botones  -->
-                        <div class="flex">
-
-                            <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] md:w-[50%] w-[30%] ">Fecha</button>
-                            <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] md:w-[20%] w-[30%]">Descripción</button>
-                            <button
-                                class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] md:w-[30%] w-[40%]">Órgano</button>
-                        </div>
+                        
 
                         <!-- Informacion sobre cassetes -->
-                        <div class="flex flex-col h-40 overflow-y-auto" id="listaCassetes">
-
-                        </div>
+                        <table class="flex flex-col h-40 overflow-y-auto" id="listaCassetes">
+                            
+                        <tr>
+                            <th
+                            class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[50%] " id="fechaBoton">Fecha</th>
+                            <th
+                            class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[20%]" id="descripcionBoton">Descripción</th>
+                        <th
+                            class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] " id="organoBoton">Órgano</th>
+                        </tr>
+                        </table>
                     </div>
                 </div>
 
@@ -487,6 +488,6 @@
         </div>
     </div>
 </body>
-<script src="./../js/cassetes.js"></script>
 
+<script src="./../js/cassetes.js"></script>
 </html>
