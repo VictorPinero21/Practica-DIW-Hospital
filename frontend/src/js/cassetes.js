@@ -130,7 +130,7 @@ const mostrarCassetes = async () => {
 
 
 //Funcion para hacer el post con el nuevo cassete a la base de datos
-const crearCassete = async () => {
+const postCrearCassete=async()=>{
   console.log("INFORMACION A POSTEAR: " + desc.value + date.value + selectOrganoCassete.value + carac.value + ob.value)
   let descripcion = desc.value
   let fecha = date.value
@@ -145,13 +145,20 @@ const crearCassete = async () => {
     },
     body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id })
   })
-  if (postCassete.ok) {
-    mostrarCassetes()
-    location.reload()
-  }
   const data = await postCassete.json()
   console.log(data)
   return data
+}
+const crearCassete = async (event) => {
+  event.preventDefault()
+
+  if (validacionModalCrearCassete()) {
+    postCrearCassete()
+    console.log("CREA")
+    mostrarCassetes()
+    location.reload()
+  }
+ 
 }
 const peticionApiUser = async () => {
   const api = await fetch("http://localhost:5001/api/usuario");
@@ -423,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selecOrMod.appendChild(option3)
   })
 })
-submitCrearCassete.addEventListener("click", crearCassete)
+nuevoCassete.addEventListener("submit", crearCassete)
 confirmDelete.addEventListener("click",borrarCassete)
 eliminarCassete.addEventListener("click",comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
