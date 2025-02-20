@@ -380,10 +380,12 @@ const filtrarporOrgano=async(e)=>{
   const api = await peticionApi()
   if(e.target.value=="Todos"){
     listaCassetes.innerHTML=""
+    listaCassetes.innerHTML="<tr><th class='px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[50%] ' id='fechaBoton'>Fecha</th> <th class='px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[20%]' id='descripcionBoton'>Descripción</th> <th class='px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] ' id='organoBoton'>Órgano</th></tr>"
         mostrarCassetes()
  
   }else{
     listaCassetes.innerHTML=""
+    listaCassetes.innerHTML="<tr><th class='px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[50%] ' id='fechaBoton'>Fecha</th> <th class='px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[20%]' id='descripcionBoton'>Descripción</th> <th class='px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] ' id='organoBoton'>Órgano</th></tr>"
     arrOrganos = api.filter(cassete => cassete.usuario_id === usuario_id);
      console.log("Array Original "+arrOrganos)
     let arrFiltrado=arrOrganos.filter(cassete=>cassete.organo===e.target.value)
