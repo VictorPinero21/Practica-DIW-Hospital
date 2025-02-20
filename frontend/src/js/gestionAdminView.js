@@ -46,8 +46,8 @@ const cargarAlumnos = async () => {
             </button>
 
             <!-- Botón de edición -->
-            <button class="text-greeb-500 hover:text-green-700 hover:cursor-pointer" data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
-              <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <button class="text-greeb-500 data-id="${usuario.id}" title="Editar" id="editar${usuario.id}">
+              <svg class="w-4 h-4 hover:cursor-pointer hover:text-green-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z" />
               </svg>
             </button>
@@ -188,13 +188,13 @@ const promocionarUsuario = async (event) => {
               rol: "administrador",
             }),
           });
-    
+
           if (!response.ok) {
             const errorDetails = await response.text();
             console.error("Error del servidor:", errorDetails);
             throw new Error("Error al promocionar usuario");
           }
-    
+
           notifier.success("Usuario promocionado a administrador.");
           cargarAlumnos();
         } catch (error) {
@@ -206,11 +206,9 @@ const promocionarUsuario = async (event) => {
         notifier.info("Operación cancelada.");
       }
     );
-    
   } else {
     notifier.warning("No puedes promocionar a un usuario que ya es administrador");
-}
-
+  }
 };
 
 const modificarUsuario = async (event) => {
@@ -257,29 +255,26 @@ const modificarUsuario = async (event) => {
       // Cerrar el modal
       modalModificarUsuario.classList.add("dnone");
     } catch (error) {
-      notifier.warning("Error al modificar el usuario:", error)
+      notifier.warning("Error al modificar el usuario:", error);
     }
   } else {
-    notifier.warning("Los datos del Formulario no son validos:", error)
+    notifier.warning("Los datos del Formulario no son validos:", error);
   }
 };
 
 document.addEventListener("DOMContentLoaded", setup);
 modalModificarUsuario.addEventListener("submit", modificarUsuario);
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
   if (typeof AWN === "undefined") {
-      console.error("Awesome Notifications no se ha cargado correctamente.");
+    console.error("Awesome Notifications no se ha cargado correctamente.");
   } else {
-      console.log("Awesome Notifications cargado correctamente.");
-      
-      // Inicializar `notifier`
-      notifier = new AWN();
-      
-      // Prueba de notificación para confirmar que funciona
-      notifier.success("Librería cargada con éxito");
+    console.log("Awesome Notifications cargado correctamente.");
+
+    // Inicializar `notifier`
+    notifier = new AWN();
+
+    // Prueba de notificación para confirmar que funciona
+    notifier.success("Librería cargada con éxito");
   }
 });
-
