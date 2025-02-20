@@ -87,14 +87,14 @@ const eliminarUsuario = async (req, res) => {
   }
 };
 
-//Comprobar Usuario y contraseña
 const comprobarUsuario = async (req, res) => {
   try {
-    console.log("Request body:", req.body);
+    console.log("📩 Request body:", req.body);
 
     const { email, password } = req.body;
 
     if (!email || !password) {
+      console.log("⚠️ Faltan datos en la petición");
       return res.status(400).json({ error: "Faltan datos en la petición" });
     }
 
@@ -102,12 +102,15 @@ const comprobarUsuario = async (req, res) => {
 
     return res.status(resultado.status).json(resultado);
   } catch (error) {
-    console.error("Error en comprobarUsuario:", error);
-    return res
-      .status(500)
-      .json({ error: "Error al comprobar usuario", details: error.message });
+    console.error("💥 Error en comprobarUsuario:", error);
+    return res.status(500).json({
+      error: "Error al comprobar usuario",
+      details: error.message,
+    });
   }
 };
+
+
 module.exports = {
   getUsuarios,
   getUsuarioById,

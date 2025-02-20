@@ -77,12 +77,13 @@ const comprobarCredenciales = async (email, password) => {
             console.log("Login exitoso:", data);
 
             // Verifica si el token existe y guárdalo
-            if (data.token) {
-                sessionStorage.setItem("token", data.token); // Guardar el token
-                console.log("Token guardado:", data.token);
+            if (data.success) {
+                sessionStorage.setItem("token", data.success);
+                console.log("Token guardado:", data.success);
             } else {
                 console.warn("No se recibió un token en la respuesta.");
             }
+            
 
             alert("Login exitoso");
             window.location.href = "./pages/cassetes.html"; // Redirigir al usuario

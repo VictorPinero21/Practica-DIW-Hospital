@@ -1,6 +1,8 @@
 const Usuario = require("./../database/models/Usuario");
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
+const moment = require("moment");
+const jwt = require("jwt-simple");
 const getUsuarios = async () => {
   try {
     return await Usuario.findAll();
@@ -63,9 +65,13 @@ const comprobarUsuario = async (email, password) => {
     console.log("✅ Usuario encontrado:", usuario.email);
     console.log("🔑 Comparando contraseñas...");
 
-    const iguales = bcrypt.compareSync(password, usuario.password);
+    
 
-    console.log("⚖️ Resultado comparación:", iguales);  
+
+
+    const iguales = await bcrypt.compare(password, usuario.password);
+
+    console.log("⚖️ Resultado comparación:", iguales);
 
     if (!iguales) {
       console.log("❌ Contraseña incorrecta");
@@ -73,7 +79,7 @@ const comprobarUsuario = async (email, password) => {
     }
 
     console.log("🔐 Contraseña correcta, generando token...");
-    const token = createToken(usuario); 
+    const token = createToken(usuario);
 
     return { status: 200, success: token };
   } catch (error) {

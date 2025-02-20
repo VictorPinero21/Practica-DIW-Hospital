@@ -6,9 +6,9 @@ const casseteRoutes = require("./cassetteRoutes");
 const muestraRoutes = require("./muestraRoutes");
 const usuarioRoutes = require("./usuarioRoutes");
 
-router.use("/imagen", middleware.checkToken, imagenRoutes);
-router.use("/cassete", middleware.checkToken, casseteRoutes);
-router.use("/muestra", middleware.checkToken, muestraRoutes);
+router.use("/imagen",  imagenRoutes);
+router.use("/cassete", casseteRoutes);
+router.use("/muestra",  muestraRoutes);
 router.use("/usuario", usuarioRoutes);
 
 module.exports = router;

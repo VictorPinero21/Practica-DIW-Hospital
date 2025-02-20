@@ -266,6 +266,9 @@ const modificarUsuario = async (event) => {
 
 document.addEventListener("DOMContentLoaded", setup);
 modalModificarUsuario.addEventListener("submit", modificarUsuario);
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
   if (typeof AWN === "undefined") {
       console.error("Awesome Notifications no se ha cargado correctamente.");

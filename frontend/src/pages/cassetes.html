@@ -26,8 +26,8 @@
               <li><a href="#" class="hover:underline">Servicios</a></li>
               <li><a href="#" class="hover:underline">Especialistas</a></li>
               <li><a href="#" class="hover:underline">Contacto</a></li>
-              <li>
-                <a href="./adminView.html" class="hover:underline"><i class="fa-solid fa-user"></i></a>
+              <li id="vistaAdmin">
+                
               </li>
             </ul>
           </div>
@@ -156,7 +156,10 @@
 
                 <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2">
             </div>
-            <a href="./../index.html">Cerrar Sesion</a>
+            <button id="cerrarSesion"">
+                Cerrar Sesion
+            </button>
+         
         </div>
 
         <div class="max-w-7xl mx-auto p-4 space-y-4">
@@ -510,4 +513,5 @@
 </body>
 
 <script src="./../js/cassetes.js"></script>
+<script src="../js/isAdmin.js"></script>
 </html>

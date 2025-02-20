@@ -1,5 +1,6 @@
 const jwt = require("jwt-simple");
-const moment = require("moment");
+const moment = require('moment');
+
 
 const SECRET_KEY = "frase secreta"; // Clave secreta
 
