@@ -52,24 +52,52 @@ const comprobacion_login=()=>{
 }
 
 //Funcion para comprobar usuario y contraseña que sean correcto en la api
-const comprobarCredenciales=async(email,password)=>{
-    console.log(email,password)
-    const arrayUsuarios=await fetch("http://localhost:5001/api/usuario/login",{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        
-        body: JSON.stringify({ email, password })
+const comprobarCredenciales = async (email, password) => {
+    console.log("Intentando iniciar sesión con:", email, password);
+
+    try {
+        const response = await fetch("http://localhost:5001/api/usuario/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const text = await response.text(); // Obtiene la respuesta como texto
+        console.log("Respuesta del servidor:", text); // Ver qué responde el servidor
+
+        if (!text) {
+            throw new Error("El servidor respondió con un cuerpo vacío");
+        }
+
+        const data = JSON.parse(text); // Convierte solo si hay contenido
+
+        if (response.ok) {
+            console.log("Login exitoso:", data);
+
+            // Verifica si el token existe y guárdalo
+            if (data.token) {
+                sessionStorage.setItem("token", data.token); // Guardar el token
+                console.log("Token guardado:", data.token);
+            } else {
+                console.warn("No se recibió un token en la respuesta.");
+            }
+
+            alert("Login exitoso");
+            window.location.href = "./pages/cassetes.html"; // Redirigir al usuario
+        } else {
+            console.error("Error en login:", data.error || "Usuario y/o contraseña incorrectos");
+            document.getElementById("error_pass_login").textContent =
+                data.error || "Usuario y/o contraseña incorrectos";
+        }
+    } catch (error) {
+        console.error("Error en la solicitud:", error);
+        document.getElementById("error_pass_login").textContent =
+            "Error en la conexión con el servidor";
     }
-    )
-    if(arrayUsuarios.ok){
-        localStorage.setItem("email",email)
-         location.href="./pages/cassetes.html"
-    }else{
-        error_pass_login.textContent="Usuario y/o contraseña incorrectos"
-    }
-}
+};
+
 //Funcion para realizar el login correctamente en caso de estar todo correcto.
 const verificar_login=(event)=>{
     event.preventDefault()

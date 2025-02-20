@@ -49,23 +49,51 @@ const eliminarUsuario = async (id) => {
   }
 };
 
-const comprobarUsuario=async(email,password)=>{
-  try{
-      // console.log(email,pasword)
-        const usuario=await Usuario.findOne({where:{email:email}})
-        console.log("USUARIO:"+usuario.email+usuario.password)
-        //Compamos la contraseña de ese usuario con la contraseña enviada, la desencriptamos
-        const pass=await bcrypt.compare(password, usuario.password);
-        console.log("Contraseña"+pass)
-        
-        return {status:200}
-       
-         
-      
-    }catch(error){
-     throw new Error("Error al comprobar")
+const comprobarUsuario = async (email, password) => {
+  try {
+    console.log("🔍 Buscando usuario con email:", email);
+
+    const usuario = await Usuario.findOne({ where: { email } });
+
+    if (!usuario) {
+      console.log("❌ Usuario no encontrado");
+      return { status: 404, error: "Error en usuario y/o contraseña" };
     }
-}
+
+    console.log("✅ Usuario encontrado:", usuario.email);
+    console.log("🔑 Comparando contraseñas...");
+
+    const iguales = bcrypt.compareSync(password, usuario.password);
+
+    console.log("⚖️ Resultado comparación:", iguales);  
+
+    if (!iguales) {
+      console.log("❌ Contraseña incorrecta");
+      return { status: 401, error: "Error en usuario y/o contraseña" };
+    }
+
+    console.log("🔐 Contraseña correcta, generando token...");
+    const token = createToken(usuario); 
+
+    return { status: 200, success: token };
+  } catch (error) {
+    console.error("💥 Error en comprobarUsuario:", error);
+    return { status: 500, error: "Error al comprobar", details: error.message };
+  }
+};
+
+const createToken = (user) => {
+  const payload = {
+    usuarioId: user.id,
+    usuarioRol: user.rol,
+    createdAt: moment().unix(),
+    expiresAt: moment().add(5, "minutes").unix(),
+  };
+
+  return jwt.encode(payload, "frase secreta");
+};
+
+
 module.exports = {
   getUsuarios,
   getUsuarioById,

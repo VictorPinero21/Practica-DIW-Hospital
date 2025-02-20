@@ -90,18 +90,24 @@ const eliminarUsuario = async (req, res) => {
 //Comprobar Usuario y contraseña
 const comprobarUsuario = async (req, res) => {
   try {
-    const comprobar = await usuarioService.comprobarUsuario(req.body.email, req.body.password);
+    console.log("Request body:", req.body);
 
-    if (comprobar) {
-      res.status(204).json({ message: "Usuario verificado correctamente" });
-    } else {
-      res.status(404).json({ message: "Acceso denegado" });
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Faltan datos en la petición" });
     }
+
+    const resultado = await usuarioService.comprobarUsuario(email, password);
+
+    return res.status(resultado.status).json(resultado);
   } catch (error) {
-    res.status(500).json({ error: "HA FALLADO" });
+    console.error("Error en comprobarUsuario:", error);
+    return res
+      .status(500)
+      .json({ error: "Error al comprobar usuario", details: error.message });
   }
 };
-
 module.exports = {
   getUsuarios,
   getUsuarioById,
