@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <title>Proyecto Sanitaria</title>
+
+ <!-- Cargar la librería con defer -->
+ <script src="https://cdn.jsdelivr.net/npm/awesome-notifications@latest/dist/index.var.js"></script>
+
+  <title>Proyecto Sanitaria</title>
     <link rel="shortcut icon" href="./../assets/favicoin.png" type="image/x-icon" />
     <!-- FONTAWESOME -->
     <link
@@ -15,29 +19,31 @@
       referrerpolicy="no-referrer"
     />
     <link href="./../css/adminView.css" rel="stylesheet" />
+     <!-- Estilos de Awesome Notifications -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/awesome-notifications@latest/dist/style.css">
   </head>
 
   <body>
-    <header class="header w-full">
-      <nav class="bg-green-400 p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <h1 class="text-white text-xl font-bold">Clínica Sanitaria</h1>
-            <img src="./../assets/logo clinica.png" alt="" class="w-9" />
+      <header class="header w-full">
+        <nav class="bg-green-400 p-4 shadow-lg">
+          <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <h1 class="text-white text-xl font-bold">Clínica Sanitaria</h1>
+              <img src="./../assets/logo clinica.png" alt="" class="w-9" />
+            </div>
+            <button id="menu-toggle" class="md:hidden text-white">☰</button>
+            <ul class="md:flex gap-6 hidden text-white font-medium" id="menu">
+              <li><a href="#" class="hover:underline">Inicio</a></li>
+              <li><a href="#" class="hover:underline">Servicios</a></li>
+              <li><a href="#" class="hover:underline">Especialistas</a></li>
+              <li><a href="#" class="hover:underline">Contacto</a></li>
+              <li>
+                <a href="./cassetes.html" class="hover:underline"><i class="fa-solid fa-user"></i></a>
+              </li>
+            </ul>
           </div>
-          <button id="menu-toggle" class="md:hidden text-white">☰</button>
-          <ul class="md:flex gap-6 hidden text-white font-medium" id="menu">
-            <li><a href="#" class="hover:underline">Inicio</a></li>
-            <li><a href="#" class="hover:underline">Servicios</a></li>
-            <li><a href="#" class="hover:underline">Especialistas</a></li>
-            <li><a href="#" class="hover:underline">Contacto</a></li>
-            <li>
-              <a href="./cassetes.html" class="hover:underline"><i class="fa-solid fa-user"></i></a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+        </nav>
+      </header>
 
     <!-- Modal de Modificar Usuario (Oculto por defecto) -->
     <form id="modalModificarUsuario" class="dnone fixed inset-0 flex items-center justify-center" novalidate>
@@ -123,6 +129,8 @@
     </div>
     <!-- CDN SORTABLE -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <script src="./../js/gestionAdminView.js"></script>
+<script src="../js/gestionAdminView.js"></script>
+<script src="../js/variablesAdmin.js"></script>
+<script src="../js/modalesVistaAdmin.js"></script>
   </body>
 </html>

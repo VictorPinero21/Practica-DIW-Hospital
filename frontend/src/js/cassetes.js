@@ -1,5 +1,4 @@
-const organosHumanos = [
-  "Cerebro",
+const organosHumanos = ["Cerebro",
   "Cerebelo",
   "Tronco encefalico",
   "Medula espinal",
@@ -8,8 +7,8 @@ const organosHumanos = [
   "Higado",
   "Riñones",
   "Bazo",
-  "Páncreas",
-  "Estómago",
+  "Pancreas",
+  "Estomago",
   "Intestino delgado",
   "Intestino grueso",
   "Esofago",
@@ -31,8 +30,7 @@ const organosHumanos = [
   "Ureteres",
   "Uretra",
   "Hipotalamo",
-  "Hipofisis"
-];
+  "Hipofisis"];
 let organSelect = document.getElementById("organSelect")
 let listaCassetes = document.getElementById("listaCassetes")
 let cassetteDetail = document.getElementById("cassetteDetail")
@@ -46,12 +44,12 @@ let carac = document.getElementById("caracteristicas")
 let ob = document.getElementById("observaciones")
 let submitCrearCassete = document.getElementById("submitCrearCassete")
 //modal modificar Cassetes
-let desM=document.getElementById("descripcionMod")
-let dateM=document.getElementById("fechaMod")
-let selecOrMod=document.getElementById("organoMod")
-let caracMod=document.getElementById("caracteristicasMod")
-let obMod=document.getElementById("observacionesMod")
-let submitModCassete=document.getElementById("submitModificarCassete")
+let desM = document.getElementById("descripcionMod")
+let dateM = document.getElementById("fechaMod")
+let selecOrMod = document.getElementById("organoMod")
+let caracMod = document.getElementById("caracteristicasMod")
+let obMod = document.getElementById("observacionesMod")
+let submitModCassete = document.getElementById("submitModificarCassete")
 // modal nuevos cassettes
 let nuevoCassete = document.getElementById('nuevoCassete');
 let cerrarNuevoCassete = document.getElementById('cerrarNuevoCassete');
@@ -65,6 +63,10 @@ let deleteModal = document.getElementById('deleteModal')
 let cancelDelete = document.getElementById('cancelDelete')
 let confirmDelete = document.getElementById('confirmDelete')
 let eliminarCassete = document.getElementById('eliminarCassete')
+//botones para ordenar
+let fechaBoton = document.getElementById("fechaBoton")
+let descripcionBoton = document.getElementById("descripcionBoton")
+let organoBoton = document.getElementById("organoBoton")
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -91,10 +93,10 @@ const mostrarCassetes = async () => {
   cassetesArr = api.filter(cassete => cassete.usuario_id === usuario_id);
 
   cassetesArr.forEach(cassete => {
-    let newDiv = document.createElement("DIV")
-    let fecha = document.createElement("P")
-    let descripcion = document.createElement("P")
-    let organo = document.createElement("P")
+    let newDiv = document.createElement("tr")
+    let fecha = document.createElement("td")
+    let descripcion = document.createElement("td")
+    let organo = document.createElement("td")
     let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
     fecha.textContent = fechaTexto;
     descripcion.textContent = cassete.descripcion
@@ -223,63 +225,127 @@ const detalleCassete = async (event) => {
 }
 
 //Funcion para borrar el cassete seleccionado
-const borrarCassete=async()=>{
-  console.log("El id ha borrar es: "+id)
-  const delete_cassete=await fetch(`http://localhost:5001/api/cassete/${id}`,{
-    method:'DELETE',
+const borrarCassete = async () => {
+  console.log("El id ha borrar es: " + id)
+  const delete_cassete = await fetch(`http://localhost:5001/api/cassete/${id}`, {
+    method: 'DELETE',
   })
-  if(delete_cassete.ok){
+  if (delete_cassete.ok) {
     mostrarCassetes()
     location.reload()
   }
 }
 //Funcion para saber si se ha hecho click previamente en algun cassete y si no, mostrar el error
-const comprobarBorrado=()=>{
-  if(id){
+const comprobarBorrado = () => {
+  if (id) {
     mostrar(deleteModal)
-    
-  }else{
-      cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
+
+  } else {
+    cassetteDetail.textContent = "NO HAS SELECCIONADO NADA MACHO"
   }
 }
 
 //Funcion para modificar el cassete
-const modCassete=async()=>{
+const modCassete = async () => {
 
   let descripcion = desM.value
   let fecha = dateM.value
   let organo = selecOrMod.value
   let caracteristicas = caracMod.value
   let observaciones = obMod.value
-    const modificar=await fetch(`http://localhost:5001/api/cassete/${id}`,{
-        method:'PUT',
-        body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-    if(modificar.ok){
-      mostrarCassetes()
-      location.reload()
-    }
+  const modificar = await fetch(`http://localhost:5001/api/cassete/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+  if (modificar.ok) {
+    mostrarCassetes()
+    location.reload()
+  }
 }
 
 //Funcion para comprobar si hay algun cassete seleccionado para mostrar el modal de modificar
-const comprobarActualizacion=async()=>{
-  if(id){
+const comprobarActualizacion = async () => {
+  if (id) {
     mostrar(modalModificarCassette)
-    const api=await peticionApiID(id)
-   
-    desM.value=api.descripcion
+    const api = await peticionApiID(id)
+
+    desM.value = api.descripcion
     let fechaTexto = api.fecha ? api.fecha.toString().substring(0, 10) : "Fecha no disponible";
-    dateM.value=fechaTexto
-    selecOrMod.value=api.organo
-    caracMod.textContent=api.caracteristicas
-    obMod.textContent=api.observaciones
-  }else{
-    cassetteDetail.textContent="NO HAS SELECCIONADO NADA MACHO"
+    dateM.value = fechaTexto
+    selecOrMod.value = api.organo
+    caracMod.textContent = api.caracteristicas
+    obMod.textContent = api.observaciones
+  } else {
+    cassetteDetail.textContent = "NO HAS SELECCIONADO NADA MACHO"
+  }
 }
+//Inicializamos Sorttable para la tabla con los cassetes mostrados
+const Sortable = window.Sortable;
+const ordenarFecha = () => {
+  console.log("Ordenar")
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  // Ordenar las filas por la fecha (columna 0)
+  rows.sort(function (a, b) {
+    var fechaA = new Date(a.cells[0].textContent); // Obtener la fecha de la primera celda
+    var fechaB = new Date(b.cells[0].textContent);
+    return fechaA - fechaB; // Ordenar de más antiguo a más reciente
+  });
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function (row) {
+    listaCassetes.appendChild(row);
+  });
 }
+const ordenarDescripcion = () => {
+  console.log("Descripcion")
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  rows.sort(function (a, b) {
+
+    var valorA = a.cells[1].textContent // Obtener la fecha de la primera celda
+    var valorB = b.cells[1].textContent
+    console.log("fecha A:" + valorA)
+    console.log("fecha B:" + valorB)
+    // Ordenar alfabéticamente
+    if (valorA < valorB) return -1;
+    if (valorA > valorB) return 1;
+    return 0;
+  });
+
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function (row) {
+    listaCassetes.appendChild(row);
+  });
+}
+
+const ordenarOrgano = () => {
+  console.log("Organo")
+  let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
+  console.log(rows)
+  rows.sort(function (a, b) {
+
+    var valorA = a.cells[2].textContent // Obtener la fecha de la primera celda
+    var valorB = b.cells[2].textContent
+    console.log("fecha A:" + valorA)
+    console.log("fecha B:" + valorB)
+    // Ordenar alfabéticamente
+    if (valorA < valorB) return -1;
+    if (valorA > valorB) return 1;
+    return 0;
+  });
+
+
+  // Reinsertar las filas ordenadas en la tabla
+  rows.forEach(function (row) {
+    listaCassetes.appendChild(row);
+  });
+}
+
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -287,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
   organosHumanos.forEach(organo => {
     let option = document.createElement("OPTION")
     let option2 = document.createElement("OPTION")
-    let option3=document.createElement("OPTION")
+    let option3 = document.createElement("OPTION")
     option.textContent = organo
     option.value = organo.trim();
     option2.textContent = organo
@@ -300,10 +366,13 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 })
 submitCrearCassete.addEventListener("click", crearCassete)
-confirmDelete.addEventListener("click",borrarCassete)
-eliminarCassete.addEventListener("click",comprobarBorrado)
+confirmDelete.addEventListener("click", borrarCassete)
+eliminarCassete.addEventListener("click", comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
-submitModificarCassete.addEventListener("click",modCassete)
+submitModificarCassete.addEventListener("click", modCassete)
+fechaBoton.addEventListener("click", ordenarFecha)
+descripcionBoton.addEventListener("click", ordenarDescripcion)
+organoBoton.addEventListener("click", ordenarOrgano)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
@@ -371,6 +440,8 @@ let delete__muestra = document.getElementById('delete__muestra')
 let delete__imgMuestra = document.getElementById('delete__imgMuestra')
 // añadirla
 let aniadirImg__detalleMuestra = document.getElementById('aniadirImg__detalleMuestra')
+let aniadirImg__form = document.getElementById('aniadirImg__form')
+let aniadirImg__button = document.getElementById('aniadirImg__button')
 // modal confirmar eliminacion de muestra
 let deleteModal__muestra = document.getElementById('deleteModal__muestra');
 let confirmDelete__muestra = document.getElementById('confirmDelete__muestra');
@@ -383,10 +454,16 @@ let updateMuestra__desc = document.getElementById('updateMuestra__desc')
 let updateMuestra__date = document.getElementById('updateMuestra__date')
 let updateMuestra__tincion = document.getElementById('updateMuestra__tincion')
 let updateMuestra__Observaciones = document.getElementById('updateMuestra__Observaciones')
+// fragment para añadir las imagenes
+let fragment3 = document.createDocumentFragment();
+// boton de borrar imagen
+let delete__image = document.getElementById('delete__image');
+// modal de confirmacion
+let deleteModal__img = document.getElementById('deleteModal__img')
+let confirmDelete__img = document.getElementById('confirmDelete__img')
+let cancelDelete__img = document.getElementById('cancelDelete__img')
 
-
-
-// peticion a la api
+// peticion a la api para recoger las muestras de un cassette
 const mostrarMuestras = (id) => {
   let url = "http://localhost:5001/api/muestra/cassette/" + id;
 
@@ -407,6 +484,7 @@ const mostrarMuestras = (id) => {
     })
 }
 
+// variable para mostrar las muestras que se encuentran en un cassette
 const listarMuestras = (muestras) => {
   // console.log(muestras)
   muestras.forEach(muestra => {
@@ -420,9 +498,9 @@ const listarMuestras = (muestras) => {
     fecha.textContent = muestra.fecha.substring(0, 10)
     descripcion.textContent = muestra.descripcion
     tincion.textContent = muestra.tincion
-    fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
-    descripcion.classList = "w-[20%] ml-2 hover:cursor-pointer"
-    tincion.classList = "w-[25%] ml-2  hover:cursor-pointer"
+    fecha.classList = "md:w-[50%] w-[30%] ml-2 hover:cursor-pointer"
+    descripcion.classList = "md:w-[20%] w-[30%] ml-2 hover:cursor-pointer"
+    tincion.classList = "md:w-[25%] w-[35%] ml-2  hover:cursor-pointer"
     i.classList = "fas fa-file text-green-600 w-[5%] ml-2 hover:cursor-pointer"
     newDiv.appendChild(fecha)
     newDiv.appendChild(descripcion)
@@ -467,6 +545,8 @@ const modalMuestra = (muestra) => {
   // aqui hay que comprobar si hay o no imagen, para mostrarlas o mostrar la de prueba
   // Img__detalleMuestra.src=''
 
+  // peticion a la pai para coger las imagenes de esta muestra
+  peticionImagenesMuestra(muestra.id)
   // por ultimo mostrar la modal
   mostrar(detalleMuestra__modal)
 }
@@ -500,6 +580,7 @@ const createMuestra = (event) => {
       },
       body: JSON.stringify(data), // Convertimos los datos a JSON
     }).then(response => {
+
       // si la respuesta es un ok=true mostrar feedback
       if (response.ok === true) {
         // console.log("insercion realizada con exito")
@@ -509,8 +590,11 @@ const createMuestra = (event) => {
         // aqui no salimos de la modal por si quiere crear varias muestras a la vez
         mostrarMuestras(id)
       }
-    })
-      .catch(error => {
+      return response.json()
+    }).then(responsejson =>{
+      console.log(responsejson)
+      createImgMuestra(responsejson.id);
+    }).catch(error => {
         console.log('El error: ' + error)
         newMuestra__feedback.textContent = "Ha habido un error"
         newMuestra__feedback.classList.remove("text-green-700")
@@ -519,10 +603,46 @@ const createMuestra = (event) => {
   }
 }
 
-// eliminar la muestra
+const createImgMuestra = async (id__muestra) =>{
+  
+    const input = newMuestra__img;
+  
+    console.log(input)
+  
+    if (input.files.length === 0) {
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
+    formData.append("muestra_id", id__muestra); // ID de la muestra (puedes cambiarlo)
+  
+    try {
+      const respuesta = await fetch("http://localhost:5001/api/imagen", {
+        method: "POST",
+        body: formData, // Enviar FormData con la imagen
+      });
+  
+      const resultado = await respuesta.json();
+      // console.log("Respuesta del servidor:", resultado);
+  
+      // console.log(respuesta.ok)
+      if (respuesta.ok == true) {
+        // llamamos a la funcion que muestra la modal desde el principio (render)
+        ocultar(detalleMuestra__modal)
+      }
+  
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
+  
+}
 
+// eliminar la muestra
+// variable global 
 let id__muestra = "";
 
+// mostrar la modal para eliminar la muestra
 const deleteMuestra = (event) => {
   // recoger el id de la muestra que queremos eliminar
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
@@ -532,10 +652,11 @@ const deleteMuestra = (event) => {
   mostrar(deleteModal__muestra);
 }
 
-const borrado = (id) => {
+// peticion a la api para borrar una muestra
+const borrado = (id_muestra) => {
   // console.log(id)
 
-  let url = 'http://localhost:5001/api/muestra/' + id;
+  let url = 'http://localhost:5001/api/muestra/' + id_muestra;
 
   fetch(url, {
     method: 'DELETE',
@@ -543,34 +664,39 @@ const borrado = (id) => {
     // console.log(response)
     ocultar(deleteModal__muestra)
     ocultar(detalleMuestra__modal)
+    // volver a listar las muestras
+    mostrarMuestras(id)
   })
     .catch(error => "error: " + error)
 }
 
 // update de muestras
-
+// cargar los datos de la muestra deseada en la modal
 const updateModal = (event) => {
   id__muestra = event.target.parentElement.parentElement.parentElement.parentElement.parentElement.id
 
   // rellenar los campos del update
-  updateMuestra__desc.value=descripcion__detalleMuestra.textContent;
-  updateMuestra__date.value=fecha__detalleMuestra.textContent;
-  updateMuestra__tincion.value=tincion__detalleMuestra.textContent;
-  updateMuestra__Observaciones.value=observaciones__detalleMuestra.textContent;
+  updateMuestra__desc.value = descripcion__detalleMuestra.textContent;
+  updateMuestra__date.value = fecha__detalleMuestra.textContent;
+  updateMuestra__tincion.value = tincion__detalleMuestra.textContent;
+  updateMuestra__Observaciones.value = observaciones__detalleMuestra.textContent;
+
 
   mostrar(updateModal__muestra)
 }
 
-const updateMuestra = (event) =>{
+
+// actualizar la muestra con los datos del formulario de la modal
+const updateMuestra = (event) => {
   event.preventDefault();
 
-  let url = "http://localhost:5001/api/muestra/"+id__muestra;
+  let url = "http://localhost:5001/api/muestra/" + id__muestra;
 
   let data = {
     descripcion: updateMuestra__desc.value,
-    fecha:  updateMuestra__date.value,
-    tincion:  updateMuestra__tincion.value,
-    observaciones:updateMuestra__Observaciones.value  
+    fecha: updateMuestra__date.value,
+    tincion: updateMuestra__tincion.value,
+    observaciones: updateMuestra__Observaciones.value
   }
 
   // console.log(data)
@@ -582,25 +708,160 @@ const updateMuestra = (event) =>{
     },
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
-  .then(responsejson => {
-    // console.log('Actualizado con éxito', responsejson)
-    // ocultamos la modal del formulario
-    ocultar(updateModal__muestra)
-    // ocultamos la modal de los detalles
-    ocultar(detalleMuestra__modal)
-    // mostramos la modal con los nuevos datos
-    peticionMuestras(id__muestra)
-    // actualizamos el listado de muestras
-    mostrarMuestras(id)
-  })
-  .catch(error => console.error('Error:', error));
-  
+    .then(response => response.json())
+    .then(responsejson => {
+      // console.log('Actualizado con éxito', responsejson)
+      // ocultamos la modal del formulario
+      ocultar(updateModal__muestra)
+      // ocultamos la modal de los detalles
+      ocultar(detalleMuestra__modal)
+      // mostramos la modal con los nuevos datos
+      peticionMuestras(id__muestra)
+      // actualizamos el listado de muestras
+      mostrarMuestras(id)
+    })
+    .catch(error => console.error('Error:', error));
 
 }
 
+// peticion para recpger las imagenes de las muestras
+const peticionImagenesMuestra = async (id) => {
+  let url = `http://localhost:5001/api/imagen/muestra/${id}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json(); // Convertimos la respuesta en JSON
+
+    console.log("JSON recibido:", data); // Verifica qué se recibe
+
+    // vaciamos el contenedor en cualquier caso
+    containerImg__detalleMuestra.innerHTML = ""
+
+    if (data.length == 0) {
+      cargarImagenPorDefecto();
+      return;
+    } else {
+      // Convertir el buffer en un Blob
+      // ahora mismo esto sube la primera foto en grande
+      const uint8Array = new Uint8Array(data[0].imagen.data);
+      // console.log(uint8Array)
+      const blob = new Blob([uint8Array], { type: "image/png" }); // Cambia el tipo según el formato de tu imagen
+      const imageUrl = URL.createObjectURL(blob);
+
+      cargarImagenesMuestra(imageUrl, data[0].id);
+
+      // para mostrar todas las imagenes pequeñas
+      data.forEach((img) => {
+        // console.log(img)
+        const uint8Array = new Uint8Array(img.imagen.data);
+        const blob = new Blob([uint8Array], { type: "image/png" });
+        const imageUrl = URL.createObjectURL(blob);
+        mostrarOpcionesImagenes(imageUrl, img.id);
+      });
+      // primero se vacia para que no se sobreescriba
+      containerImg__detalleMuestra.append(fragment3)
+
+    }
 
 
+  } catch (error) {
+    console.error("Error al obtener la imagen:", error);
+  }
+};
+
+
+// cargamos una imagen por defecto cuando la muestra no tiene imagenes
+const cargarImagenPorDefecto = () => {
+  console.log("imagen por defecto")
+  Img__detalleMuestra.src = './../assets/camara.png'
+}
+
+// cargamos las imagenes de la muestra
+// le pasamos el id por el alt para ppoder borrarlo posteriormente 
+const cargarImagenesMuestra = (imagenes, id) => {
+  // console.log('cargar una imagen en grande y el resto en pequeño')
+  // console.log(imagenes)
+  let src = imagenes;
+  // console.log(src)
+  Img__detalleMuestra.src = src;
+  Img__detalleMuestra.alt = id;
+
+}
+
+// subir una imagen referenciada a esa muestra a la bd
+const subirImagen = async (event) => {
+  event.preventDefault();
+
+  const input = aniadirImg__detalleMuestra;
+
+  // console.log(input)
+
+  if (input.files.length === 0) {
+    alert("Selecciona una imagen primero");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
+  formData.append("muestra_id", detalleMuestra__modal.id); // ID de la muestra (puedes cambiarlo)
+
+  try {
+    const respuesta = await fetch("http://localhost:5001/api/imagen", {
+      method: "POST",
+      body: formData, // Enviar FormData con la imagen
+    });
+
+    const resultado = await respuesta.json();
+    // console.log("Respuesta del servidor:", resultado);
+
+    // console.log(respuesta.ok)
+    if (respuesta.ok == true) {
+      // llamamos a la funcion que muestra la modal desde el principio (render)
+      ocultar(detalleMuestra__modal)
+    }
+
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+  }
+}
+
+// aqui debemos de crear las imagenes e introducirlas en un fragment, el src es (img)
+// pasamos el id oara guardarlo en el alt y asi poder borrar la imagen
+const mostrarOpcionesImagenes = (img, id) => {
+  // console.log(img)
+
+  let image = document.createElement("IMG")
+  image.src = img;
+  image.alt = id;
+  image.classList = "h-10 w-10 m-4"
+  fragment3.append(image);
+}
+
+const borrarImagen = () => {
+  console.log(Img__detalleMuestra.alt)
+
+  let url = 'http://localhost:5001/api/imagen/' + Img__detalleMuestra.alt;
+
+  fetch(url, {
+    method: 'DELETE',  // Especificamos que es una solicitud DELETE
+    headers: {
+      'Content-Type': 'application/json', // Puedes añadir otros headers si es necesario
+      // 'Authorization': 'Bearer token' // Si necesitas autenticación, descomenta y añade el token
+    }
+  }).then(response => console.log(response))
+
+  // ocultamos la modal de la elimiacion
+  ocultar(deleteModal__img)
+  ocultar(detalleMuestra__modal)
+}
+
+const cambiarImg = (event) => {
+  if (event.target.tagName === 'IMG') {
+    // nos aseguramos de que pincha en una imagen
+    console.log(event.target.alt)
+    cargarImagenesMuestra(event.target.src, event.target.alt)
+  }
+}
 
 
 // listeners
@@ -609,9 +870,18 @@ close__newMuestra__modal.addEventListener('click', () => ocultar(newMuestra__mod
 close__detalleMuestra__modal.addEventListener('click', () => ocultar(detalleMuestra__modal))
 confirmDelete__muestra.addEventListener('click', () => borrado(id__muestra))
 cancelDelete__muestra.addEventListener('click', () => ocultar(deleteModal__muestra))
-close__updateMuestra__modal.addEventListener('click', ()=>ocultar(updateModal__muestra))
+close__updateMuestra__modal.addEventListener('click', () => ocultar(updateModal__muestra))
+delete__image.addEventListener('click', () => mostrar(deleteModal__img))
+cancelDelete__img.addEventListener('click', () => ocultar(deleteModal__img))
 listaMuestras.addEventListener('click', DetailMuestras)
 newMuestra__form.addEventListener('submit', createMuestra)
 delete__muestra.addEventListener('click', deleteMuestra)
 update__muestra.addEventListener('click', updateModal)
 updateMuestra__form.addEventListener('submit', updateMuestra)
+aniadirImg__button.addEventListener('click', () => {
+  aniadirImg__detalleMuestra.click();
+})
+confirmDelete__img.addEventListener('click', borrarImagen)
+
+aniadirImg__detalleMuestra.addEventListener('change', subirImagen)
+containerImg__detalleMuestra.addEventListener('click', cambiarImg)

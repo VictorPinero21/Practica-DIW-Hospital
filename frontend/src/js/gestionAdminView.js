@@ -1,51 +1,8 @@
-const Sortable = window.Sortable;
-
-const tbody = document.getElementById("usersTableBody");
-const modalModificarUsuario = document.getElementById("modalModificarUsuario");
-const modalID = document.getElementById("modalID");
-const modalNombre = document.getElementById("modalNombre");
-const modalApellido = document.getElementById("modalApellido");
-const modalEmail = document.getElementById("modalEmail");
-const modalPassword = document.getElementById("modalPassword");
-const modalConfirmPassword = document.getElementById("modalConfirmPassword");
-const modalCentro = document.getElementById("modalCentro");
-const modalRol = document.getElementById("modalRol");
-const guardarCambiosBtn = document.getElementById("guardarCambiosBtn");
-const errorEmail = document.getElementById("errorEmail");
-const errorPassword = document.getElementById("errorPassword");
-const errorConfirmPassword = document.getElementById("errorConfirmPassword");
-const table = document.getElementById("usersTable");
-//
-let errorNombre = document.getElementById("errorNombre");
-let errorApellido = document.getElementById("errorApellido");
-let errorCentro = document.getElementById("errorCentro");
-
-// Función para agregar eventos solo si el elemento existe
-function addEventListenerIfExists(id, event, callback) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.addEventListener(event, callback);
-  }
-}
-
-// Eventos con verificación
-addEventListenerIfExists("cerrarModalUsuario", "click", () => {
-  modalModificarUsuario.classList.toggle("dnone");
-});
-
-// Cerrar el modal al hacer clic fuera de él
-addEventListenerIfExists("modalModificarUsuario", "click", (event) => {
-  if (event.target === modalModificarUsuario) {
-    modalModificarUsuario.classList.toggle("dnone");
-  }
-});
-
 //Funcion para arrancar la aplicacion
 const setup = () => {
   cargarAlumnos();
   cargarSortable();
 };
-
 // Función para cargar sólo los usuarios con rol "alumno"
 const cargarAlumnos = async () => {
   try {
@@ -135,7 +92,6 @@ const cargarAlumnos = async () => {
     console.log("Error cargando alumnos:", error);
   }
 };
-
 //Función para implementar Sortable.js en las cabeceras de la tabla
 const cargarSortable = () => {
   const headers = table.querySelectorAll("th");
@@ -170,37 +126,37 @@ const cargarSortable = () => {
     handle: "td", // Permitir que toda la fila sea arrastrable
   });
 };
-
-const cargarDatosModal = async (tr) => {
-  modalID.value = tr.dataset.id || "";
-  modalNombre.value = tr.dataset.nombre || "";
-  modalApellido.value = tr.dataset.apellido || "";
-  modalEmail.value = tr.dataset.email || "";
-  modalPassword.value = tr.dataset.password || "";
-  modalConfirmPassword.value = tr.dataset.password || "";
-  modalCentro.value = tr.dataset.centro || "";
-  modalRol.value = tr.dataset.rol || "";
-};
-
-// Función para eliminar un alumno
+// Función para eliminar un usuario con confirmación de Awesome Notifications
 const eliminarUsuario = async (event) => {
   event.preventDefault();
   const button = event.target.closest("button");
   const id = button.dataset.id;
-  //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
-  if (id && confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
-    try {
-      const response = await fetch(`http://localhost:5001/api/usuario/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error("Error al eliminar usuario");
-      cargarAlumnos(); // Recargar la tabla
-    } catch (error) {
-      console.log("Error eliminando usuario:", error);
-    }
-  } else {
-    console.log("ID de usuario no válido.");
-  }
-};
 
+  if (!id) {
+    console.log("ID de usuario no válido.");
+    return;
+  }
+
+  // Mostrar la notificación de confirmación con opciones
+  notifier.confirm(
+    "¿Estás seguro de que deseas eliminar este usuario?",
+    async () => {
+      try {
+        const response = await fetch(`http://localhost:5001/api/usuario/${id}`, { method: "DELETE" });
+        if (!response.ok) throw new Error("Error al eliminar usuario");
+
+        notifier.success("Usuario eliminado correctamente"); // Notificación de éxito
+        cargarAlumnos(); // Recargar la tabla
+      } catch (error) {
+        notifier.alert("Error eliminando usuario");
+        console.log("Error eliminando usuario:", error);
+      }
+    },
+    () => {
+      notifier.info("Operación cancelada"); // Mensaje si se cancela la eliminación
+    }
+  );
+};
 // Función para promocionar un alumno a administrador
 const promocionarUsuario = async (event) => {
   event.preventDefault();
@@ -215,38 +171,46 @@ const promocionarUsuario = async (event) => {
   const password = tr.dataset.password;
   const centro = tr.dataset.centro;
   const rol = tr.dataset.rol;
-  //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
   if (rol !== "administrador") {
-    if (confirm("¿Estás seguro de querer promocionar a este alumno a Administrador?")) {
-      try {
-        const response = await fetch(`http://localhost:5001/api/usuario/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nombre,
-            apellido,
-            email,
-            password,
-            centro,
-            rol: "administrador",
-          }),
-        });
-
-        if (!response.ok) {
-          const errorDetails = await response.text();
-          console.error("Error del servidor:", errorDetails);
-          throw new Error("Error al promocionar usuario");
+    notifier.confirm(
+      "¿Estás seguro de querer promocionar a este alumno a Administrador?",
+      async () => {
+        try {
+          const response = await fetch(`http://localhost:5001/api/usuario/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nombre,
+              apellido,
+              email,
+              password,
+              centro,
+              rol: "administrador",
+            }),
+          });
+    
+          if (!response.ok) {
+            const errorDetails = await response.text();
+            console.error("Error del servidor:", errorDetails);
+            throw new Error("Error al promocionar usuario");
+          }
+    
+          notifier.success("Usuario promocionado a administrador.");
+          cargarAlumnos();
+        } catch (error) {
+          notifier.alert("Error al promocionar el usuario");
+          console.log("Error al modificar el usuario: " + error.message);
         }
-
-        cargarAlumnos(); // Recargar la tabla
-      } catch (error) {
-        console.log("Error al modificar el usuario: " + error.message);
+      },
+      () => {
+        notifier.info("Operación cancelada.");
       }
-    }
+    );
+    
   } else {
-    //CAMBIAR ESTO POR UN MODAL ALERT DE CONFIRMACIÓN
-    alert("No puedes promocionar a un usuario que ya es administrador");
-  } 
+    notifier.warning("No puedes promocionar a un usuario que ya es administrador");
+}
+
 };
 
 const modificarUsuario = async (event) => {
@@ -293,84 +257,29 @@ const modificarUsuario = async (event) => {
       // Cerrar el modal
       modalModificarUsuario.classList.add("dnone");
     } catch (error) {
-      console.log("Error al modificar el usuario:", error);
+      notifier.warning("Error al modificar el usuario:", error)
     }
   } else {
-    console.log("Los datos del formulario no son válidos.");
+    notifier.warning("Los datos del Formulario no son validos:", error)
   }
-};
-
-const validarModal = () => {
-  // console.log("validar modal");
-  let correcto = true;
-  if (modalEmail.validity.valueMissing) {
-    errorEmail.textContent = "Debe introducir el e-mail";
-    correcto = false;
-  } else if (modalEmail.validity.typeMismatch) {
-    errorEmail.textContent = "El formato de e-mail no es válido";
-    correcto = false;
-  } else {
-    errorEmail.textContent = "";
-  }
-
-  //añadir el pattern y hacer la validacion del patternMissMatch
-
-  if (modalPassword.validity.valueMissing) {
-    errorPassword.textContent = "Debe introducir la contraseña";
-    correcto = false;
-  } else if (modalPassword.validity.typeMismatch) {
-    errorPassword.textContent = "La contraseña está mal conformada";
-    correcto = false;
-  } else if (modalPassword.validity.patternMismatch) {
-    errorPassword.textContent = "La contraseña debe seguir un patrón";
-    correcto = false;
-  } else {
-    errorPassword.textContent = "";
-  }
-
-  if (modalConfirmPassword.validity.valueMissing) {
-    errorConfirmPassword.textContent = "Debe repetir la contraseña";
-    correcto = false;
-  } else if (modalConfirmPassword.validity.typeMismatch) {
-    errorConfirmPassword.textContent = "La contraseña está mal conformada";
-    correcto = false;
-  } else if (modalPassword.value != modalConfirmPassword.value) {
-    errorConfirmPassword.textContent = "Las contraseñas no coinciden";
-    correcto = false;
-  } else {
-    errorConfirmPassword.textContent = "";
-  }
-
-  // hay que hacer la validcion par que no se introduzcan cambios vacios (nombre, apellido, centro)
-
-  // modalNombre
-  // modalApellido
-  // modalCentro
-
-  // nombre
-  if (modalNombre.validity.valueMissing) {
-    correcto = false;
-    errorNombre.textContent = "El nombre no puede estar vacío";
-  } else {
-    errorNombre.textContent = "";
-  }
-  // apellido
-  if (modalApellido.validity.valueMissing) {
-    correcto = false;
-    errorApellido.textContent = "El apellido no puede estar vacío";
-  } else {
-    errorApellido.textContent = "";
-  }
-  // centro
-  if (modalCentro.validity.valueMissing) {
-    correcto = false;
-    errorCentro.textContent = "El centro no puede estar vacío";
-  } else {
-    errorCentro.textContent = "";
-  }
-
-  return correcto;
 };
 
 document.addEventListener("DOMContentLoaded", setup);
 modalModificarUsuario.addEventListener("submit", modificarUsuario);
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof AWN === "undefined") {
+      console.error("Awesome Notifications no se ha cargado correctamente.");
+  } else {
+      console.log("Awesome Notifications cargado correctamente.");
+      
+      // Inicializar `notifier`
+      notifier = new AWN();
+      
+      // Prueba de notificación para confirmar que funciona
+      notifier.success("Librería cargada con éxito");
+  }
+});
+

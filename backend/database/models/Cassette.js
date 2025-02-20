@@ -26,9 +26,6 @@ Cassette.init(
         notEmpty: {
           msg: "El campo 'organo' no puede estar vacío."
         },
-        isAlpha: {
-          msg: "El campo 'organo' solo puede contener letras."
-        },
         len: {
           args: [3, 50],
           msg: "El campo 'organo' debe tener entre 3 y 50 caracteres."
@@ -43,8 +40,8 @@ Cassette.init(
             "Higado",
             "Riñones",
             "Bazo",
-            "Páncreas",
-            "Estómago",
+            "Pancreas",
+            "Estomago",
             "Intestino delgado",
             "Intestino grueso",
             "Esofago",
