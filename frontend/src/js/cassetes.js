@@ -264,8 +264,8 @@ const comprobarBorrado=()=>{
   }
 }
 
-//Funcion para modificar el cassete
-const modCassete=async()=>{
+//Funcion para hacer el post de modificacion de cassete
+const postModCassete=async()=>{
 
   let descripcion = desM.value
   let fecha = dateM.value
@@ -279,7 +279,12 @@ const modCassete=async()=>{
           'Content-type': 'application/json; charset=UTF-8',
       },
     })
-    if(modificar.ok){
+}
+//Funcion para modificar el cassete
+const modCassete=async(event)=>{
+    event.preventDefault()
+    if(validacionModalUpdateCassete()){
+      postModCassete()
       mostrarCassetes()
       location.reload()
     }
@@ -434,7 +439,7 @@ nuevoCassete.addEventListener("submit", crearCassete)
 confirmDelete.addEventListener("click",borrarCassete)
 eliminarCassete.addEventListener("click",comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
-submitModCassete.addEventListener("click",modCassete)
+modalModificarCassette.addEventListener("submit",modCassete)
 fechaBoton.addEventListener("click",ordenarFecha)
 descripcionBoton.addEventListener("click",ordenarDescripcion)
 organoBoton.addEventListener("click",ordenarOrgano)
