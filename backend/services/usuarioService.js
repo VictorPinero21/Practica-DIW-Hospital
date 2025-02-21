@@ -67,7 +67,10 @@ const comprobarUsuario = async (email, password) => {
 
     
 
-    const iguales = bcrypt.compareSync(password, usuario.password);
+    const iguales = await bcrypt.compare(password, usuario.password);
+    console.log("✅ Usuario encontrado:", usuario.email);
+    console.log("🔍 Password ingresado:", password);
+    console.log("🔍 Password almacenado:", usuario.password);
 
     console.log("⚖️ Resultado comparación:", iguales);
 
