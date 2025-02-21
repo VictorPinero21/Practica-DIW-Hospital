@@ -145,16 +145,17 @@
             <div class="max-w-7xl mx-auto flex gap-4 flex-wrap justify-center">
                 <select id="organSelect" class="bg-white rounded-md border-[#0ff56b] px-3 py-2">
                     <option value="" disabled selected>Seleccionar un Órgano</option>
+                    <option value="Todos">Todos</option>
                     <option value="bazo">Bazo</option>
                     <option value="timo">Timo</option>
                     <option value="ura">URA</option>
                 </select>
 
-                <input type="text" placeholder="Escaner QR" class="bg-white border-[#0ff56b] rounded-md px-3 py-2">
+                <input type="text" placeholder="Escaner QR" class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="QR_header">
 
-                <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2">
+                <input type="date" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="header_f1">
 
-                <input type="text" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2">
+                <input type="date" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="header_f2">
             </div>
             <button id="cerrarSesion"">
                 Cerrar Sesion
@@ -199,6 +200,9 @@
                         <th
                             class="px-4 py-2 text-left font-medium border-b border-[#0ff56b] w-[30%] " id="organoBoton">Órgano</th>
                         </tr>
+                        <!-- <tr id="ponerCassetes">
+
+                        </tr> -->
                         </table>
                     </div>
                 </div>

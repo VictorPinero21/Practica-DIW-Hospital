@@ -30,9 +30,16 @@ const organosHumanos = ["Cerebro",
   "Ureteres",
   "Uretra",
   "Hipotalamo",
-  "Hipofisis"];
+  "Hipofisis"
+];
+//Variables header
 let organSelect = document.getElementById("organSelect")
+let QR_header=document.getElementById("QR_header")
+let header_f1=document.getElementById("header_f1")
+let header_f2=document.getElementById("header_f2")
+//Resto
 let listaCassetes = document.getElementById("listaCassetes")
+let ponerCassetes=document.getElementById("ponerCassetes")
 let cassetteDetail = document.getElementById("cassetteDetail")
 let usuario_id;
 let id //ID DEL CASSETE AL QUE HACES CLICK
@@ -64,9 +71,12 @@ let cancelDelete = document.getElementById('cancelDelete')
 let confirmDelete = document.getElementById('confirmDelete')
 let eliminarCassete = document.getElementById('eliminarCassete')
 //botones para ordenar
-let fechaBoton = document.getElementById("fechaBoton")
-let descripcionBoton = document.getElementById("descripcionBoton")
-let organoBoton = document.getElementById("organoBoton")
+let fechaBoton=document.getElementById("fechaBoton")
+let descripcionBoton=document.getElementById("descripcionBoton")
+let organoBoton=document.getElementById("organoBoton")
+let arrOrganos=[]
+const token = sessionStorage.getItem("token");
+
 
 // Función para agregar eventos solo si el elemento existe
 function addEventListenerIfExists(id, event, callback) {
@@ -78,7 +88,16 @@ function addEventListenerIfExists(id, event, callback) {
 
 //Función para hacer la peticon GET a la API
 const peticionApi = async () => {
-  const api = await fetch("http://localhost:5001/api/cassete");
+  const options = {
+  
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
+  }
+      
+  const api = await fetch("http://localhost:5001/api/cassete",options);
   const data = await api.json();
   return data;
 }
@@ -101,9 +120,9 @@ const mostrarCassetes = async () => {
     fecha.textContent = fechaTexto;
     descripcion.textContent = cassete.descripcion
     organo.textContent = cassete.organo
-    fecha.classList = "w-[50%] ml-2 hover:cursor-pointer"
-    descripcion.classList = "w-[20%] ml-2 hover:cursor-pointer"
-    organo.classList = "w-[30%] ml-2  hover:cursor-pointer"
+    fecha.classList = " ml-2 hover:cursor-pointer"
+    descripcion.classList = " ml-2 hover:cursor-pointer"
+    organo.classList = " ml-2  hover:cursor-pointer"
     newDiv.appendChild(fecha)
     newDiv.appendChild(descripcion)
     newDiv.appendChild(organo)
@@ -113,6 +132,7 @@ const mostrarCassetes = async () => {
 
     fragment.appendChild(newDiv)
   })
+  // ponerCassetes.appendChild(fragment)
   listaCassetes.appendChild(fragment)
 }
 
@@ -129,7 +149,8 @@ const crearCassete = async () => {
   const postCassete = await fetch("http://localhost:5001/api/cassete", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      'user-token': token.trim()
     },
     body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id })
   })
@@ -142,7 +163,16 @@ const crearCassete = async () => {
   return data
 }
 const peticionApiUser = async () => {
-  const api = await fetch("http://localhost:5001/api/usuario");
+  const options = {
+  
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
+  }
+      
+  const api = await fetch("http://localhost:5001/api/usuario",options);
   const data = await api.json();
   return data;
 }
@@ -159,7 +189,16 @@ const recogerID = async () => {
 }
 
 const peticionApiID = async (id) => {
-  const api = await fetch(`http://localhost:5001/api/cassete/${id}`)
+  const options = {
+  
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
+  }
+      
+  const api = await fetch(`http://localhost:5001/api/cassete/${id}`,options)
   const data = await api.json()
 
   return data
@@ -229,6 +268,10 @@ const borrarCassete = async () => {
   console.log("El id ha borrar es: " + id)
   const delete_cassete = await fetch(`http://localhost:5001/api/cassete/${id}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
   })
   if (delete_cassete.ok) {
     mostrarCassetes()
@@ -258,6 +301,8 @@ const modCassete = async () => {
     body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
+      'user-token': token.trim()
+    
     },
   })
   if (modificar.ok) {
@@ -284,23 +329,27 @@ const comprobarActualizacion = async () => {
 }
 //Inicializamos Sorttable para la tabla con los cassetes mostrados
 const Sortable = window.Sortable;
-const ordenarFecha = () => {
+//Funcion para ordenar por fechas
+const ordenarFecha=()=>{
   console.log("Ordenar")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
-  console.log(rows)
+
   // Ordenar las filas por la fecha (columna 0)
   rows.sort(function (a, b) {
     var fechaA = new Date(a.cells[0].textContent); // Obtener la fecha de la primera celda
     var fechaB = new Date(b.cells[0].textContent);
+    console.log("FECHA A"+fechaA)
     return fechaA - fechaB; // Ordenar de más antiguo a más reciente
   });
 
   // Reinsertar las filas ordenadas en la tabla
-  rows.forEach(function (row) {
+  rows.forEach(function(row) {
+    console.log(row)
     listaCassetes.appendChild(row);
   });
 }
-const ordenarDescripcion = () => {
+//Funcion para ordenar alfabeticamente por la Descripcion 
+const ordenarDescripcion=()=>{
   console.log("Descripcion")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
   console.log(rows)
@@ -322,8 +371,8 @@ const ordenarDescripcion = () => {
     listaCassetes.appendChild(row);
   });
 }
-
-const ordenarOrgano = () => {
+//Funcion para ordenar alfabeticamente por el organo
+const ordenarOrgano=()=>{
   console.log("Organo")
   let rows = Array.from(listaCassetes.rows).slice(1); // Obtener las filas de datos, ignorando el encabezado
   console.log(rows)
@@ -346,6 +395,48 @@ const ordenarOrgano = () => {
   });
 }
 
+//Funcion para filtrar los cassetes por el tipo de organo seleccionado
+
+const filtrarporOrgano=async(e)=>{
+  const api = await peticionApi()
+  if(e.target.value=="Todos"){
+    listaCassetes.innerHTML=""
+        mostrarCassetes()
+ 
+  }else{
+    listaCassetes.innerHTML=""
+    arrOrganos = api.filter(cassete => cassete.usuario_id === usuario_id);
+     console.log("Array Original "+arrOrganos)
+    let arrFiltrado=arrOrganos.filter(cassete=>cassete.organo===e.target.value)
+    arrFiltrado.forEach(cassete => {
+      let newDiv = document.createElement("tr")
+      let fecha = document.createElement("td")
+      let descripcion = document.createElement("td")
+      let organo = document.createElement("td")
+      let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
+      fecha.textContent = fechaTexto;
+      descripcion.textContent = cassete.descripcion
+      organo.textContent = cassete.organo
+      fecha.classList = " ml-2 hover:cursor-pointer"
+      descripcion.classList = "wml-2 hover:cursor-pointer"
+      organo.classList = " ml-2  hover:cursor-pointer"
+      newDiv.appendChild(fecha)
+      newDiv.appendChild(descripcion)
+      newDiv.appendChild(organo)
+  
+      newDiv.classList.add("flex")
+      newDiv.id = cassete.id
+  
+      fragment.appendChild(newDiv)
+    }
+    )
+    listaCassetes.appendChild(fragment)
+  }
+
+  
+}
+//Funcion para filtrar los cassetes por 2 fechas
+const filtrarPorFecha=()=>{}
 //listeners
 document.addEventListener("DOMContentLoaded", recogerID)
 document.addEventListener("DOMContentLoaded", mostrarCassetes)
@@ -369,10 +460,11 @@ submitCrearCassete.addEventListener("click", crearCassete)
 confirmDelete.addEventListener("click", borrarCassete)
 eliminarCassete.addEventListener("click", comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
-submitModificarCassete.addEventListener("click", modCassete)
-fechaBoton.addEventListener("click", ordenarFecha)
-descripcionBoton.addEventListener("click", ordenarDescripcion)
-organoBoton.addEventListener("click", ordenarOrgano)
+submitModificarCassete.addEventListener("click",modCassete)
+fechaBoton.addEventListener("click",ordenarFecha)
+descripcionBoton.addEventListener("click",ordenarDescripcion)
+organoBoton.addEventListener("click",ordenarOrgano)
+organSelect.addEventListener("change",filtrarporOrgano)
 // A PARTIR DE AQUI ALVARO
 // ARREGLO DE LAS MODALES
 
@@ -467,7 +559,15 @@ let cancelDelete__img = document.getElementById('cancelDelete__img')
 const mostrarMuestras = (id) => {
   let url = "http://localhost:5001/api/muestra/cassette/" + id;
 
-  fetch(url)
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token,
+
+    }
+  }
+  fetch(url,options)
     .then(response => response.json())
     .then(responsejson => {
 
@@ -524,9 +624,16 @@ const DetailMuestras = (event) => {
 
 const peticionMuestras = (id) => {
   // console.log(id)
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token
+    }
+  }
   let url = "http://localhost:5001/api/muestra/" + id;
 
-  fetch(url)
+  fetch(url,options)
     .then(response => response.json())
     .then(responsejson => modalMuestra(responsejson))
 }
@@ -577,6 +684,7 @@ const createMuestra = (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tipo de contenido (en este caso JSON)
+        'user-token' : token
       },
       body: JSON.stringify(data), // Convertimos los datos a JSON
     }).then(response => {
@@ -621,6 +729,10 @@ const createImgMuestra = async (id__muestra) =>{
       const respuesta = await fetch("http://localhost:5001/api/imagen", {
         method: "POST",
         body: formData, // Enviar FormData con la imagen
+        headers : {
+          'Content-Type': 'multipart/form-data',
+          'user-token' : token
+        }
       });
   
       const resultado = await respuesta.json();
@@ -660,6 +772,10 @@ const borrado = (id_muestra) => {
 
   fetch(url, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token' : token
+    }
   }).then(response => {
     // console.log(response)
     ocultar(deleteModal__muestra)
@@ -704,7 +820,8 @@ const updateMuestra = (event) => {
   fetch(url, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'user-token' : token
     },
     body: JSON.stringify(data)
   })
@@ -727,9 +844,17 @@ const updateMuestra = (event) => {
 // peticion para recpger las imagenes de las muestras
 const peticionImagenesMuestra = async (id) => {
   let url = `http://localhost:5001/api/imagen/muestra/${id}`;
+ 
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token' : token
+      }
+      };
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url,options);
     const data = await response.json(); // Convertimos la respuesta en JSON
 
     console.log("JSON recibido:", data); // Verifica qué se recibe
@@ -809,6 +934,10 @@ const subirImagen = async (event) => {
     const respuesta = await fetch("http://localhost:5001/api/imagen", {
       method: "POST",
       body: formData, // Enviar FormData con la imagen
+     headers : {
+      'Content-Type': 'multipart/form-data',
+      'user-token' : token 
+     }
     });
 
     const resultado = await respuesta.json();
@@ -846,7 +975,7 @@ const borrarImagen = () => {
     method: 'DELETE',  // Especificamos que es una solicitud DELETE
     headers: {
       'Content-Type': 'application/json', // Puedes añadir otros headers si es necesario
-      // 'Authorization': 'Bearer token' // Si necesitas autenticación, descomenta y añade el token
+       'user-token': token // token de autenticacion
     }
   }).then(response => console.log(response))
 

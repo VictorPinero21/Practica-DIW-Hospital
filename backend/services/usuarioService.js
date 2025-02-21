@@ -55,8 +55,8 @@ const comprobarUsuario = async (email, password) => {
   try {
     console.log("🔍 Buscando usuario con email:", email);
 
-    const usuario = await Usuario.findOne({ where: { email } });
-
+    const usuario = await Usuario.findOne({ where: { email:email } });
+console.log(usuario)
     if (!usuario) {
       console.log("❌ Usuario no encontrado");
       return { status: 404, error: "Error en usuario y/o contraseña" };
@@ -65,10 +65,13 @@ const comprobarUsuario = async (email, password) => {
     console.log("✅ Usuario encontrado:", usuario.email);
     console.log("🔑 Comparando contraseñas...");
 
+
+    console.log(password)
+    console.log(usuario.password)
     
 
-    const iguales = bcrypt.compareSync(password, usuario.password);
-
+    const iguales = await bcrypt.compare(password, usuario.password);
+  
     console.log("⚖️ Resultado comparación:", iguales);
 
     if (!iguales) {
