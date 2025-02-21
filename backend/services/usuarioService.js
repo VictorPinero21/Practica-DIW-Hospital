@@ -67,9 +67,7 @@ const comprobarUsuario = async (email, password) => {
 
     
 
-
-
-    const iguales = await bcrypt.compare(password, usuario.password);
+    const iguales = bcrypt.compareSync(password, usuario.password);
 
     console.log("⚖️ Resultado comparación:", iguales);
 
@@ -79,7 +77,7 @@ const comprobarUsuario = async (email, password) => {
     }
 
     console.log("🔐 Contraseña correcta, generando token...");
-    const token = createToken(usuario);
+    const token = createToken(usuario); 
 
     return { status: 200, success: token };
   } catch (error) {
@@ -87,6 +85,8 @@ const comprobarUsuario = async (email, password) => {
     return { status: 500, error: "Error al comprobar", details: error.message };
   }
 };
+
+
 
 const createToken = (user) => {
   const payload = {
