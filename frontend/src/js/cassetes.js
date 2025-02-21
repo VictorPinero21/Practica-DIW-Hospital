@@ -75,7 +75,7 @@ let fechaBoton=document.getElementById("fechaBoton")
 let descripcionBoton=document.getElementById("descripcionBoton")
 let organoBoton=document.getElementById("organoBoton")
 let arrOrganos=[]
-
+const token = sessionStorage.getItem("token");
 
 
 // Función para agregar eventos solo si el elemento existe
@@ -88,7 +88,16 @@ function addEventListenerIfExists(id, event, callback) {
 
 //Función para hacer la peticon GET a la API
 const peticionApi = async () => {
-  const api = await fetch("http://localhost:5001/api/cassete");
+  const options = {
+  
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
+  }
+      
+  const api = await fetch("http://localhost:5001/api/cassete",options);
   const data = await api.json();
   return data;
 }
@@ -140,7 +149,8 @@ const postCrearCassete=async()=>{
   const postCassete = await fetch("http://localhost:5001/api/cassete", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      'user-token': token.trim()
     },
     body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id })
   })
@@ -160,7 +170,16 @@ const crearCassete = async (event) => {
  
 }
 const peticionApiUser = async () => {
-  const api = await fetch("http://localhost:5001/api/usuario");
+  const options = {
+  
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
+  }
+      
+  const api = await fetch("http://localhost:5001/api/usuario",options);
   const data = await api.json();
   return data;
 }
@@ -177,7 +196,16 @@ const recogerID = async () => {
 }
 
 const peticionApiID = async (id) => {
-  const api = await fetch(`http://localhost:5001/api/cassete/${id}`)
+  const options = {
+  
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
+  }
+      
+  const api = await fetch(`http://localhost:5001/api/cassete/${id}`,options)
   const data = await api.json()
 
   return data
@@ -247,6 +275,10 @@ const borrarCassete = async () => {
   console.log("El id ha borrar es: " + id)
   const delete_cassete = await fetch(`http://localhost:5001/api/cassete/${id}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token.trim()
+    }
   })
   if (delete_cassete.ok) {
     mostrarCassetes()
@@ -271,22 +303,19 @@ const postModCassete=async()=>{
   let organo = selecOrMod.value
   let caracteristicas = caracMod.value
   let observaciones = obMod.value
-    const modificar=await fetch(`http://localhost:5001/api/cassete/${id}`,{
-        method:'PUT',
-        body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-}
-//Funcion para modificar el cassete
-const modCassete=async(event)=>{
-    event.preventDefault()
-    if(validacionModalUpdateCassete()){
-      postModCassete()
-      mostrarCassetes()
-      location.reload()
-    }
+  const modificar = await fetch(`http://localhost:5001/api/cassete/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      'user-token': token.trim()
+    
+    },
+  })
+  if (modificar.ok) {
+    mostrarCassetes()
+    location.reload()
+  }
 }
 
 //Funcion para comprobar si hay algun cassete seleccionado para mostrar el modal de modificar
@@ -440,7 +469,7 @@ nuevoCassete.addEventListener("submit", crearCassete)
 confirmDelete.addEventListener("click",borrarCassete)
 eliminarCassete.addEventListener("click",comprobarBorrado)
 modificarCassete.addEventListener('click', comprobarActualizacion)
-modalModificarCassette.addEventListener("submit",modCassete)
+submitModCassete.addEventListener("click",postModCassete)
 fechaBoton.addEventListener("click",ordenarFecha)
 descripcionBoton.addEventListener("click",ordenarDescripcion)
 organoBoton.addEventListener("click",ordenarOrgano)
@@ -539,7 +568,15 @@ let cancelDelete__img = document.getElementById('cancelDelete__img')
 const mostrarMuestras = (id) => {
   let url = "http://localhost:5001/api/muestra/cassette/" + id;
 
-  fetch(url)
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token,
+
+    }
+  }
+  fetch(url,options)
     .then(response => response.json())
     .then(responsejson => {
 
@@ -596,9 +633,16 @@ const DetailMuestras = (event) => {
 
 const peticionMuestras = (id) => {
   // console.log(id)
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token': token
+    }
+  }
   let url = "http://localhost:5001/api/muestra/" + id;
 
-  fetch(url)
+  fetch(url,options)
     .then(response => response.json())
     .then(responsejson => modalMuestra(responsejson))
 }
@@ -649,6 +693,7 @@ const createMuestra = (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json', // Tipo de contenido (en este caso JSON)
+        'user-token' : token
       },
       body: JSON.stringify(data), // Convertimos los datos a JSON
     }).then(response => {
@@ -693,6 +738,10 @@ const createImgMuestra = async (id__muestra) =>{
       const respuesta = await fetch("http://localhost:5001/api/imagen", {
         method: "POST",
         body: formData, // Enviar FormData con la imagen
+        headers : {
+          'Content-Type': 'multipart/form-data',
+          'user-token' : token
+        }
       });
   
       const resultado = await respuesta.json();
@@ -732,6 +781,10 @@ const borrado = (id_muestra) => {
 
   fetch(url, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token' : token
+    }
   }).then(response => {
     // console.log(response)
     ocultar(deleteModal__muestra)
@@ -776,7 +829,8 @@ const updateMuestra = (event) => {
   fetch(url, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'user-token' : token
     },
     body: JSON.stringify(data)
   })
@@ -799,9 +853,17 @@ const updateMuestra = (event) => {
 // peticion para recpger las imagenes de las muestras
 const peticionImagenesMuestra = async (id) => {
   let url = `http://localhost:5001/api/imagen/muestra/${id}`;
+ 
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-token' : token
+      }
+      };
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url,options);
     const data = await response.json(); // Convertimos la respuesta en JSON
 
     console.log("JSON recibido:", data); // Verifica qué se recibe
@@ -881,6 +943,10 @@ const subirImagen = async (event) => {
     const respuesta = await fetch("http://localhost:5001/api/imagen", {
       method: "POST",
       body: formData, // Enviar FormData con la imagen
+     headers : {
+      'Content-Type': 'multipart/form-data',
+      'user-token' : token 
+     }
     });
 
     const resultado = await respuesta.json();
@@ -918,7 +984,7 @@ const borrarImagen = () => {
     method: 'DELETE',  // Especificamos que es una solicitud DELETE
     headers: {
       'Content-Type': 'application/json', // Puedes añadir otros headers si es necesario
-      // 'Authorization': 'Bearer token' // Si necesitas autenticación, descomenta y añade el token
+       'user-token': token // token de autenticacion
     }
   }).then(response => console.log(response))
 

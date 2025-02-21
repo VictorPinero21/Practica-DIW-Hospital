@@ -15,20 +15,19 @@ const PORT = process.env.PORT || 5001;
 
 //Middleware
 //Para poder rellenar el req.body
+app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Rutas   
 const router = require("./routes/index");
 app.use("/api", router);
- app.use(cors({
-   origin: "*",  // Permite cualquier origen
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization", "user-token"]
- }));
+//  app.use(cors({
+//    origin: "*",  // Permite cualquier origen
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization", "user-token"]
+//  }));
 
-
-//  app.use(cors());
 
 
 
