@@ -772,44 +772,40 @@ const createMuestra = (event) => {
   }
 }
 
-const createImgMuestra = async (id__muestra) =>{
-  
-    const input = newMuestra__img;
-  
-    console.log(input)
-  
-    if (input.files.length === 0) {
-      return;
-    }
-  
-    const formData = new FormData();
-    formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
-    formData.append("muestra_id", id__muestra); // ID de la muestra (puedes cambiarlo)
-  
-    try {
-      const respuesta = await fetch("http://localhost:5001/api/imagen", {
-        method: "POST",
-        body: formData, // Enviar FormData con la imagen
-        headers : {
-          'Content-Type': 'multipart/form-data',
-          'user-token' : token
-        }
-      });
-  
-      const resultado = await respuesta.json();
-      // console.log("Respuesta del servidor:", resultado);
-  
-      // console.log(respuesta.ok)
-      if (respuesta.ok == true) {
-        // llamamos a la funcion que muestra la modal desde el principio (render)
-        ocultar(detalleMuestra__modal)
+const createImgMuestra = async (id__muestra) => {
+  const input = newMuestra__img;
+
+  if (!input || input.files.length === 0) {
+    console.warn("No se ha seleccionado ninguna imagen.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("imagen", input.files[0]);
+  formData.append("muestra_id", id__muestra);
+
+  try {
+    const respuesta = await fetch("http://localhost:5001/api/imagen", {
+      method: "POST",
+      body: formData,
+      headers: {
+        'user-token': token // Solo este encabezado
       }
-  
-    } catch (error) {
-      console.error("Error al subir la imagen:", error);
+    });
+
+    const resultado = await respuesta.json();
+
+    if (respuesta.ok) {
+      ocultar(detalleMuestra__modal);
+    } else {
+      console.error("Error en la respuesta del servidor:", resultado);
     }
-  
-}
+
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+  }
+};
+
 
 // eliminar la muestra
 // variable global 
@@ -980,41 +976,37 @@ const subirImagen = async (event) => {
 
   const input = aniadirImg__detalleMuestra;
 
-  // console.log(input)
-
-  if (input.files.length === 0) {
-    notifier.warning("Selecciona una imagen primero")
-  
+  if (!input || input.files.length === 0) {
+    notifier.warning("Selecciona una imagen primero");
     return;
   }
 
   const formData = new FormData();
-  formData.append("imagen", input.files[0]); // Archivo en el campo "imagen"
-  formData.append("muestra_id", detalleMuestra__modal.id); // ID de la muestra (puedes cambiarlo)
+  formData.append("imagen", input.files[0]);
+  formData.append("muestra_id", detalleMuestra__modal.id);
 
   try {
     const respuesta = await fetch("http://localhost:5001/api/imagen", {
       method: "POST",
-      body: formData, // Enviar FormData con la imagen
-     headers : {
-      'Content-Type': 'multipart/form-data',
-      'user-token' : token 
-     }
+      body: formData,
+      headers: {
+        'user-token': token // Solo este encabezado
+      }
     });
 
     const resultado = await respuesta.json();
-    // console.log("Respuesta del servidor:", resultado);
-
-    // console.log(respuesta.ok)
-    if (respuesta.ok == true) {
-      // llamamos a la funcion que muestra la modal desde el principio (render)
-      ocultar(detalleMuestra__modal)
+    
+    if (respuesta.ok) {
+      ocultar(detalleMuestra__modal);
+    } else {
+      console.error("Error en la respuesta del servidor:", resultado);
     }
 
   } catch (error) {
     console.error("Error al subir la imagen:", error);
   }
-}
+};
+
 
 // aqui debemos de crear las imagenes e introducirlas en un fragment, el src es (img)
 // pasamos el id oara guardarlo en el alt y asi poder borrar la imagen

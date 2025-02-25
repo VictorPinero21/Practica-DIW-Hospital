@@ -18,6 +18,7 @@ let error_apellidos_register=document.getElementById("error_apellido_register")
 let error_email_register=document.getElementById("error_email_register")
 let error_pass_register=document.getElementById("error_pass_register")
 let error_repetirpass_register=document.getElementById("error_repetirpass_register")
+
 //Variable boleeana para el login
 let correcto=true
 //Funciones
@@ -85,7 +86,7 @@ const comprobarCredenciales = async (email, password) => {
             }
             
 
-            alert("Login exitoso");
+            
             window.location.href = "./pages/cassetes.html"; // Redirigir al usuario
         } else {
             console.error("Error en login:", data.error || "Usuario y/o contraseña incorrectos");
@@ -160,31 +161,43 @@ const comprobar_register=()=>{
     return correcto
 }
 //Funcion para realizar el post a la base de datos(da error de CORS, preguntar a JORGE)
-const registrar_usuario=async()=>{
-    let user={
+const registrar_usuario = async () => {
+    let user = {
         apellido: apellidos_register.value,
         centro: select_institutos.value,
-        email:email_register.value,
-        nombre:nombre_register.value,
-        password:pass_register.value,
-        rol:'alumno'
+        email: email_register.value,
+        nombre: nombre_register.value,
+        password: pass_register.value,
+        rol: 'alumno'
+    };
+
+    try {
+        const response = await fetch("http://localhost:5001/api/usuario", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Usuario registrado:", data);
+
+        // Redirigir al login si el registro es exitoso
+        notifier.success("Logeado")
+        window.location.href = "http://127.0.0.1:5500/frontend/src/index.html"; // Ajusta la URL según tu estructura
+    } catch (error) {
+        console.error("Error al registrar usuario:", error);
+        notifier.warning("El registro no se pudo completar , el usuario ya existe o hubo un problema con la base de datos");
     }
-    
-    const api=await fetch("http://localhost:5001/api/usuario",{
-        method:'POST',
-        headers: {
-            
-            'Content-Type': 'application/json',  // This needs to be allowed by the server
-        
-          },
-        body:JSON.stringify(user)
-       
-    })
-   
-    const data=await api.json()
-    console.log("USUARIO REGISTRADO CORRECTAMENTE")
-    return data
-}
+};
+
+
+  
 //Funcion para realizar el register correctamente en caso de estar todo correcto.
 const verificar_register=async(event)=>{
     event.preventDefault()
@@ -196,8 +209,22 @@ const verificar_register=async(event)=>{
     }
 }
 
+  
 //Listeners
 // document.addEventListener("DOMContentLoaded",peticionApi)
 form_login.addEventListener("submit",verificar_login)
 form_register.addEventListener("submit",verificar_register)
+document.addEventListener("DOMContentLoaded",()=> {
 
+    if (typeof AWN === "undefined") {
+        console.error("Awesome Notifications no se ha cargado correctamente.");
+        return; 
+    } else {
+        console.log("Awesome Notifications cargado correctamente.");
+        notifier = new AWN();
+    }
+  
+  
+  
+    
+  })
