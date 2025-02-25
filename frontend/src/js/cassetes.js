@@ -1,3 +1,9 @@
+document.addEventListener("adminReady", () => {
+  console.log("isAdmin.js ha terminado, ahora cargamos los cassetes.");
+  // Aquí colocamos toda la lógica de cassetes.js
+});
+
+
 const organosHumanos = ["Cerebro",
   "Cerebelo",
   "Tronco encefalico",
@@ -86,55 +92,80 @@ function addEventListenerIfExists(id, event, callback) {
   }
 }
 
-//Función para hacer la peticon GET a la API
+// Función para hacer la petición GET a la API
 const peticionApi = async () => {
   const options = {
-  
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'user-token': token.trim()
-    }
-  }
-      
-  const api = await fetch("http://localhost:5001/api/cassete",options);
-  const data = await api.json();
-  return data;
-}
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'user-token': token.trim()
+      }
+  };
 
-let fragment = document.createDocumentFragment()
-//fecha descripcion organo
+  try {
+      const api = await fetch("http://localhost:5001/api/cassete", options);
+
+     
+      if (api.status === 401) {
+          console.error("Token expirado o no autorizado.");
+          notifier.warning("Su sesión ha expirado. Por favor, inicie sesión nuevamente.");
+          
+          // Redirigir después de mostrar la notificación
+          setTimeout(() => {
+              location.href = "http://127.0.0.1:5500/frontend/src/index.html"; // Cambia a la ruta adecuada para tu aplicación
+          }, 2000); // Espera 2 segundos antes de redirigir
+
+          return null; // Regresar null para manejarlo más adelante
+      }
+
+      const data = await api.json();
+      return data;
+  } catch (error) {
+      console.error("Error en la petición:", error);
+      notifier.error("Ocurrió un error al comunicarse con la API.");
+      return null;
+  }
+};
+
+let fragment = document.createDocumentFragment();
+// Fecha, descripción, órgano
 const mostrarCassetes = async () => {
-  const api = await peticionApi()
+  const api = await peticionApi();
+
+  // Si api es null, significa que ocurrió un error (probablemente 401)
+  if (!api) {
+      return; // Salir de la función para evitar errores
+  }
 
   let cassetesArr;
-  //Creo los cassetes
+  // Creo los cassetes
   cassetesArr = api.filter(cassete => cassete.usuario_id === usuario_id);
 
   cassetesArr.forEach(cassete => {
-    let newDiv = document.createElement("tr")
-    let fecha = document.createElement("td")
-    let descripcion = document.createElement("td")
-    let organo = document.createElement("td")
-    let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
-    fecha.textContent = fechaTexto;
-    descripcion.textContent = cassete.descripcion
-    organo.textContent = cassete.organo
-    fecha.classList = " ml-2 hover:cursor-pointer"
-    descripcion.classList = " ml-2 hover:cursor-pointer"
-    organo.classList = " ml-2  hover:cursor-pointer"
-    newDiv.appendChild(fecha)
-    newDiv.appendChild(descripcion)
-    newDiv.appendChild(organo)
+      let newDiv = document.createElement("tr");
+      let fecha = document.createElement("td");
+      let descripcion = document.createElement("td");
+      let organo = document.createElement("td");
+      let fechaTexto = cassete.fecha ? cassete.fecha.toString().substring(0, 10) : "Fecha no disponible";
+      fecha.textContent = fechaTexto;
+      descripcion.textContent = cassete.descripcion;
+      organo.textContent = cassete.organo;
+      fecha.classList = "ml-2 hover:cursor-pointer";
+      descripcion.classList = "ml-2 hover:cursor-pointer";
+      organo.classList = "ml-2 hover:cursor-pointer";
+      newDiv.appendChild(fecha);
+      newDiv.appendChild(descripcion);
+      newDiv.appendChild(organo);
 
-    newDiv.classList.add("flex")
-    newDiv.id = cassete.id
+      newDiv.classList.add("flex");
+      newDiv.id = cassete.id;
 
-    fragment.appendChild(newDiv)
-  })
-  // ponerCassetes.appendChild(fragment)
-  listaCassetes.appendChild(fragment)
-}
+      fragment.appendChild(newDiv);
+  });
+
+  // ponerCassetes.appendChild(fragment);
+  listaCassetes.appendChild(fragment);
+};
 
 
 //Funcion para hacer el post con el nuevo cassete a la base de datos
@@ -145,6 +176,8 @@ const postCrearCassete=async()=>{
   let organo = selectOrganoCassete.value
   let caracteristicas = carac.value
   let observaciones = ob.value
+  let qr_cassette = "QR" + Math.random().toString(36).substring(7); // Generar un QR de prueba (opcional)
+
   console.log(usuario_id)
   const postCassete = await fetch("http://localhost:5001/api/cassete", {
     method: "POST",
@@ -152,7 +185,7 @@ const postCrearCassete=async()=>{
       "Content-Type": "application/json",
       'user-token': token.trim()
     },
-    body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id })
+    body: JSON.stringify({ descripcion, fecha, organo, caracteristicas, observaciones, usuario_id , qr_cassette })
   })
   const data = await postCassete.json()
   console.log(data)
@@ -163,7 +196,7 @@ const crearCassete = async (event) => {
 
   if (validacionModalCrearCassete()) {
     postCrearCassete()
-    console.log("CREA")
+ 
     mostrarCassetes()
     location.reload()
   }
@@ -216,6 +249,7 @@ const detalleCassete = async (event) => {
   // console.log(event.target.parentElement.id)
   //Mostrar Descripcion,fecha,caracteristiacs, y observaciones
   id = event.target.parentElement.id
+  localStorage.setItem("id_cassete", id)
   const api = await peticionApiID(id)
   // console.log(api)
   let p1 = document.createElement("P")
@@ -270,28 +304,43 @@ const detalleCassete = async (event) => {
   mostrarMuestras(id);
 }
 
-//Funcion para borrar el cassete seleccionado
-const borrarCassete = async () => {
-  console.log("El id ha borrar es: " + id)
-  const delete_cassete = await fetch(`http://localhost:5001/api/cassete/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'user-token': token.trim()
-    }
-  })
-  if (delete_cassete.ok) {
-    mostrarCassetes()
-    location.reload()
+const borrarCassete = async (id) => {
+  console.log("El id a borrar es: " + id);
+
+  try {
+      const delete_cassete = await fetch(`http://localhost:5001/api/cassete/${id}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json',
+              'user-token': token.trim()
+          }
+      });
+
+      console.log(delete_cassete); // Para depurar
+
+      if (delete_cassete.ok) {
+          notifier.success("Cassette eliminado correctamente."); // Notificación de éxito
+          mostrarCassetes(); // Actualizar la lista de cassettes
+      } else {
+          const errorData = await delete_cassete.json();
+          notifier.warning("Error al eliminar el cassette: " + errorData.message);
+      }
+  } catch (error) {
+      console.error("Error al intentar eliminar el cassete:", error);
+      notifier.warning("Ocurrió un error en la eliminación del cassete.");
   }
-}
+};
+
+
+
+
 //Funcion para saber si se ha hecho click previamente en algun cassete y si no, mostrar el error
 const comprobarBorrado = () => {
   if (id) {
     mostrar(deleteModal)
 
   } else {
-    cassetteDetail.textContent = "NO HAS SELECCIONADO NADA MACHO"
+ notifier.warning("Selecciona un Cassete")
   }
 }
 
@@ -331,7 +380,7 @@ const comprobarActualizacion = async () => {
     caracMod.textContent = api.caracteristicas
     obMod.textContent = api.observaciones
   } else {
-    cassetteDetail.textContent = "NO HAS SELECCIONADO NADA MACHO"
+  notifier.warning("Seleccionada un cassete Primero")
   }
 }
 //Inicializamos Sorttable para la tabla con los cassetes mostrados
@@ -483,16 +532,19 @@ const mostrar = (modal) => {
 }
 
 const ocultar = (modal) => {
-  modal.classList.add("hidden")
-  modal.classList.remove("flex")
-}
+  // Mostrar notificación de cancelación
+  notifier.info("Se ha cancelado la operación");
 
-// eventos para ocultar modales
-cerrarNuevoCassete.addEventListener('click', () => ocultar(nuevoCassete))
-cerrarModalCassete.addEventListener('click', () => ocultar(modalModificarCassette))
-cancelDelete.addEventListener('click', () => ocultar(deleteModal))
-confirmDelete.addEventListener('click', () => ocultar(deleteModal))
-// eventos para mostrar las modales
+  // Ocultar el modal
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+};
+
+// Eventos para ocultar modales y mostrar la notificación
+cerrarNuevoCassete.addEventListener('click', () => ocultar(nuevoCassete));
+cerrarModalCassete.addEventListener('click', () => ocultar(modalModificarCassette));
+cancelDelete.addEventListener('click', () => ocultar(deleteModal));
+confirmDelete.addEventListener('click', () => ocultar(deleteModal));
 toggleModal.addEventListener('click', () => mostrar(nuevoCassete))
 // modificarCassete.addEventListener('click', () => mostrar(modalModificarCassette))
 // eliminarCassete.addEventListener('click', () => mostrar(deleteModal))
@@ -652,7 +704,7 @@ const modalMuestra = (muestra) => {
   // console.log(muestra)
 
   detalleMuestra__modal.id = muestra.id;
-
+  localStorage.setItem("id_muestra", muestra.id)
   // dar valor a los textos
   descripcion__detalleMuestra.textContent = muestra.descripcion;
   fecha__detalleMuestra.textContent = muestra.fecha.substring(0, 10);
@@ -685,7 +737,7 @@ const createMuestra = (event) => {
       fecha: newMuestra__date.value,
       tincion: newMuestra__tincion.value,
       observaciones: newMuestra__Observaciones.value,
-      qr_muestra: "",
+      qr_muestra :"QR" + Math.random().toString(36).substring(7), // Generar un QR de prueba (opcional
       cassette_id: id,
     }
 
@@ -931,7 +983,8 @@ const subirImagen = async (event) => {
   // console.log(input)
 
   if (input.files.length === 0) {
-    alert("Selecciona una imagen primero");
+    notifier.warning("Selecciona una imagen primero")
+  
     return;
   }
 
@@ -1023,3 +1076,37 @@ confirmDelete__img.addEventListener('click', borrarImagen)
 
 aniadirImg__detalleMuestra.addEventListener('change', subirImagen)
 containerImg__detalleMuestra.addEventListener('click', cambiarImg)
+
+
+document.addEventListener("DOMContentLoaded",()=> {
+
+  if (typeof AWN === "undefined") {
+      console.error("Awesome Notifications no se ha cargado correctamente.");
+      return; 
+  } else {
+      console.log("Awesome Notifications cargado correctamente.");
+      notifier = new AWN();
+  }
+
+
+
+  
+})
+
+const cerrarSesion = document.getElementById("cerrarSesion");
+
+const cerrarSesionFunction = () => {
+    // Eliminar el token del localStorage
+    sessionStorage.removeItem("token");
+
+    // Mostrar la notificación de cierre de sesión
+    notifier.success("Has cerrado sesión correctamente."); // Muestra la notificación
+
+    // Redirigir después de un tiempo
+    setTimeout(() => {
+        window.location.href = "http://127.0.0.1:5500/frontend/src/index.html"; // Cambia a la ruta deseada
+    }, 5000); // Espera 2 segundos antes de redirigir
+};
+
+// Función para cerrar sesión
+cerrarSesion.addEventListener("click", cerrarSesionFunction);

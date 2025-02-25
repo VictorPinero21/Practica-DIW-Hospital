@@ -1,17 +1,13 @@
 let contenedor = document.getElementById("vistaAdmin");
 const CerrarSesionButton = document.getElementById("cerrarSesion");
+let notifier ;
 
-const cerrarSesion = () => {
-    sessionStorage.removeItem("token");
-    contenedor.innerHTML = "";
-    location.href = "../index.html"
-}
 const cargarVistaAdmin = async () => {
     const token = sessionStorage.getItem("token"); // Obtener token en el momento de la petición
     console.log("Token recuperado del sessionStorage:", token);
     
     if (!token) {
-        console.warn("No hay token disponible, redirigiendo...");
+        notifier.info("El token primero")
         return; // Detener ejecución si no hay token
     }
 
@@ -48,4 +44,3 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(cargarVistaAdmin, 500); 
 });
 
-CerrarSesionButton.addEventListener("click",cerrarSesion)

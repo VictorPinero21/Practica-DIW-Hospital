@@ -7,12 +7,29 @@
     <title>Medical Interface</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="./../assets/favicoin.png" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+     <!-- Cargar la librería con defer -->
+ <script src="https://cdn.jsdelivr.net/npm/awesome-notifications@latest/dist/index.var.js"></script>
+
+     <!-- Estilos de Awesome Notifications -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/awesome-notifications@latest/dist/style.css">
 </head>
 
 <body>
+  
+    <div id="show__QRModal" class="modal hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="modal-delete">
+          <span id="close__QR" class="close-btn">&times;</span>
+          <h2>Código QR</h2>
+          <div class="flex justify-center" id="img__QR">
+  
+          </div>
+        </div>
+      </div>
+
     <header class="header w-full">
         <nav class="bg-green-400 p-4 shadow-lg">
           <div class="container mx-auto flex justify-between items-center">
@@ -161,15 +178,19 @@
                     <option value="ura">URA</option>
                 </select>
 
-                <input type="text" placeholder="Escaner QR" class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="QR_header">
-
+             
+<button class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="QR_header">Generar QR</button>
                 <input type="date" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="header_f1">
 
                 <input type="date" placeholder="dd/mm/aaaa" class="bg-white border-[#0ff56b] rounded-md px-3 py-2" id="header_f2">
             </div>
-            <button id="cerrarSesion"">
-                Cerrar Sesion
-            </button>
+ 
+
+<button id="cerrarSesion" class="flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200">
+    <i class="fas fa-sign-out-alt mr-2"></i>
+    Cerrar Sesión
+</button>
+
          
         </div>
 
@@ -526,10 +547,11 @@
     </div>
 </body>
 
+
+<script src="./../js/isAdmin.js"></script>
 <script src="./../js/cassetes.js"></script>
-<<<<<<< HEAD
+
+<script src="./../js/qr_cassete.js"></script>
 <script src="./../js/validacionModalCassetes.js"></script>
-=======
-<script src="../js/isAdmin.js"></script>
->>>>>>> victor-rama
+
 </html>

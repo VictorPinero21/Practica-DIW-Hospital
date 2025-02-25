@@ -78,6 +78,8 @@ Cassette.init(
     },
     qr_cassette: {
       type: DataTypes.TEXT,
+      allowNull: false,
+      defaultValue: () => "QR" + Math.random().toString(36).substring(7),
     },
     usuario_id: {
       type: DataTypes.UUID, 

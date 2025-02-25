@@ -61,16 +61,24 @@ const actualizarCassette = async (req, res) => {
 // Eliminar un cassette
 const eliminarCassette = async (req, res) => {
   try {
-    const deleted = await casetteService.eliminarCassette(req.params.id);
-    if (deleted) {
-      res.status(204).json({ message: "Cassette eliminado" });
-    } else {
-      res.status(404).json({ message: "Cassette no encontrado" });
-    }
+      // Intenta eliminar el cassette usando el servicio
+      const deleted = await casetteService.eliminarCassette(req.params.id);
+
+      // Verifica si se eliminó correctamente
+      if (deleted) {
+          // Respuesta exitosa, no hay contenido para devolver
+          res.status(204).send(); // 204 No Content es apropiado aquí
+      } else {
+          // Si no se encontró el cassette
+          res.status(404).json({ message: "Cassette no encontrado" });
+      }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+      // Manejo de errores en caso de una excepción
+      console.error("Error al eliminar el cassette:", error); // Log para el servidor
+      res.status(500).json({ error: error.message }); // Respuesta de error
   }
 };
+
 
 module.exports = {
   getCassettes,

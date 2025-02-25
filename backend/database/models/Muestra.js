@@ -33,6 +33,9 @@ Muestra.init(
     qr_muestra: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+          len: [0, 255], // Longitud máxima de 255 caracteres
+      },
     },
     cassette_id: {
       type: DataTypes.UUID,
